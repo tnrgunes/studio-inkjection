@@ -1,84 +1,242 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="nl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inkjection Tattoo</title>
-    <style>
-        /* Tasarımı geri getiren ana CSS v1.0 */
-        :root { --bg:#000; --text:#fff; --accent:#25D366; }
-        body { margin: 0; background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; text-align: center; padding-bottom: 50px; }
-        .header { padding: 40px 20px; background: linear-gradient(to bottom, #111, #000); }
-        h1 { font-size: 2.5em; margin: 0; letter-spacing: 2px; color: #fff; }
-        .btn-container { margin: 20px 0; display: flex; flex-direction: column; align-items: center; gap: 15px; }
-        .btn { width: 85%; max-width: 300px; padding: 15px; border-radius: 50px; text-decoration: none; font-weight: bold; font-size: 1.1em; transition: 0.3s; }
-        .whatsapp { background: #25D366; color: #fff; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); }
-        .facebook { background: #1877F2; color: #fff; }
-        
-        /* Takvim Alanı */
-        #calendar { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; max-width: 450px; margin: 30px auto; padding: 15px; background: #0a0a0a; border-radius: 15px; }
-        .day { padding: 15px 5px; border-radius: 10px; font-size: 14px; background: #1a1a1a; border: 1px solid #333; }
-        .booked { background: #ff4444 !important; color: #fff !important; text-decoration: line-through; opacity: 0.7; border-color: #ff4444; }
-        .free { border-color: #25D366; color: #25D366; }
-        .info-text { font-size: 0.9em; color: #888; margin-top: 20px; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Inkjection Tattoo</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root{ --bg:#000; --card:rgba(15, 15, 15, 0.98); --text:#fff; }
+*{box-sizing:border-box}
+
+/* SPLASH SCREEN */
+#splash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; display: flex; align-items: center; justify-content: center; z-index: 999999; transition: opacity 0.8s ease; }
+#splash img { width: 180px; border-radius: 50%; animation: pulse 2s infinite; }
+@keyframes pulse { 0% { opacity: 0.5; transform: scale(0.95); } 50% { opacity: 1; transform: scale(1); } 100% { opacity: 0.5; transform: scale(0.95); } }
+
+body { margin: 0; background-color: #000; color: var(--text); font-family: 'Helvetica Neue', Arial, sans-serif; text-align: center; background-image: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), url('https://i.ibb.co/1cqzt5D/MG-1164.jpg'); background-size: contain; background-position: top center; background-attachment: fixed; background-repeat: no-repeat; }
+
+.container{max-width:460px; margin:auto; padding:100px 20px 60px 20px; min-height: 100vh; position: relative; z-index: 5;}
+
+/* MENU & LANGS */
+.menu-trigger { position: fixed; top: 25px; right: 25px; font-size: 24px; color: #fff; cursor: pointer; background: rgba(0,0,0,0.7); padding: 10px 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); z-index: 10001; backdrop-filter: blur(5px); }
+#sideMenu { position: fixed; top: 0; right: -320px; width: 300px; height: 100%; background: rgba(10,10,10,0.98); backdrop-filter: blur(20px); z-index: 10002; transition: 0.4s; padding: 50px 30px; text-align: left; }
+#sideMenu.active { right: 0; }
+.close-menu { position: absolute; top: 25px; right: 25px; font-size: 30px; cursor: pointer; color: #fff; }
+
+.menu-langs { display: flex; gap: 10px; margin-bottom: 40px; }
+.lang-btn { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid #444; color: #fff; padding: 10px; border-radius: 10px; cursor: pointer; font-size: 14px; font-weight: bold;}
+.lang-btn.active { border-color: #fff; background: rgba(255,255,255,0.2); }
+
+.logo img{width:130px; border-radius:50%; border:2px solid rgba(255,255,255,0.3); margin-bottom:15px;}
+h1{letter-spacing:8px; margin:10px 0; font-size:32px; text-transform: uppercase;}
+
+.socials{display:flex; justify-content:center; gap:35px; margin:25px 0}
+.socials a{font-size:35px; color:var(--text); text-shadow: 0 0 10px rgba(0,0,0,0.8);}
+
+.btn-main{display:block; margin:18px auto; padding:20px; width:100%; max-width:320px; color:#fff; font-weight:bold; border-radius:60px; text-decoration:none; border:1px solid rgba(255,255,255,0.4); background:rgba(0,0,0,0.5); backdrop-filter: blur(10px); cursor:pointer; font-size:14px; letter-spacing:2px; text-transform: uppercase;}
+.whatsapp-main{background:rgba(37, 211, 102, 0.25); border-color: rgba(37, 211, 102, 0.5);}
+
+/* MODALS */
+.modal { display: none; position: fixed; z-index: 10005; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); backdrop-filter: blur(10px); }
+.modal-content { background: rgba(15,15,15,0.98); margin: 60px auto; padding: 25px; border-radius: 30px; width: 95%; max-width: 400px; position: relative; border: 1px solid rgba(255,255,255,0.15); max-height: 85vh; overflow-y: auto; }
+.close-modal { position: absolute; top: 15px; right: 20px; color: #fff; font-size: 32px; cursor: pointer; }
+
+/* PORTFOLIO GRID */
+.portfolio-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 5px; }
+.portfolio-grid img { width: 100%; height: 160px; object-fit: cover; border-radius: 15px; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); }
+
+/* LIGHTBOX */
+#viewerModal { display: none; position: fixed; z-index: 20000; top: 0; left: 0; width: 100%; height: 100%; background: #000; align-items: center; justify-content: center; }
+#viewerImg { max-width: 95%; max-height: 80%; border-radius: 10px; object-fit: contain; }
+.viewer-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); color: #fff; border: none; padding: 20px; cursor: pointer; font-size: 24px; border-radius: 50%; }
+.prev-btn { left: 15px; }
+.next-btn { right: 15px; }
+.close-viewer { position: absolute; top: 30px; right: 30px; font-size: 40px; color: #fff; cursor: pointer; }
+
+/* CALENDAR */
+.days{display:grid; grid-template-columns:repeat(7,1fr); gap:6px}
+.day{height:40px; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,0.08); border-radius:10px; font-size:14px; font-weight: bold;}
+.available{border:1px solid rgba(255,255,255,0.3); cursor:pointer;}
+.booked{color:rgba(255,255,255,0.15); position:relative;}
+.booked::after{content:"✕"; position:absolute; font-size:22px; color:#ff3b3b;}
+.past-day { opacity: 0.2; pointer-events: none; }
+
+.section{margin-top:40px; padding:25px; text-align:left; background: rgba(0,0,0,0.6); border-radius: 25px;}
+.input-group { text-align: left; margin-bottom: 15px; }
+.input-group input, .input-group textarea { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid #333; border-radius: 10px; padding: 12px; color: #fff; outline: none; }
+</style>
 </head>
+
 <body>
-    <div class="header">
-        <h1>Inkjection Tattoo</h1>
-        <p>Zandhoven, Belgium</p>
-    </div>
 
-    <div class="btn-container">
-        <a href="https://wa.me/32465313881" class="btn whatsapp">WhatsApp ile Yaz</a>
-        <a href="https://www.facebook.com/share/15ZpY9N4K8/?mibextid=wwXIfr" class="btn facebook">Facebook Sayfamız</a>
-    </div>
+<div id="splash"><img src="https://i.ibb.co/tPTrSN8k/image.png"></div>
+<div class="menu-trigger" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
 
-    <div id="calendar"></div>
-    <p class="info-text">🔴 Dolu Günler | 🟢 Boş Günler</p>
+<div id="sideMenu">
+  <span class="close-menu" onclick="toggleMenu()">×</span>
+  <div class="menu-langs">
+    <button class="lang-btn active" id="nlBtn" onclick="setLang('nl')">NL</button>
+    <button class="lang-btn" id="enBtn" onclick="setLang('en')">EN</button>
+  </div>
+  <div class="menu-content">
+    <h3 id="menuAddressTitle">ADRES</h3>
+    <p>Torenstraat 32, 2243 Zandhoven</p>
+    <h3 id="menuContactTitle">CONTACT</h3>
+    <p>Email: TalithaTurelinckx@hotmail.com</p>
+    <p>WhatsApp: +32 476 63 37 94</p>
+  </div>
+</div>
 
-    <script>
-        async function loadData() {
-            // Senin Google Sheets bağlantın
-            const sheetId = '1-Cmr2UoQB89Oo4D-Qcukhr7CGjs7eAEJbuSlWtyjFk4';
-            const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=Sayfa1`;
-            
-            try {
-                const res = await fetch(url);
-                const txt = await res.text();
-                const json = JSON.parse(txt.substr(47).slice(0, -2));
-                
-                const bookedDates = json.table.rows.map(row => {
-                    let val = row.c[0] ? row.c[0].v : null;
-                    let status = row.c[1] ? row.c[1].v : '';
-                    
-                    if (val && status === 'booked') {
-                        // Hem Date() hem de Düz Metin okuma desteği
-                        if (typeof val === 'string' && val.includes('Date')) {
-                            const m = val.match(/\d+/g);
-                            return `${m[0]}-${(parseInt(m[1])+1).toString().padStart(2,'0')}-${m[2].padStart(2,'0')}`;
-                        }
-                        return val.toString().trim(); 
-                    }
-                    return null;
-                }).filter(x => x);
+<div class="container">
+  <div class="logo"><img src="https://i.ibb.co/tPTrSN8k/image.png"></div>
+  <h1>INKJECTION</h1>
+  <p id="tagline">Uw Verhaal, Onze Passie</p>
+  <div class="socials">
+    <a href="https://www.instagram.com/inkj.ection/" target="_blank"><i class="fab fa-instagram"></i></a>
+    <a href="https://www.tiktok.com/@inkjection.tattoo" target="_blank"><i class="fab fa-tiktok"></i></a>
+    <a href="https://www.facebook.com/share/1XPw4Fx861/" target="_blank"><i class="fab fa-facebook-f"></i></a>
+  </div>
+  <button class="btn-main" onclick="openModalSync('workModal')" id="btnWork">MY WORK</button>
+  <button class="btn-main" onclick="openModalSync('calModal')" id="btnCal">VRIJE DAGEN</button>
+  <a class="btn-main whatsapp-main" href="https://wa.me/32476633794" target="_blank">WHATSAPP</a>
+  <div class="section">
+    <h2 id="aboutTitle">OVER MIJ</h2>
+    <p id="aboutText">Passie voor kunst, precisie op de huid.</p>
+  </div>
+</div>
 
-                const cal = document.getElementById('calendar');
-                const today = new Date();
-                
-                for(let i=0; i<30; i++) {
-                    const d = new Date(today);
-                    d.setDate(today.getDate() + i);
-                    const iso = `${d.getFullYear()}-${(d.getMonth()+1).toString().padStart(2,'0')}-${d.getDate().toString().padStart(2,'0')}`;
-                    
-                    const div = document.createElement('div');
-                    div.className = 'day ' + (bookedDates.includes(iso) ? 'booked' : 'free');
-                    div.innerText = d.getDate() + "/" + (d.getMonth()+1);
-                    cal.appendChild(div);
-                }
-            } catch (e) { console.error("Hata:", e); }
-        }
-        loadData(); [cite: 2025-12-24]
-    </script>
+<div id="workModal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeModal('workModal')">×</span><div id="modalWorkTitle" style="font-weight:bold; margin-bottom:20px;">PORTFOLIO</div><div class="portfolio-grid" id="portfolioGrid"></div></div></div>
+<div id="calModal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeModal('calModal')">×</span><div class="cal-header" style="display:flex; justify-content:center; align-items:center; gap:15px; margin-bottom:15px;"><button class="cal-nav" onclick="changeMonth(-1)"><</button><div id="calTitle" style="font-weight:bold;"></div><button class="cal-nav" onclick="changeMonth(1)">></button></div><div class="days" id="days"></div></div></div>
+
+<div id="viewerModal">
+  <span class="close-viewer" onclick="closeViewer()">×</span>
+  <button class="viewer-btn prev-btn" onclick="navImg(-1)"><i class="fas fa-chevron-left"></i></button>
+  <img id="viewerImg" src="">
+  <button class="viewer-btn next-btn" onclick="navImg(1)"><i class="fas fa-chevron-right"></i></button>
+</div>
+
+<div id="formModal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal" onclick="closeModal('formModal')">×</span>
+    <h3 id="formTitle">Afspraak Aanvragen</h3>
+    <div class="input-group"><label id="lblDate">Datum</label><input type="text" id="formDate" readonly></div>
+    <div class="input-group"><label id="lblName">Naam</label><input type="text" id="custName"></div>
+    <div class="input-group"><label id="lblIdea">Idee</label><textarea id="custIdea" rows="4"></textarea></div>
+    <button class="btn-main" style="background:#25D366; border:none;" onclick="sendWhatsApp()"><span id="btnSendWaText">VERSTUREN</span></button>
+    <p id="photoInstruction" style="font-size: 11px; color: #888;"></p>
+  </div>
+</div>
+
+<script>
+const SHEET_ID = '1-Cmr2UoQB89Oo4D-Qcukhr7CGjs7eAEJbuSlWtyjFk4', SHEET_NAME = 'Sayfa1'; 
+let googleBookings = {}, allImages = [], currentImgIdx = 0, lang = "nl";
+const now = new Date(); now.setHours(0,0,0,0);
+let viewMonth = now.getMonth(), viewYear = now.getFullYear();
+
+window.onload = () => { 
+  setTimeout(() => { document.getElementById('splash').style.display = 'none'; }, 2000); 
+  fetchData(); updateLang();
+};
+
+async function openModalSync(id) { await fetchData(); document.getElementById(id).style.display = "block"; }
+function closeModal(id) { document.getElementById(id).style.display = "none"; }
+function toggleMenu() { document.getElementById('sideMenu').classList.toggle('active'); }
+function setLang(l) { lang = l; updateLang(); toggleMenu(); }
+
+async function fetchData() {
+  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${SHEET_NAME}&t=${Date.now()}`;
+  try {
+    const res = await fetch(url, { cache: "no-store" });
+    const text = await res.text();
+    const rows = text.split(/\r?\n/).map(r => r.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/^"|"$/g, '').trim()));
+    
+    googleBookings = {}; allImages = [];
+    const workGrid = document.getElementById("portfolioGrid"); workGrid.innerHTML = "";
+    
+    rows.forEach(cols => {
+      // DÜZ METİN OKUMA DESTEĞİ BURADA
+      if(cols[0] && cols[1] && cols[1].toLowerCase()==='booked') {
+          let dateVal = cols[0];
+          // Google'ın gönderdiği Date(2026,0,5) formatını yakala
+          if(dateVal.includes("Date(")) {
+              let m = dateVal.match(/\d+/g);
+              dateVal = `${m[0]}-${(parseInt(m[1])+1).toString().padStart(2,'0')}-${m[2].padStart(2,'0')}`;
+          }
+          googleBookings[dateVal] = true;
+      }
+      
+      if(cols[2] && cols[2].startsWith('http')) {
+        allImages.push(cols[2]);
+        const img = document.createElement("img");
+        img.src = cols[2];
+        const idx = allImages.length - 1;
+        img.onclick = () => openViewer(idx);
+        workGrid.appendChild(img);
+      }
+    });
+    renderCalendar();
+  } catch (e) { console.log("Sync error"); }
+}
+
+function openViewer(idx) {
+  currentImgIdx = idx;
+  document.getElementById("viewerImg").src = allImages[currentImgIdx];
+  document.getElementById("viewerModal").style.display = "flex";
+}
+function closeViewer() { document.getElementById("viewerModal").style.display = "none"; }
+function navImg(step) {
+  currentImgIdx += step;
+  if(currentImgIdx >= allImages.length) currentImgIdx = 0;
+  if(currentImgIdx < 0) currentImgIdx = allImages.length - 1;
+  document.getElementById("viewerImg").src = allImages[currentImgIdx];
+}
+
+function renderCalendar() {
+  const daysEl = document.getElementById("days");
+  const months = lang==="nl"?["JANUARI","FEBRUARI","MAART","APRIL","MEI","JUNI","JULI","AUGUSTUS","SEPTEMBER","OKTOBER","NOVEMBER","DECEMBER"]:["JANUARY","FEBRUARY","MARCH","APRIL","MAY","JUNE","JULY","AUGUST","SEPTEMBER","OCTOBER","NOVEMBER","DECEMBER"];
+  document.getElementById("calTitle").textContent = months[viewMonth] + " " + viewYear;
+  daysEl.innerHTML = "";
+  const firstDay = new Date(viewYear, viewMonth, 1).getDay();
+  const shift = firstDay === 0 ? 6 : firstDay - 1;
+  for(let i=0; i<shift; i++) daysEl.appendChild(document.createElement("div"));
+  const totalDays = new Date(viewYear, viewMonth + 1, 0).getDate();
+  for(let d=1; d<=totalDays; d++) {
+    const dObj = new Date(viewYear, viewMonth, d);
+    const id = `${viewYear}-${(viewMonth+1).toString().padStart(2,'0')}-${d.toString().padStart(2,'0')}`;
+    const el = document.createElement("div");
+    const isBooked = googleBookings[id];
+    el.className = "day " + (isBooked ? "booked" : "available");
+    if(dObj < now) el.classList.add("past-day");
+    el.textContent = d;
+    if(!isBooked && dObj >= now) el.onclick = () => { document.getElementById("formDate").value = id; document.getElementById("formModal").style.display = "block"; };
+    daysEl.appendChild(el);
+  }
+}
+
+function sendWhatsApp() {
+  const date = document.getElementById("formDate").value, name = document.getElementById("custName").value, idea = document.getElementById("custIdea").value;
+  if(!name || !idea) return alert("Fill fields");
+  const msg = lang === "nl" ? `*TATTOO AANVRAAG*%0A📅 *Datum:* ${date}%0A👤 *Naam:* ${name}%0A💡 *Idee:* ${idea}%0A%0A--- IK STUUR NU DE FOTO ---` : `*TATTOO REQUEST*%0A📅 *Date:* ${date}%0A👤 *Name:* ${name}%0A💡 *Idea:* ${idea}%0A%0A--- SENDING THE PHOTO NOW ---`;
+  window.open(`https://wa.me/32476633794?text=${msg}`, '_blank');
+}
+
+function updateLang() {
+  const isNl = (lang === "nl");
+  document.getElementById("nlBtn").classList.toggle("active", isNl);
+  document.getElementById("enBtn").classList.toggle("active", !isNl);
+  const t = isNl ? 
+    { tag: "Uw Verhaal, Onze Passie", work: "MY WORK", cal: "VRIJE DAGEN", abT: "OVER MIJ", mwT: "PORTFOLIO", fT: "Afspraak Aanvragen", lD: "Datum", lN: "Naam", lI: "Idee", bWa: "VERSTUREN & FOTO", pIns: "(Stuur bericht veeg sonra foto toe)" } :
+    { tag: "Your Story, Our Passion", work: "MY WORK", cal: "OPEN DAYS", abT: "ABOUT ME", mwT: "PORTFOLIO", fT: "Request Appointment", lD: "Date", lN: "Name", lI: "Idea", bWa: "SEND & ADD PHOTO", pIns: "(Send message and then attach photo)" };
+  
+  document.getElementById("tagline").textContent = t.tag; document.getElementById("btnWork").textContent = t.work; document.getElementById("btnCal").textContent = t.cal;
+  document.getElementById("aboutTitle").textContent = t.abT; document.getElementById("modalWorkTitle").textContent = t.mwT;
+  document.getElementById("formTitle").textContent = t.fT; document.getElementById("lblDate").textContent = t.lD;
+  document.getElementById("lblName").textContent = t.lN; document.getElementById("lblIdea").textContent = t.lI;
+  document.getElementById("btnSendWaText").textContent = t.bWa; document.getElementById("photoInstruction").textContent = t.pIns;
+  renderCalendar();
+}
+function changeMonth(s) { viewMonth += s; if(viewMonth>11){viewMonth=0;viewYear++;} if(viewMonth<0){viewMonth=11;viewYear--;} renderCalendar(); }
+</script>
 </body>
 </html>
