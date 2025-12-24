@@ -5,32 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inkjection Tattoo</title>
     <style>
+        /* Tasarımı geri getiren ana CSS v1.0 */
         :root { --bg:#000; --text:#fff; --accent:#25D366; }
-        body { background:#000; color:#fff; font-family:sans-serif; text-align:center; margin:0; padding:20px; }
-        .btn { display:inline-block; padding:15px 30px; margin:10px; border-radius:30px; text-decoration:none; font-weight:bold; transition: 0.3s; }
-        .whatsapp { background:#25D366; color:#fff; }
-        .facebook { background:#1877F2; color:#fff; }
-        .btn:hover { transform: scale(1.05); opacity: 0.9; }
-        #calendar { display:grid; grid-template-columns:repeat(7, 1fr); gap:8px; max-width:400px; margin:30px auto; padding:10px; }
-        .day { padding:12px 5px; border:1px solid #333; font-size:13px; border-radius:8px; background:#111; }
-        .booked { background:#ff4444 !important; color:#fff !important; text-decoration:line-through; opacity:0.7; border-color:#ff4444; }
-        .free { color:#25D366; border-color:#25D366; }
-        h1 { margin-bottom: 5px; }
-        p { color: #888; font-size: 14px; margin-bottom: 25px; }
+        body { margin: 0; background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; text-align: center; padding-bottom: 50px; }
+        .header { padding: 40px 20px; background: linear-gradient(to bottom, #111, #000); }
+        h1 { font-size: 2.5em; margin: 0; letter-spacing: 2px; color: #fff; }
+        .btn-container { margin: 20px 0; display: flex; flex-direction: column; align-items: center; gap: 15px; }
+        .btn { width: 85%; max-width: 300px; padding: 15px; border-radius: 50px; text-decoration: none; font-weight: bold; font-size: 1.1em; transition: 0.3s; }
+        .whatsapp { background: #25D366; color: #fff; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); }
+        .facebook { background: #1877F2; color: #fff; }
+        
+        /* Takvim Alanı */
+        #calendar { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; max-width: 450px; margin: 30px auto; padding: 15px; background: #0a0a0a; border-radius: 15px; }
+        .day { padding: 15px 5px; border-radius: 10px; font-size: 14px; background: #1a1a1a; border: 1px solid #333; }
+        .booked { background: #ff4444 !important; color: #fff !important; text-decoration: line-through; opacity: 0.7; border-color: #ff4444; }
+        .free { border-color: #25D366; color: #25D366; }
+        .info-text { font-size: 0.9em; color: #888; margin-top: 20px; }
     </style>
 </head>
 <body>
-    <h1>Inkjection Tattoo</h1>
-    <p>Dolu günler kırmızı ile işaretlenmiştir. Randevu için yazın.</p>
-    
-    <a href="https://wa.me/32465313881" class="btn whatsapp">WhatsApp: Resim Gönder</a>
-    <a href="https://www.facebook.com/share/15ZpY9N4K8/?mibextid=wwXIfr" class="btn facebook">Facebook Sayfamız</a>
+    <div class="header">
+        <h1>Inkjection Tattoo</h1>
+        <p>Zandhoven, Belgium</p>
+    </div>
+
+    <div class="btn-container">
+        <a href="https://wa.me/32465313881" class="btn whatsapp">WhatsApp ile Yaz</a>
+        <a href="https://www.facebook.com/share/15ZpY9N4K8/?mibextid=wwXIfr" class="btn facebook">Facebook Sayfamız</a>
+    </div>
 
     <div id="calendar"></div>
+    <p class="info-text">🔴 Dolu Günler | 🟢 Boş Günler</p>
 
     <script>
         async function loadData() {
-            // Senin güncel tablo ID'n ve sayfa ismin
+            // Senin Google Sheets bağlantın
             const sheetId = '1-Cmr2UoQB89Oo4D-Qcukhr7CGjs7eAEJbuSlWtyjFk4';
             const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=Sayfa1`;
             
@@ -44,42 +53,30 @@
                     let status = row.c[1] ? row.c[1].v : '';
                     
                     if (val && status === 'booked') {
-                        // 1. Durum: Google'ın otomatik tarih formatı
+                        // Hem Date() hem de Düz Metin okuma desteği
                         if (typeof val === 'string' && val.includes('Date')) {
                             const m = val.match(/\d+/g);
                             return `${m[0]}-${(parseInt(m[1])+1).toString().padStart(2,'0')}-${m[2].padStart(2,'0')}`;
                         }
-                        // 2. Durum: Senin girdiğin 'Düz Metin' formatı (2026-01-05)
                         return val.toString().trim(); 
                     }
                     return null;
                 }).filter(x => x);
 
-                renderCalendar(bookedDates);
-            } catch (e) { 
-                console.error("Veri yüklenemedi:", e); 
-            }
-        }
-
-        function renderCalendar(booked) {
-            const cal = document.getElementById('calendar');
-            const today = new Date();
-            // Gelecek 30 günü göster
-            for(let i=0; i<30; i++) {
-                const d = new Date(today);
-                d.setDate(today.getDate() + i);
+                const cal = document.getElementById('calendar');
+                const today = new Date();
                 
-                // Tarihi YYYY-MM-DD formatına çevirerek eşleştir
-                const year = d.getFullYear();
-                const month = (d.getMonth() + 1).toString().padStart(2, '0');
-                const day = d.getDate().toString().padStart(2, '0');
-                const iso = `${year}-${month}-${day}`;
-                
-                const div = document.createElement('div');
-                div.className = 'day ' + (booked.includes(iso) ? 'booked' : 'free');
-                div.innerText = d.getDate() + "/" + (d.getMonth()+1);
-                cal.appendChild(div);
-            }
+                for(let i=0; i<30; i++) {
+                    const d = new Date(today);
+                    d.setDate(today.getDate() + i);
+                    const iso = `${d.getFullYear()}-${(d.getMonth()+1).toString().padStart(2,'0')}-${d.getDate().toString().padStart(2,'0')}`;
+                    
+                    const div = document.createElement('div');
+                    div.className = 'day ' + (bookedDates.includes(iso) ? 'booked' : 'free');
+                    div.innerText = d.getDate() + "/" + (d.getMonth()+1);
+                    cal.appendChild(div);
+                }
+            } catch (e) { console.error("Hata:", e); }
         }
         loadData(); [cite: 2025-12-24]
     </script>
