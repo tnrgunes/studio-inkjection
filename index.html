@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<title>Inkjection Tattoo - Zandhoven</title>
+<meta name="description" content="Inkjection Tattoo Zandhoven: Uw Verhaal, Onze Passie. Bekijk ons werk en boek direct uw afspraak online.">
+<meta name="keywords" content="Tattoo, Inkjection, Zandhoven, Tattoo Studio, Belgium, Inkjection Tattoo">
+<meta name="author" content="Inkjection">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+/* CSS ve Tasarım Kodları v1.0 */
+:root{ --bg:#000; --text:#fff; --accent:#25D366; }
+*{box-sizing:border-box; -webkit-tap-highlight-color: transparent;}
+body { margin: 0; background: #000; color: var(--text); font-family: 'Helvetica Neue', Arial, sans-serif; text-align: center; 
+    background-image: linear-gradient(rgba(0,0,0,0.82), rgba(0,0,0,0.82)), url('https://i.ibb.co/1cqzt5D/MG-1164.jpg'); 
+    background-size: cover; background-position: center; background-attachment: fixed; }
+
+#splash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; display: flex; align-items: center; justify-content: center; z-index: 999999; }
+#splash img { width: 140px; border-radius: 50%; animation: pulse 2s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 0.6; transform: scale(0.95); } 50% { opacity: 1; transform: scale(1); } }
+
+.container{max-width:500px; margin:auto; padding:80px 20px 40px 20px; min-height: 100vh;}
+.logo img{width:120px; height:120px; border-radius:50%; border:2px solid rgba(255,255,255,0.2); margin-bottom:10px; object-fit: cover;}
+h1{letter-spacing:6px; margin:10px 0; font-size:28px; text-transform: uppercase; font-weight: 300;}
+
+.menu-trigger { position: fixed; top: 20px; right: 20px; font-size: 22px; color: #fff; background: rgba(0,0,0,0.6); padding: 12px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); z-index: 10001; backdrop-filter: blur(10px); cursor: pointer;}
+#sideMenu { position: fixed; top: 0; right: -320px; width: 300px; height: 100%; background: rgba(10,10,10,0.98); backdrop-filter: blur(25px); z-index: 10002; transition: 0.4s; padding: 60px 30px; text-align: left; border-left: 1px solid rgba(255,255,255,0.05);}
+#sideMenu.active { right: 0; }
+.btn-main{display:block; margin:15px auto; padding:18px; width:100%; max-width:320px; color:#fff; font-weight:bold; border-radius:50px; text-decoration:none; border:1px solid rgba(255,255,255,0.3); background:rgba(255,255,255,0.08); backdrop-filter: blur(15px); cursor:pointer; font-size:12px; letter-spacing:2px; text-transform: uppercase;}
+
+.lang-box { margin-bottom: 40px; display: flex; gap: 10px; }
+.lang-option { padding: 8px 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2); font-size: 12px; cursor: pointer; transition: 0.3s; color: #888; }
+.lang-option.active { border-color: #fff; color: #fff; background: rgba(255,255,255,0.1); }
+
+.portfolio-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.portfolio-grid img { width: 100%; height: 180px; object-fit: cover; border-radius: 15px; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); }
+
+#viewerModal { display: none; position: fixed; z-index: 20000; top: 0; left: 0; width: 100%; height: 100%; background: #000; align-items: center; justify-content: center; }
+#viewerImg { width: 100%; height: 100%; object-fit: contain; image-rendering: -webkit-optimize-contrast; } 
+.viewer-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); color: #fff; border: none; width: 60px; height: 60px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 24px; z-index: 20002;}
+.prev-btn { left: 10px; } .next-btn { right: 10px; }
+.close-viewer { position: absolute; top: 25px; right: 25px; font-size: 45px; color: #fff; cursor: pointer; z-index: 20001; }
+
+.modal { display: none; position: fixed; z-index: 10005; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); backdrop-filter: blur(20px); overflow-y: auto; padding: 20px 0; }
+.modal-content { background: #111; margin: auto; padding: 25px; border-radius: 30px; width: 92%; max-width: 450px; position: relative; border: 1px solid rgba(255,255,255,0.1); }
+.close-modal { position: absolute; top: 15px; right: 20px; color: #fff; font-size: 35px; cursor: pointer; }
+
+.cal-header { display: flex; justify-content: space-between; align-items: center; margin: 30px 0 20px 0; }
+.cal-nav { background: none; border: 1px solid #444; color: #fff; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.days{display:grid; grid-template-columns:repeat(7,1fr); gap:6px}
+.day{height:45px; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,0.04); border-radius:10px; font-size:14px;}
+.available{border: 1px solid rgba(255,255,255,0.25); cursor:pointer; background:rgba(255,255,255,0.08);}
+.booked{color:rgba(255,255,255,0.15); position:relative;}
+.booked::after{content:"✕"; position:absolute; color:#ff4444; font-size: 10px;}
+.past-day { opacity: 0.1; pointer-events: none; }
+.nav-disabled { opacity: 0.05; pointer-events: none; }
+</style>
+</head>
+<body>
+
+<div id="splash"><img src="https://i.ibb.co/tPTrSN8k/image.png"></div>
+<div class="menu-trigger" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
+
+<div id="sideMenu">
+    <span onclick="toggleMenu()" style="position:absolute; top:20px; right:25px; font-size:35px; cursor:pointer;">×</span>
+    <div style="margin-top:40px;">
+        <p style="color:#666; font-size:10px; letter-spacing:2px; margin-bottom:15px; text-transform:uppercase;">Language / Taal</p>
+        <div class="lang-box">
+            <div id="langNL" class="lang-option active" onclick="updateLanguage('nl')">NL</div>
+            <div id="langEN" class="lang-option" onclick="updateLanguage('en')">EN</div>
+        </div>
+        <p id="menuLocLabel" style="color:#888; font-size:12px; text-transform:uppercase;">Location</p>
+        <p style="font-size:14px; margin-bottom:25px;">Torenstraat 32, 2243 Zandhoven</p>
+        <p id="menuContactLabel" style="color:#888; font-size:12px; text-transform:uppercase;">Contact</p>
+        <p style="font-size:14px;">+32 476 63 37 94</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="logo"><img src="https://i.ibb.co/tPTrSN8k/image.png"></div>
+    <h1>INKJECTION</h1>
+    <p id="tagline">Uw Verhaal, Onze Passie</p>
+    
+    <div style="display:flex; justify-content:center; gap:25px; margin:25px 0">
+        <a href="https://www.instagram.com/inkj.ection/" target="_blank" style="color:#fff; font-size:26px;"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.facebook.com/share/1Jj6LvAebP/?mibextid=wwXIfr" target="_blank" style="color:#fff; font-size:26px;"><i class="fab fa-facebook"></i></a>
+        <a href="https://www.tiktok.com/@inkjection.tattoo" target="_blank" style="color:#fff; font-size:26px;"><i class="fab fa-tiktok"></i></a>
+    </div>
+
+    <button id="btnWork" class="btn-main" onclick="openSyncModal('workModal')">MY WORK</button>
+    <button id="btnDays" class="btn-main" onclick="openSyncModal('calModal')">VRIJE DAGEN</button>
+    <a id="btnWA" class="btn-main" href="https://wa.me/32476633794" target="_blank" style="background:rgba(37, 211, 102, 0.15); border-color:rgba(37, 211, 102, 0.45); color:#25D366;">WHATSAPP</a>
+</div>
+
+<div id="workModal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeCommonModal('workModal')">×</span>
+    <div id="portfolioTitle" style="font-weight:bold; margin-bottom:20px; letter-spacing:3px;">PORTFOLIO</div>
+    <div class="portfolio-grid" id="portfolioGrid"></div>
+</div></div>
+
+<div id="viewerModal">
+    <span class="close-viewer" onclick="hideViewer()">×</span>
+    <button class="viewer-btn prev-btn" onclick="slideImg(-1)"><i class="fas fa-chevron-left"></i></button>
+    <img id="viewerImg" src="">
+    <button class="viewer-btn next-btn" onclick="slideImg(1)"><i class="fas fa-chevron-right"></i></button>
+</div>
+
+<div id="calModal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeCommonModal('calModal')">×</span>
+    <div class="cal-header">
+        <button class="cal-nav" id="prevMonthBtn" onclick="shiftMonth(-1)"><i class="fas fa-chevron-left"></i></button>
+        <div id="calTitle" style="font-weight:bold;"></div>
+        <button class="cal-nav" id="nextMonthBtn" onclick="shiftMonth(1)"><i class="fas fa-chevron-right"></i></button>
+    </div>
+    <div class="days" id="days"></div>
+</div></div>
+
+<div id="formModal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeCommonModal('formModal')">×</span>
+    <h3 id="formHeader">Afspraak Aanvragen</h3>
+    <input type="text" id="formDate" readonly style="width:100%; margin-bottom:12px; background:#1a1a1a; color:#fff; border:1px solid #333; padding:15px; border-radius:12px;">
+    <input type="text" id="custName" placeholder="Uw Naam" style="width:100%; margin-bottom:12px; background:#1a1a1a; color:#fff; border:1px solid #333; padding:15px; border-radius:12px;">
+    <textarea id="custIdea" rows="4" placeholder="Uw Idee" style="width:100%; margin-bottom:12px; background:#1a1a1a; color:#fff; border:1px solid #333; padding:15px; border-radius:12px;"></textarea>
+    
+    <button id="formSubmit" class="btn-main" style="background:#25D366; border:none; color:#fff; max-width:100%; display:flex; align-items:center; justify-content:center; gap:10px;" onclick="executeWhatsApp()">
+        <i class="fas fa-paper-plane"></i> <span>VERSTUREN + FOTO</span>
+    </button>
+    <p id="photoNote" style="font-size:10px; color:#888; margin-top:10px; font-style:italic;">* Vergeet niet om na het versturen je referentiefoto te sturen via WhatsApp!</p>
+</div></div>
+
+<script>
+/* JavaScript Kodları v1.0 */
+const SHEET_ID = '1-Cmr2UoQB89Oo4D-Qcukhr7CGjs7eAEJbuSlWtyjFk4', SHEET_NAME = 'Sayfa1'; 
+let bookings = {}, images = [], activeIdx = 0, lang = 'nl';
+
+const DATA_MAP = {
+    nl: {
+        tagline: "Uw Verhaal, Onze Passie",
+        btnWork: "MY WORK",
+        btnDays: "VRIJE DAGEN",
+        portfolioTitle: "PORTFOLIO",
+        formHeader: "Afspraak Aanvragen",
+        custName: "Uw Naam",
+        custIdea: "Uw Idee",
+        formSubmit: "VERSTUREN + FOTO",
+        photoNote: "* Vergeet niet om na het versturen je referentiefoto te sturen via WhatsApp!",
+        menuLoc: "LOCATIE",
+        menuContact: "CONTACT",
+        months: ["JANUARI","FEBRUARI","MAART","APRIL","MEI","JUNI","JULI","AUGUSTUS","SEPTEMBER","OKTOBER","NOVEMBER","DECEMBER"]
+    },
+    en: {
+        tagline: "Your Story, Our Passion",
+        btnWork: "MY WORK",
+        btnDays: "FREE DAYS",
+        portfolioTitle: "PORTFOLIO",
+        formHeader: "Request Appointment",
+        custName: "Your Name",
+        custIdea: "Your Idea / Description",
+        formSubmit: "SEND + PHOTO",
+        photoNote: "* Don't forget to send your reference photo on WhatsApp after clicking send!",
+        menuLoc: "LOCATION",
+        menuContact: "CONTACT",
+        months: ["JANUARY","FEBRUARY","MARCH","APRIL","MAY","JUNE","JULY","AUGUSTUS","SEPTEMBER","OCTOBER","NOVEMBER","DECEMBER"]
+    }
+};
+
+const today = new Date(); today.setHours(0,0,0,0);
+const sMonth = today.getMonth(), sYear = today.getFullYear();
+let vMonth = sMonth, vYear = sYear;
+
+window.onload = () => { setTimeout(() => { document.getElementById('splash').style.display = 'none'; }, 1500); fetchSheetData(); };
+
+function updateLanguage(target) {
+    lang = target;
+    document.getElementById('langNL').classList.toggle('active', target === 'nl');
+    document.getElementById('langEN').classList.toggle('active', target === 'en');
+    
+    document.getElementById('tagline').innerText = DATA_MAP[lang].tagline;
+    document.getElementById('btnWork').innerText = DATA_MAP[lang].btnWork;
+    document.getElementById('btnDays').innerText = DATA_MAP[lang].btnDays;
+    document.getElementById('portfolioTitle').innerText = DATA_MAP[lang].portfolioTitle;
+    document.getElementById('formHeader').innerText = DATA_MAP[lang].formHeader;
+    document.getElementById('custName').placeholder = DATA_MAP[lang].custName;
+    document.getElementById('custIdea').placeholder = DATA_MAP[lang].custIdea;
+    document.querySelector('#formSubmit span').innerText = DATA_MAP[lang].formSubmit;
+    document.getElementById('photoNote').innerText = DATA_MAP[lang].photoNote;
+    document.getElementById('menuLocLabel').innerText = DATA_MAP[lang].menuLoc;
+    document.getElementById('menuContactLabel').innerText = DATA_MAP[lang].menuContact;
+    
+    refreshCalendar();
+    setTimeout(toggleMenu, 300);
+}
+
+async function fetchSheetData() {
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${SHEET_NAME}&t=${Date.now()}`;
+    try {
+        const res = await fetch(url, { cache: "no-store" });
+        const text = await res.text();
+        const rows = text.split(/\r?\n/).map(r => r.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/^"|"$/g, '').trim()));
+        bookings = {}; images = [];
+        const grid = document.getElementById("portfolioGrid"); 
+        if(grid) grid.innerHTML = "";
+        rows.forEach(cols => {
+            if(cols[0] && cols[1]?.toLowerCase()==='booked') bookings[cols[0]] = true;
+            let imgUrl = cols[2];
+            if(imgUrl?.includes('http')) {
+                if(imgUrl.includes("instagram.com/p/")) imgUrl = imgUrl.split('?')[0] + "media/?size=l";
+                images.push(imgUrl);
+                const idx = images.length - 1;
+                const img = document.createElement("img");
+                img.src = imgUrl;
+                img.onclick = () => showViewer(idx);
+                if(grid) grid.appendChild(img);
+            }
+        });
+        refreshCalendar();
+    } catch (e) { console.log("Fetch Error"); }
+}
+
+function showViewer(idx) { 
+    activeIdx = idx; 
+    document.getElementById("viewerImg").src = images[activeIdx]; 
+    document.getElementById("viewerModal").style.display = "flex"; 
+    document.body.style.overflow="hidden";
+}
+function hideViewer() { document.getElementById("viewerModal").style.display = "none"; document.body.style.overflow="auto"; }
+function slideImg(s) { 
+    activeIdx += s; 
+    if(activeIdx >= images.length) activeIdx = 0; 
+    if(activeIdx < 0) activeIdx = images.length - 1; 
+    document.getElementById("viewerImg").src = images[activeIdx]; 
+}
+
+function refreshCalendar() {
+    const daysBox = document.getElementById("days");
+    document.getElementById("calTitle").textContent = DATA_MAP[lang].months[vMonth] + " " + vYear;
+    daysBox.innerHTML = "";
+    const diff = (vYear - sYear) * 12 + (vMonth - sMonth);
+    document.getElementById("prevMonthBtn").classList.toggle("nav-disabled", diff <= 0);
+    document.getElementById("nextMonthBtn").classList.toggle("nav-disabled", diff >= 2);
+    const firstDay = new Date(vYear, vMonth, 1).getDay();
+    const offset = (firstDay === 0 ? 6 : firstDay - 1);
+    for(let i=0; i<offset; i++) daysBox.appendChild(document.createElement("div"));
+    const daysInMonth = new Date(vYear, vMonth + 1, 0).getDate();
+    for(let d=1; d<=daysInMonth; d++) {
+        const dObj = new Date(vYear, vMonth, d);
+        const id = `${vYear}-${(vMonth+1).toString().padStart(2,'0')}-${d.toString().padStart(2,'0')}`;
+        const el = document.createElement("div");
+        el.className = "day";
+        if(dObj < today) el.classList.add("past-day");
+        else if(bookings[id]) el.classList.add("booked");
+        else { 
+            el.classList.add("available"); 
+            el.onclick = () => { document.getElementById("formDate").value = id; document.getElementById("formModal").style.display = "block"; }; 
+        }
+        el.textContent = d;
+        daysBox.appendChild(el);
+    }
+}
+
+async function openSyncModal(id) { await fetchSheetData(); document.getElementById(id).style.display = "block"; document.body.style.overflow="hidden"; }
+function closeCommonModal(id) { document.getElementById(id).style.display = "none"; document.body.style.overflow="auto"; }
+function toggleMenu() { document.getElementById('sideMenu').classList.toggle('active'); }
+function shiftMonth(s) { vMonth += s; if(vMonth>11){vMonth=0;vYear++;} if(vMonth<0){vMonth=11;vYear--;} refreshCalendar(); }
+
+function executeWhatsApp() {
+    const d = document.getElementById("formDate").value, n = document.getElementById("custName").value, i = document.getElementById("custIdea").value;
+    if(!n || !i) return alert(lang === 'nl' ? "Vul a.u.b. alle velden in." : "Please fill all fields.");
+    const msg = lang === 'nl' ? 
+        `*NIEUWE AANVRAAG*%0A📅 Datum: ${d}%0A👤 Naam: ${n}%0A💡 Idee: ${i}%0A%0A📸 _Ik stuur nu de referentiefoto hieronder..._` : 
+        `*NEW APPOINTMENT REQUEST*%0A📅 Date: ${d}%0A👤 Name: ${n}%0A💡 Idea: ${i}%0A%0A📸 _I am sending the reference photo below now..._`;
+    window.open(`https://wa.me/32476633794?text=${msg}`, '_blank');
+}
+</script>
+</body>
+</html>
