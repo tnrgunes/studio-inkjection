@@ -6,8 +6,8 @@
 <title>Inkjection Tattoo</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
-:root{ --bg:#000; --text:#fff; --gray: #444; }
-*{box-sizing:border-box}
+:root{ --bg:#000; --text:#fff; --gray: #444; --silver: #e0e0e0; --chrome: linear-gradient(135deg, #f5f7fa 0%, #b8c6db 50%, #f5f7fa 100%); }
+*{box-sizing:border-box; -webkit-tap-highlight-color: transparent;}
 
 #splash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; display: flex; align-items: center; justify-content: center; z-index: 999999; }
 #splash img { width: 180px; border-radius: 50%; }
@@ -25,16 +25,21 @@ body { margin: 0; background-color: #000; color: #fff; font-family: Arial, sans-
     border: 2px solid rgba(245, 245, 220, 0.3);
 }
 
-.menu-trigger { position: fixed; top: 25px; right: 25px; font-size: 24px; color: #fff; cursor: pointer; background: rgba(0,0,0,0.7); padding: 10px 14px; border-radius: 12px; z-index: 10001; backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.2); }
+.menu-trigger, .btn-main, .lang-btn, .menu-contact-btn, .close-menu, .close-modal, .amt-opt, .day, .size-option { 
+    cursor: pointer; 
+    touch-action: manipulation; 
+}
+
+.menu-trigger { position: fixed; top: 25px; right: 25px; font-size: 24px; color: #fff; background: rgba(0,0,0,0.7); padding: 10px 14px; border-radius: 12px; z-index: 10001; backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.2); }
 
 #sideMenu { position: fixed; top: 0; right: -320px; width: 300px; height: 100%; background: rgba(10,10,10,0.98); backdrop-filter: blur(25px); z-index: 10002; transition: 0.4s; padding: 60px 25px; text-align: left; overflow-y: auto;}
 #sideMenu.active { right: 0; }
-.close-menu { position: absolute; top: 20px; right: 20px; font-size: 30px; cursor: pointer; }
+.close-menu { position: absolute; top: 20px; right: 20px; font-size: 30px; }
 
-.lang-btn { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid #444; color: #fff; padding: 10px; border-radius: 10px; cursor: pointer; font-size: 14px; font-weight: bold;}
+.lang-btn { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid #444; color: #fff; padding: 10px; border-radius: 10px; font-size: 14px; font-weight: bold;}
 .lang-btn.active { border-color: #fff; background: rgba(255,255,255,0.2); }
 
-.menu-contact-btn { width: 100%; padding: 15px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff; border-radius: 12px; font-weight: bold; cursor: pointer; text-align: left; display: flex; justify-content: space-between; align-items: center; font-size: 16px; letter-spacing: 1px; margin-top: 20px;}
+.menu-contact-btn { width: 100%; padding: 15px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff; border-radius: 12px; font-weight: bold; text-align: left; display: flex; justify-content: space-between; align-items: center; font-size: 16px; letter-spacing: 1px; margin-top: 20px;}
 #contactPanel { display: none; margin-top: 15px; padding: 10px; background: rgba(255,255,255,0.02); border-radius: 12px; }
 #contactPanel.show { display: block; }
 
@@ -48,36 +53,45 @@ body { margin: 0; background-color: #000; color: #fff; font-family: Arial, sans-
 .review-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 1px solid rgba(255,255,255,0.2); font-size: 14px; }
 .review-body { font-size: 13px; line-height: 1.6; font-style: italic; opacity: 0.95; margin: 0; }
 
-.btn-main{display:block; margin:18px auto; padding:20px; width:100%; max-width:320px; color:#fff; font-weight:bold; border-radius:60px; text-decoration:none; border:1px solid rgba(255,255,255,0.4); background:rgba(0,0,0,0.5); backdrop-filter: blur(10px); cursor:pointer; font-size:14px; letter-spacing:2px; text-transform: uppercase;}
+.btn-main{display:block; margin:18px auto; padding:20px; width:100%; max-width:320px; color:#fff; font-weight:bold; border-radius:60px; text-decoration:none; border:1px solid rgba(255,255,255,0.4); background:rgba(0,0,0,0.5); backdrop-filter: blur(10px); font-size:14px; letter-spacing:2px; text-transform: uppercase;}
 .whatsapp-main{background:rgba(37, 211, 102, 0.25); border-color: rgba(37, 211, 102, 0.5);}
 .wa-small-btn { padding: 12px; font-size: 11px; max-width: 280px; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; }
 
 .modal { display: none; position: fixed; z-index: 10005; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); backdrop-filter: blur(10px); }
 .modal-content { background: rgba(15,15,15,0.98); margin: 60px auto; padding: 25px; border-radius: 30px; width: 95%; max-width: 400px; position: relative; border: 1px solid rgba(255,255,255,0.15); max-height: 85vh; overflow-y: auto; }
-.close-modal { position: absolute; top: 15px; right: 20px; color: #fff; font-size: 32px; cursor: pointer; }
+.close-modal { position: sticky; top: 0; float: right; color: #fff; font-size: 32px; z-index: 10006; background: rgba(15,15,15,0.6); border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; margin-right: -10px; margin-top: -10px;}
 
-/* PAYMENT MODAL SPECIFIC (LESS DARK) */
+#workModal .modal-content { max-width: 100%; width: 95%; padding: 10px; }
+.portfolio-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; width: 100%; margin-top: 10px;}
+.portfolio-grid img { width: 100%; height: auto; aspect-ratio: 1/1; object-fit: cover; border-radius: 10px; }
+
+.ticket { background: #111; border: 1px solid #333; border-radius: 12px; position: relative; padding: 20px; margin-bottom: 20px; overflow: hidden; text-align: left; }
+.ticket::before { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent); animation: shine 3s infinite; }
+@keyframes shine { 100% { left: 200%; } }
+.ticket-title { font-size: 16px; color: var(--silver); letter-spacing: 2px; margin: 0 0 10px 0; font-weight: bold; border-bottom: 1px dashed #333; padding-bottom: 10px;}
+.ticket-val { color: #fff; font-weight: bold; font-size: 13px; }
+.scratch-circle { position: absolute; right: 15px; bottom: 15px; width: 70px; height: 70px; background: var(--chrome); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; font-weight: 800; font-size: 16px; border: 2px solid #fff; box-shadow: 0 0 10px rgba(255,255,255,0.1); }
+.amt-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 15px; }
+.amt-opt { background: #1a1a1a; border: 1px solid #333; color: #fff; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: bold; }
+.amt-opt.active { background: var(--silver); color: #000; border-color: #fff; }
+
 #paymentModal .modal-content { background: rgba(35,35,35,0.95); border-color: rgba(255,255,255,0.3); box-shadow: 0 0 40px rgba(255,255,255,0.1); }
-
 .pay-circle { width:70px; height:70px; border:2px solid #fff; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 10px; font-weight:bold; font-size: 20px; color: #fff; }
 .payment-card { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 18px; margin-bottom: 15px; text-align: left; }
 .pay-label { font-size: 11px; text-transform: uppercase; color: #ccc; margin-bottom: 8px; display: block; }
 .payconiq-btn { background: #e30613; color: #fff; border: none; padding: 12px; border-radius: 12px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; text-decoration: none; margin-top: 10px; }
 
 .size-box { display: flex; flex-direction: column; gap: 15px; margin-top: 25px; }
-.size-option { padding: 18px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; color: #fff; cursor: pointer; transition: 0.3s all ease; display: flex; justify-content: space-between; align-items: center; text-align: left; }
+.size-option { padding: 18px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; color: #fff; transition: 0.3s all ease; display: flex; justify-content: space-between; align-items: center; text-align: left; }
 .size-option b { font-size: 16px; display: block; letter-spacing: 1px; }
 .size-option span { font-size: 12px; color: rgba(255,255,255,0.5); font-weight: normal; }
 
 .days{display:grid; grid-template-columns:repeat(7,1fr); gap:6px}
 .day{height:40px; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,0.08); border-radius:10px; font-size:14px; font-weight: bold;}
-.available{border:1px solid rgba(255,255,255,0.3); cursor:pointer;}
+.available{border:1px solid rgba(255,255,255,0.3);}
 .booked{color:rgba(255,255,255,0.15); position:relative;}
 .booked-future::after{content:"✕"; position:absolute; font-size:22px; color:#ff3b3b;}
-.past-day { opacity: 0.2; pointer-events: none; }
-
-.portfolio-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-.portfolio-grid img { width: 100%; height: 160px; object-fit: cover; border-radius: 15px; }
+.past-day { opacity: 0.2 !important; pointer-events: none; color:rgba(255,255,255,0.15) !important; }
 
 .form-input { width:100%; margin-bottom:12px; padding:14px; background:#1a1a1a; color:#fff; border:1px solid #333; border-radius:12px; font-family: inherit; font-size: 14px; outline: none; }
 .file-box { border: 1px dashed #444; padding: 15px; border-radius: 12px; text-align: center; margin-bottom: 12px; position: relative; background: #1a1a1a; cursor: pointer; }
@@ -97,6 +111,7 @@ body { margin: 0; background-color: #000; color: #fff; font-family: Arial, sans-
     <button class="lang-btn active" id="nlBtn" onclick="setLang('nl')">NL</button>
     <button class="lang-btn" id="enBtn" onclick="setLang('en')">EN</button>
   </div>
+
   <button class="menu-contact-btn" onclick="toggleContactPanel()">
     <span id="menuContactLabel">CONTACT</span>
     <i class="fas fa-chevron-down" id="contactArrow"></i>
@@ -107,6 +122,11 @@ body { margin: 0; background-color: #000; color: #fff; font-family: Arial, sans-
     <p style="font-size:13px; margin:10px 0;"><i class="fas fa-map-marker-alt"></i> Torenstraat 32, 2243 Zandhoven</p>
     <div class="mini-map"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2497.568448834714!2d4.655931776999719!3d51.24151703043135!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c3f916e7884d5d%3A0x7d6c6e3d231a4f0!2sTorenstraat%2032%2C%202243%20Zandhoven!5e0!3m2!1str!2sbe!4v1704234567890!5m2!1str!2sbe" allowfullscreen="" loading="lazy"></iframe></div>
   </div>
+
+  <button class="menu-contact-btn" onclick="openGiftModal()" style="border-color: var(--silver); color: var(--silver); margin-top: 20px;">
+    <span id="menuGiftLabel">GIFT VOUCHER</span>
+    <i class="fas fa-ticket-alt"></i>
+  </button>
 </div>
 
 <div class="container">
@@ -131,20 +151,42 @@ body { margin: 0; background-color: #000; color: #fff; font-family: Arial, sans-
     <h2 id="reviewTitle" style="font-size: 16px; text-align: center; letter-spacing: 3px; margin-bottom: 25px;">CLIENT REVIEWS</h2>
     <div class="review-card">
         <div class="review-header"><div class="review-avatar" style="background:#444">K</div><div><b>Kyra Derveaux</b><div class="review-stars">★★★★★</div></div></div>
-        <p class="review-body">"Samen met mijn zus en mama bir tattoo laten zetten ve we hebben hier bir héél aangename ervaring gehad! Ze nam echt de tijd om alles goed te bespreken ve plaatste de tattoo met veel zorg en precisie."</p>
+        <p class="review-body">"Samen met mijn zus en mama een tattoo laten zetten en we hebben hier een héél aangename ervaring gehad! Ze nam echt de tijd om alles goed te bespreken ve plaatste de tattoo met veel zorg en precisie."</p>
     </div>
     <div class="review-card">
         <div class="review-header"><div class="review-avatar" style="background:#444">W</div><div><b>Wally Goovaert</b><div class="review-stars">★★★★★</div></div></div>
-        <p class="review-body">"Zeer vriendelijk! Haar work is perfectionistisch & hygiënisch, ze houdt rekening met what je wil. Gewoon top! 🤩✨"</p>
+        <p class="review-body">"Zeer vriendelijk! Haar werk is perfectionistisch & hygiënisch, ze houdt rekening met wat je wil. Gewoon top! 🤩✨"</p>
     </div>
     <div class="review-card">
         <div class="review-header"><div class="review-avatar" style="background:#444">R</div><div><b>Rani Derveaux</b><div class="review-stars">★★★★★</div></div></div>
-        <p class="review-body">"2de tattoo gezet bij haar ve weer super tevreden. Heel vriendelijke dame ve doet haar work heel goed!"</p>
+        <p class="review-body">"2de tattoo gezet bij haar en weer super tevreden. Heel vriendelijke dame en doet haar werk heel goed!"</p>
     </div>
     <div class="review-card">
         <div class="review-header"><div class="review-avatar" style="background:#444">T</div><div><b>Taner Güneş</b><div class="review-stars">★★★★★</div></div></div>
         <p class="review-body">"Very clean and hygienic tattoo artist, very kind and does exactly what you want, I definitely recommend you to go! ☺️😇"</p>
     </div>
+  </div>
+</div>
+
+<div id="giftModal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal" onclick="closeModal('giftModal')">×</span>
+    <h3 id="giftTitle" style="margin-bottom:15px; letter-spacing:2px;">GIFT VOUCHER</h3>
+    <div class="ticket">
+        <div class="ticket-title" id="cardTitle">TATTOO VOUCHER</div>
+        <div style="font-size:10px; color:#666; margin-bottom:5px;">FOR: <span class="ticket-val" id="dispTo">...</span></div>
+        <div style="font-size:10px; color:#666;">FROM: <span class="ticket-val" id="dispFrom">...</span></div>
+        <div class="scratch-circle"><span id="dispAmt">?€</span></div>
+    </div>
+    <div class="amt-grid">
+      <button class="amt-opt" onclick="setGiftAmt(50)">50€</button>
+      <button class="amt-opt" onclick="setGiftAmt(100)">100€</button>
+      <button class="amt-opt" onclick="setGiftAmt(250)">250€</button>
+    </div>
+    <input type="number" id="inpGiftAmt" class="form-input" placeholder="Custom Amount (€)" oninput="setGiftAmt(this.value)">
+    <input type="text" id="inpGiftFrom" class="form-input" placeholder="From (Name)" oninput="document.getElementById('dispFrom').textContent = this.value || '...'">
+    <input type="text" id="inpGiftTo" class="form-input" placeholder="To (Name)" oninput="document.getElementById('dispTo').textContent = this.value || '...'">
+    <button class="btn-main" style="background:var(--silver); color:#000; border:none; margin-top:10px;" onclick="sendGiftWA()" id="btnGiftOrder">ORDER VOUCHER</button>
   </div>
 </div>
 
@@ -163,7 +205,7 @@ body { margin: 0; background-color: #000; color: #fff; font-family: Arial, sans-
 <div id="formModal" class="modal">
   <div class="modal-content">
     <span class="close-modal" onclick="closeFormAndReset()">×</span>
-    <h3 id="formTitle">Afspraak Aanvragen</h3>
+    <h3 id="formTitle">Boeking Aanvragen</h3>
     <input type="text" id="formDate" readonly class="form-input" style="color:#888;">
     <input type="text" id="custName" placeholder="Naam / Name *" class="form-input">
     <input type="tel" id="custGsm" placeholder="GSM Number *" class="form-input">
@@ -171,11 +213,9 @@ body { margin: 0; background-color: #000; color: #fff; font-family: Arial, sans-
     <input type="text" id="custSize" placeholder="Size (cm) *" class="form-input">
     <input type="text" id="custBody" placeholder="Body Part *" class="form-input">
     <textarea id="custIdea" placeholder="Idea (Optional)" class="form-input" rows="3"></textarea>
-    
     <div class="file-box"><span id="fileLabel1">Photo 1</span><input type="file" id="custImage1" accept="image/*" class="custImageInput" onchange="updateFileLabel(1)"></div>
     <div class="file-box"><span id="fileLabel2">Photo 2</span><input type="file" id="custImage2" accept="image/*" class="custImageInput" onchange="updateFileLabel(2)"></div>
     <div class="file-box"><span id="fileLabel3">Photo 3</span><input type="file" id="custImage3" accept="image/*" class="custImageInput" onchange="updateFileLabel(3)"></div>
-    
     <div id="uploadLoading">Processing Photos...</div>
     <button id="prepareBtn" class="btn-main" style="background:#fff; color:#000; border:none;" onclick="prepareEmail()">NEXT STEP</button>
     <button id="finalStep2Btn" class="btn-main" onclick="openPayment()" style="display:none; background:#25D366; border:none;">CONTINUE</button>
@@ -186,25 +226,21 @@ body { margin: 0; background-color: #000; color: #fff; font-family: Arial, sans-
     <div class="modal-content" style="text-align: center;">
         <span class="close-modal" onclick="closeFormAndReset()">×</span>
         <div class="pay-circle">€50</div>
-        <h3 id="payTitle">VOORSCHOT</h3>
+        <h3 id="payTitle">DEPOSIT</h3>
         <p class="pay-note" id="payNote" style="color: #ff3b3b; font-weight: 800; border: 2px solid #ff3b3b; padding: 12px; border-radius: 12px; font-size: 14px; background: rgba(255,59,59,0.1);"></p>
-        
         <div class="payment-card">
             <span class="pay-label">Option 1: Payconiq</span>
-            <a href="https://pay.bancontact.com/p2p/55187a99-6257-4b38-8608-ad3a4c88effe" class="payconiq-btn" target="_blank" onclick="alert('Vergeet niet SEND MAIL tıklamayı!')">PAY NOW</a>
+            <a href="https://pay.bancontact.com/p2p/55187a99-6257-4b38-8608-ad3a4c88effe" class="payconiq-btn" target="_blank" onclick="confirmPaymentAlert()">PAY NOW</a>
         </div>
-        
         <div class="payment-card">
             <span class="pay-label">Option 2: Bank Transfer</span>
             <div style="font-size:13px; letter-spacing:1px; color:#fff; font-weight: bold;">BE29 9735 0509 1764</div>
         </div>
-
         <p id="gentleNote" style="font-size: 13px; color: #fff; font-weight: 600; margin: 20px 0 10px; line-height: 1.5; padding: 0 10px; text-shadow: 0 0 10px rgba(255,255,255,0.2);"></p>
-
         <a id="finalWaLink" class="btn-main whatsapp-main wa-small-btn" href="#" target="_blank" onclick="resetFormAfterSend()">
             <i class="fab fa-whatsapp"></i> <span id="waBtnLabel"></span>
         </a>
-        <a id="finalMailLink" class="btn-main" href="#" target="_blank" onclick="resetFormAfterSend()" style="background:#fff; color:#000; border:none; margin-top:5px;">SEND MAIL</a>
+        <a id="finalMailLink" class="btn-main" href="#" target="_blank" onclick="resetFormAfterSend()" style="background:#fff; color:#000; border:none; margin-top:5px;">SEND FORM</a>
     </div>
 </div>
 
@@ -215,7 +251,7 @@ body { margin: 0; background-color: #000; color: #fff; font-family: Arial, sans-
 const SHEET_ID = '1-Cmr2UoQB89Oo4D-Qcukhr7CGjs7eAEJbuSlWtyjFk4', SHEET_NAME = 'Sayfa1'; 
 const MY_EMAIL = "Inkjection.tattoo95@gmail.com";
 const MY_WA = "32476633794";
-let googleBookings = {}, lang = "nl", userSizeChoice = "small";
+let googleBookings = {}, lang = "nl", userSizeChoice = "small", selectedGiftAmt = 0;
 const now = new Date(); now.setHours(0,0,0,0);
 let viewMonth = now.getMonth(), viewYear = now.getFullYear();
 
@@ -223,6 +259,10 @@ window.onload = () => { setTimeout(() => { document.getElementById('splash').sty
 function toggleMenu() { document.getElementById('sideMenu').classList.toggle('active'); }
 function toggleContactPanel() { document.getElementById('contactPanel').classList.toggle('show'); document.getElementById('contactArrow').classList.toggle('fa-chevron-up'); }
 function setLang(l) { lang = l; updateLang(); }
+
+function confirmPaymentAlert() {
+    alert(lang === 'nl' ? 'Vergeet niet om op "SEND FORM" te klikken na de betaling!' : 'Do not forget to click "SEND FORM" after payment!');
+}
 
 function updateLang() {
   const isNl = (lang === "nl");
@@ -233,10 +273,32 @@ function updateLang() {
   document.getElementById("btnWork").textContent = isNl ? "MIJN WERK" : "MY WORK";
   document.getElementById("aboutTitle").textContent = isNl ? "OVER MIJ" : "ABOUT ME";
   document.getElementById("payTitle").textContent = isNl ? "VOORSCHOT" : "DEPOSIT";
-  document.getElementById("payNote").textContent = isNl ? "BELANGRIJK: Stuur ALTIJD de e-mail na betaling, anders hebben wij uw gegevens niet!" : "IMPORTANT: ALWAYS send the email after payment, otherwise we won't have your details!";
+  document.getElementById("payNote").textContent = isNl ? "BELANGRIJK: Stuur ALTIJD het formulier na betaling, anders hebben wij uw gegevens niet!" : "IMPORTANT: ALWAYS send the form after payment, otherwise we won't have your details!";
   document.getElementById("gentleNote").textContent = isNl ? "Het is erg belangrijk dat u uw gegevens verzendt (zelfs als u de betaling nu niet uitvoert), zodat we kunnen beginnen met de voorbereiding van uw ontwerp." : "It is very important that you send your details (even if you do not make the payment now), so we can start preparing your design.";
   document.getElementById("waBtnLabel").textContent = isNl ? "VRAGEN OVER BETALING" : "QUESTIONS ABOUT PAYMENT";
+  document.getElementById("formTitle").textContent = isNl ? "Boeking Aanvragen" : "Request Booking";
+  document.getElementById("menuGiftLabel").textContent = isNl ? "CADEAUBON" : "GIFT VOUCHER";
+  document.getElementById("giftTitle").textContent = isNl ? "CADEAUBON" : "GIFT VOUCHER";
+  document.getElementById("cardTitle").textContent = isNl ? "CADEAUBON" : "TATTOO VOUCHER";
+  document.getElementById("inpGiftAmt").placeholder = isNl ? "Ander Bedrag (€)" : "Custom Amount (€)";
+  document.getElementById("inpGiftFrom").placeholder = isNl ? "Van (Naam)" : "From (Name)";
+  document.getElementById("inpGiftTo").placeholder = isNl ? "Voor (Naam)" : "To (Name)";
+  document.getElementById("btnGiftOrder").textContent = isNl ? "BESTEL BON" : "ORDER VOUCHER";
+  document.getElementById("finalMailLink").textContent = isNl ? "SEND FORM" : "SEND FORM";
   renderCalendar();
+}
+
+function openGiftModal() { toggleMenu(); document.getElementById('giftModal').style.display = 'block'; }
+function setGiftAmt(amt) {
+    selectedGiftAmt = amt;
+    document.getElementById('dispAmt').textContent = amt ? amt + '€' : '?€';
+    document.querySelectorAll('.amt-opt').forEach(b => b.classList.toggle('active', b.textContent === amt + '€'));
+}
+function sendGiftWA() {
+    const f = document.getElementById('inpGiftFrom').value, t = document.getElementById('inpGiftTo').value;
+    if(!selectedGiftAmt || !f) { alert(lang === 'nl' ? 'Vul alle velden in' : 'Please fill all fields'); return; }
+    const msg = `🎫 *INKJECTION GIFT VOUCHER*%0A--------------------------%0A💰 *Amount:* ${selectedGiftAmt}€%0A👤 *From:* ${f}%0A🎁 *To:* ${t}%0A--------------------------`;
+    window.open(`https://wa.me/${MY_WA}?text=${msg}`, '_blank');
 }
 
 function handleSelection(choice) { userSizeChoice = choice; resetInputs(); closeModal('selectionModal'); openModalSync('calModal'); }
@@ -260,7 +322,7 @@ async function fetchData() {
 
 function renderCalendar() {
   const daysEl = document.getElementById("days");
-  const nlM = ["JANUARI","FEBRUARI","MAART","APRIL","MEI","JUNI","JULI","AUGUSTUS","SEPTEMBER","OKTOBER","NOVEMBER","DECEMBER"];
+  const nlM = ["JANUARI","FEBRUARI","MAART","APRIL","MEI","JUNI","JULI","AUGUSTUS","SEPTEMBER","OCTOBER","NOVEMBER","DECEMBER"];
   const enM = ["JANUARY","FEBRUARY","MARCH","APRIL","MAY","JUNE","JULY","AUGUST","SEPTEMBER","OCTOBER","NOVEMBER","DECEMBER"];
   document.getElementById("calTitle").textContent = (lang === "nl" ? nlM[viewMonth] : enM[viewMonth]) + " " + viewYear;
   daysEl.innerHTML = "";
@@ -275,11 +337,7 @@ function renderCalendar() {
     let isB = googleBookings[id] || (userSizeChoice === 'large' && dObj.getDay() >= 1 && dObj.getDay() <= 5);
     let el = document.createElement("div");
     el.className = "day " + (isB ? "booked" : "available");
-    if(isPast) {
-        el.classList.add("past-day");
-    } else if(isB) {
-        el.classList.add("booked-future");
-    }
+    if(isPast) { el.classList.add("past-day"); } else if(isB) { el.classList.add("booked-future"); }
     el.textContent = d;
     if(!isB && !isPast) el.onclick = () => { resetInputs(); closeModal('calModal'); document.getElementById("formDate").value = id; document.getElementById("formModal").style.display = "block"; resetFormUI(); };
     daysEl.appendChild(el);
@@ -293,7 +351,6 @@ async function prepareEmail() {
   if(!n || !g || !s || !b) { alert("Please fill all required fields"); return; }
   const prepBtn = document.getElementById("prepareBtn"); const loader = document.getElementById("uploadLoading");
   prepBtn.disabled = true; loader.style.display = "block";
-  
   let urls = [];
   for(let x=1; x<=3; x++) {
     const file = document.getElementById('custImage'+x).files[0];
@@ -304,29 +361,10 @@ async function prepareEmail() {
         } catch(e) {}
     }
   }
-
-  const coolMsg = `
-✨ NEW TATTOO REQUEST ✨
------------------------------------------
-👤 CLIENT: ${n}
-📞 GSM: ${g}
-📅 DATE: ${document.getElementById("formDate").value}
-
-📏 SIZE: ${s}
-📍 BODY PART: ${b}
-💡 IDEA/NOTE: ${i || 'N/A'}
-
-🖼️ ATTACHMENTS:
-${urls.length > 0 ? urls.join('\n') : 'No photos attached.'}
------------------------------------------
-Powered by Inkjection
-  `;
-
+  const coolMsg = `✨ NEW TATTOO REQUEST ✨%0A-----------------------------------------%0A👤 CLIENT: ${n}%0A📞 GSM: ${g}%0A📅 DATE: ${document.getElementById("formDate").value}%0A%0A📏 SIZE: ${s}%0A📍 BODY PART: ${b}%0A💡 IDEA/NOTE: ${i || 'N/A'}%0A%0A🖼️ ATTACHMENTS:%0A${urls.length > 0 ? urls.join('%0A') : 'No photos attached.'}%0A-----------------------------------------`;
   const waMsg = lang === "nl" ? `Vraag over betaling voor afspraak op ${document.getElementById("formDate").value}` : `Question about payment for appointment on ${document.getElementById("formDate").value}`;
-
-  document.getElementById("finalMailLink").href = `mailto:${MY_EMAIL}?subject=Booking: ${n}&body=${encodeURIComponent(coolMsg)}`;
+  document.getElementById("finalMailLink").href = `mailto:${MY_EMAIL}?subject=Booking: ${n}&body=${coolMsg}`;
   document.getElementById("finalWaLink").href = `https://wa.me/${MY_WA}?text=${encodeURIComponent(waMsg)}`;
-  
   loader.style.display = "none"; prepBtn.style.display = "none"; document.getElementById("finalStep2Btn").style.display = "block";
 }
 
@@ -336,11 +374,8 @@ function changeMonth(s) { viewMonth += s; if(viewMonth > 11) { viewMonth = 0; vi
 function closeModal(id) { document.getElementById(id).style.display = "none"; }
 function closeFormAndReset() { closeModal('formModal'); closeModal('paymentModal'); resetInputs(); }
 function resetInputs() { 
-    ['custName','custGsm','custEmail','custSize','custBody','custIdea'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).value = ''; });
-    for(let i=1; i<=3; i++) { 
-        if(document.getElementById('custImage'+i)) document.getElementById('custImage'+i).value = ''; 
-        if(document.getElementById('fileLabel'+i)) document.getElementById('fileLabel'+i).textContent = 'Photo '+i;
-    }
+    ['custName','custGsm','custEmail','custSize','custBody','custIdea','inpGiftAmt','inpGiftFrom','inpGiftTo'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).value = ''; });
+    for(let i=1; i<=3; i++) { if(document.getElementById('custImage'+i)) document.getElementById('custImage'+i).value = ''; if(document.getElementById('fileLabel'+i)) document.getElementById('fileLabel'+i).textContent = 'Photo '+i; }
 }
 async function openModalSync(id) { await fetchData(); document.getElementById(id).style.display = "block"; }
 function resetFormUI() { document.getElementById("prepareBtn").style.display = "block"; document.getElementById("prepareBtn").disabled = false; document.getElementById("finalStep2Btn").style.display = "none"; }
