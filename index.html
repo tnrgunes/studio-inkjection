@@ -30,7 +30,20 @@ body { margin: 0; background-color: #000; color: #fff; font-family: Arial, sans-
     touch-action: manipulation; 
 }
 
-.menu-trigger { position: fixed; top: 25px; right: 25px; font-size: 24px; color: #fff; background: rgba(0,0,0,0.7); padding: 10px 14px; border-radius: 12px; z-index: 10001; backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.2); }
+/* YENİ HAVALI ÜST NAVİGASYON ENTEGRASYONU */
+.menu-container { position: fixed; top: 25px; right: 20px; display: flex; align-items: center; gap: 10px; z-index: 10001; }
+#neon-hint-box { 
+    display: flex; align-items: center; gap: 10px; background: rgba(255, 255, 255, 0.08); 
+    backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.25); 
+    padding: 0 15px; border-radius: 40px; height: 44px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.3); 
+}
+.scroll-wrapper { height: 20px; overflow: hidden; width: 85px; }
+#scroll-text { display: flex; flex-direction: column; transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1); }
+.scroll-item { height: 20px; line-height: 20px; font-size: 10px; font-weight: 800; letter-spacing: 1.5px; color: #fff; text-transform: uppercase; text-align: left; }
+.neon-arrow { font-size: 12px; color: #fff; animation: pulseArrow 1.5s infinite; }
+@keyframes pulseArrow { 0%, 100% { transform: translateX(0); opacity: 0.5; } 50% { transform: translateX(5px); opacity: 1; } }
+
+.menu-trigger { font-size: 20px; color: #fff; background: rgba(255,255,255,0.1); width: 44px; height: 44px; border-radius: 12px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; }
 
 #sideMenu { position: fixed; top: 0; right: -320px; width: 300px; height: 100%; background: rgba(10,10,10,0.98); backdrop-filter: blur(25px); z-index: 10002; transition: 0.4s; padding: 60px 25px; text-align: left; overflow-y: auto;}
 #sideMenu.active { right: 0; }
@@ -39,6 +52,14 @@ body { margin: 0; background-color: #000; color: #fff; font-family: Arial, sans-
 .lang-btn { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid #444; color: #fff; padding: 10px; border-radius: 10px; font-size: 14px; font-weight: bold;}
 .lang-btn.active { border-color: #fff; background: rgba(255,255,255,0.2); }
 
+/* AKORDİYON MENÜ STILLERI */
+.info-tab-content { 
+    display: none; padding: 15px 10px; font-size: 13px; line-height: 1.6; color: #ccc; 
+    background: rgba(255,255,255,0.03); border-radius: 0 0 12px 12px; border: 1px solid rgba(255,255,255,0.1); border-top: none;
+}
+.active-tab .info-tab-content { display: block; }
+.active-tab .menu-contact-btn { background: rgba(255,255,255,0.15); border-color: #fff; }
+
 .menu-contact-btn { width: 100%; padding: 15px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff; border-radius: 12px; font-weight: bold; text-align: left; display: flex; justify-content: space-between; align-items: center; font-size: 16px; letter-spacing: 1px; margin-top: 20px;}
 #contactPanel { display: none; margin-top: 15px; padding: 10px; background: rgba(255,255,255,0.02); border-radius: 12px; }
 #contactPanel.show { display: block; }
@@ -46,6 +67,13 @@ body { margin: 0; background-color: #000; color: #fff; font-family: Arial, sans-
 .contact-link { color: #fff; text-decoration: none; display: flex; align-items: center; gap: 10px; margin-bottom: 15px; font-size: 13px; opacity: 0.9; }
 .mini-map { width: 100%; height: 180px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.2); margin-top: 10px; overflow: hidden; background: #111; }
 .mini-map iframe { width: 100%; height: 100%; border: 0; }
+
+.about-section { margin-top: 40px; position: relative; border-radius: 20px; overflow: hidden; min-height: 420px; display: flex; flex-direction: column; justify-content: flex-start; border: 1px solid rgba(255,255,255,0.15); }
+.about-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: linear-gradient(rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1) 100%), url('https://i.postimg.cc/fbKBqJ0v/27a1fd95-3d33-4bee-a4c4-3e2bd9f85785.jpg'); background-size: cover; background-position: center; z-index: 1; }
+.about-content { position: relative; z-index: 2; padding: 30px 25px; text-align: left; }
+#aboutTitle { font-size: 24px; letter-spacing: 6px; margin: 0 0 20px 0; text-transform: uppercase; font-weight: 300; color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,1); display: inline-block; border-bottom: 1px solid rgba(255,255,255,0.4); padding-bottom: 5px; }
+#aboutText { font-size: 13.5px; line-height: 1.7; font-weight: 400; color: #f0f0f0; text-shadow: 0 1px 5px rgba(0,0,0,1); margin: 0; }
+#aboutText b { color: #fff; font-weight: 600; }
 
 .section{margin-top:40px; padding:25px; text-align:left; background: rgba(0,0,0,0.6); border-radius: 25px;}
 .review-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 18px; margin-bottom: 15px; }
@@ -103,13 +131,30 @@ body { margin: 0; background-color: #000; color: #fff; font-family: Arial, sans-
 <body>
 
 <div id="splash"><img src="https://i.ibb.co/tPTrSN8k/image.png"></div>
-<div class="menu-trigger" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
+
+<div class="menu-container">
+  <div id="neon-hint-box">
+    <div class="scroll-wrapper"><div id="scroll-text"></div></div>
+    <i class="fas fa-chevron-right neon-arrow"></i>
+  </div>
+  <div class="menu-trigger" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
+</div>
 
 <div id="sideMenu">
   <span class="close-menu" onclick="toggleMenu()">×</span>
-  <div style="display: flex; gap: 10px;">
+  <div style="display: flex; gap: 10px; margin-bottom: 10px;">
     <button class="lang-btn active" id="nlBtn" onclick="setLang('nl')">NL</button>
     <button class="lang-btn" id="enBtn" onclick="setLang('en')">EN</button>
+  </div>
+
+  <div class="info-wrapper" id="tabBook">
+    <div class="menu-contact-btn" onclick="toggleTab('tabBook')"><span id="labelBook">HOW TO BOOK?</span><i class="fas fa-calendar-check"></i></div>
+    <div class="info-tab-content" id="contentBook"></div>
+  </div>
+
+  <div class="info-wrapper" id="tabPay">
+    <div class="menu-contact-btn" onclick="toggleTab('tabPay')"><span id="labelPay">PAYMENT</span><i class="fas fa-credit-card"></i></div>
+    <div class="info-tab-content" id="contentPay"></div>
   </div>
 
   <button class="menu-contact-btn" onclick="toggleContactPanel()">
@@ -120,7 +165,7 @@ body { margin: 0; background-color: #000; color: #fff; font-family: Arial, sans-
     <a href="mailto:Inkjection.tattoo95@gmail.com" class="contact-link"><i class="fas fa-envelope"></i><span>Inkjection.tattoo95@gmail.com</span></a>
     <a href="https://wa.me/32476633794" class="contact-link"><i class="fab fa-whatsapp"></i><span>+32 476 63 37 94</span></a>
     <p style="font-size:13px; margin:10px 0;"><i class="fas fa-map-marker-alt"></i> Torenstraat 32, 2243 Zandhoven</p>
-    <div class="mini-map"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2497.568448834714!2d4.655931776999719!3d51.24151703043135!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c3f916e7884d5d%3A0x7d6c6e3d231a4f0!2sTorenstraat%2032%2C%202243%20Zandhoven!5e0!3m2!1str!2sbe!4v1704234567890!5m2!1str!2sbe" allowfullscreen="" loading="lazy"></iframe></div>
+    <div class="mini-map"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2500.5833446059633!2d4.658828976935106!3d51.21175623259364!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c3f9f7a7810619%3A0xc367677d292f725a!2sTorenstraat%2032%2C%202243%20Zandhoven!5e0!3m2!1snl!2sbe!4v1709123456789!5m2!1snl!2sbe" allowfullscreen="" loading="lazy"></iframe></div>
   </div>
 
   <button class="menu-contact-btn" onclick="openGiftModal()" style="border-color: var(--silver); color: var(--silver); margin-top: 20px;">
@@ -142,16 +187,19 @@ body { margin: 0; background-color: #000; color: #fff; font-family: Arial, sans-
   <button class="btn-main" onclick="openModalSync('selectionModal')" id="btnCal">VRIJE DAGEN</button>
   <a class="btn-main whatsapp-main" href="https://wa.me/32476633794" target="_blank">WHATSAPP</a>
   
-  <div class="section">
-    <h2 id="aboutTitle">OVER MIJ</h2>
-    <p id="aboutText">Passie voor kunst, precisie op de huid.</p>
+  <div class="about-section">
+    <div class="about-bg"></div>
+    <div class="about-content">
+      <h2 id="aboutTitle">OVER MIJ</h2>
+      <p id="aboutText"></p>
+    </div>
   </div>
 
   <div class="section">
     <h2 id="reviewTitle" style="font-size: 16px; text-align: center; letter-spacing: 3px; margin-bottom: 25px;">CLIENT REVIEWS</h2>
     <div class="review-card">
         <div class="review-header"><div class="review-avatar" style="background:#444">K</div><div><b>Kyra Derveaux</b><div class="review-stars">★★★★★</div></div></div>
-        <p class="review-body">"Samen met mijn zus en mama een tattoo laten zetten en we hebben hier een héél aangename ervaring gehad! Ze nam echt de tijd om alles goed te bespreken ve plaatste de tattoo met veel zorg en precisie."</p>
+        <p class="review-body">"Samen met mijn zus en mama een tattoo laten zetten en we hebben hier een héél aangename ervaring gehad! Ze nam echt de tijd om alles goed te bespreken en plaatste de tattoo met veel zorg en precisie."</p>
     </div>
     <div class="review-card">
         <div class="review-header"><div class="review-avatar" style="background:#444">W</div><div><b>Wally Goovaert</b><div class="review-stars">★★★★★</div></div></div>
@@ -255,10 +303,46 @@ let googleBookings = {}, lang = "nl", userSizeChoice = "small", selectedGiftAmt 
 const now = new Date(); now.setHours(0,0,0,0);
 let viewMonth = now.getMonth(), viewYear = now.getFullYear();
 
+// YENİ AKORDİYON VE KAYAR YAZI SİSTEMİ
+const phrases = { nl: ["INFO", "BOEKEN", "CADEAU", "CONTACT"], en: ["INFO", "BOOKING", "GIFT", "CONTACT"] };
+let currentWordIdx = 0;
+let scrollInterval;
+
 window.onload = () => { setTimeout(() => { document.getElementById('splash').style.display = 'none'; }, 2000); fetchData(); updateLang(); };
 function toggleMenu() { document.getElementById('sideMenu').classList.toggle('active'); }
-function toggleContactPanel() { document.getElementById('contactPanel').classList.toggle('show'); document.getElementById('contactArrow').classList.toggle('fa-chevron-up'); }
+function toggleContactPanel() { 
+    // Mevcut contact panel fonksiyonu korunurken, diğer akordiyonları kapatır
+    document.querySelectorAll('.info-wrapper').forEach(w => w.classList.remove('active-tab'));
+    document.getElementById('contactPanel').classList.toggle('show'); 
+    document.getElementById('contactArrow').classList.toggle('fa-chevron-up'); 
+}
 function setLang(l) { lang = l; updateLang(); }
+
+function toggleTab(id) {
+    // Diğer açık sekmeleri (Contact dahil) kapatır
+    document.getElementById('contactPanel').classList.remove('show');
+    document.getElementById('contactArrow').classList.remove('fa-chevron-up');
+    const el = document.getElementById(id);
+    const wasActive = el.classList.contains('active-tab');
+    document.querySelectorAll('.info-wrapper').forEach(w => w.classList.remove('active-tab'));
+    if(!wasActive) el.classList.add('active-tab');
+}
+
+function startInfiniteScroll() {
+    clearInterval(scrollInterval);
+    const container = document.getElementById('scroll-text');
+    const langWords = phrases[lang];
+    container.innerHTML = langWords.map(w => `<div class="scroll-item">${w}</div>`).join('') + `<div class="scroll-item">${langWords[0]}</div>`;
+    currentWordIdx = 0; container.style.transition = "none"; container.style.transform = "translateY(0)";
+    scrollInterval = setInterval(() => {
+        currentWordIdx++;
+        container.style.transition = "transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)";
+        container.style.transform = `translateY(-${currentWordIdx * 20}px)`;
+        if (currentWordIdx === langWords.length) {
+            setTimeout(() => { container.style.transition = "none"; container.style.transform = "translateY(0)"; currentWordIdx = 0; }, 600);
+        }
+    }, 2800);
+}
 
 function confirmPaymentAlert() {
     alert(lang === 'nl' ? 'Vergeet niet om op "SEND FORM" te klikken na de betaling!' : 'Do not forget to click "SEND FORM" after payment!');
@@ -274,7 +358,7 @@ function updateLang() {
   document.getElementById("aboutTitle").textContent = isNl ? "OVER MIJ" : "ABOUT ME";
   document.getElementById("payTitle").textContent = isNl ? "VOORSCHOT" : "DEPOSIT";
   document.getElementById("payNote").textContent = isNl ? "BELANGRIJK: Stuur ALTIJD het formulier na betaling, anders hebben wij uw gegevens niet!" : "IMPORTANT: ALWAYS send the form after payment, otherwise we won't have your details!";
-  document.getElementById("gentleNote").textContent = isNl ? "Het is erg belangrijk dat u uw gegevens verzendt (zelfs als u de betaling nu niet uitvoert), zodat we kunnen beginnen met de voorbereiding van uw ontwerp." : "It is very important that you send your details (even if you do not make the payment now), so we can start preparing your design.";
+  document.getElementById("gentleNote").textContent = isNl ? "Het is erg belangrijk dat u uw gegevens verzendt (zelfs her u de betaling nu niet uitvoert), zodat we kunnen beginnen met de voorbereiding van uw ontwerp." : "It is very important that you send your details (even if you do not make the payment now), so we can start preparing your design.";
   document.getElementById("waBtnLabel").textContent = isNl ? "VRAGEN OVER BETALING" : "QUESTIONS ABOUT PAYMENT";
   document.getElementById("formTitle").textContent = isNl ? "Boeking Aanvragen" : "Request Booking";
   document.getElementById("menuGiftLabel").textContent = isNl ? "CADEAUBON" : "GIFT VOUCHER";
@@ -285,23 +369,23 @@ function updateLang() {
   document.getElementById("inpGiftTo").placeholder = isNl ? "Voor (Naam)" : "To (Name)";
   document.getElementById("btnGiftOrder").textContent = isNl ? "BESTEL BON" : "ORDER VOUCHER";
   document.getElementById("finalMailLink").textContent = isNl ? "SEND FORM" : "SEND FORM";
+  document.getElementById("menuContactLabel").textContent = "CONTACT";
+
+  // AKORDİYON İÇERİKLERİ GÜNCELLEME
+  document.getElementById("labelBook").textContent = isNl ? "HOE BOEKEN?" : "HOW TO BOOK?";
+  document.getElementById("labelPay").textContent = isNl ? "BETALING" : "PAYMENT";
+  document.getElementById("contentBook").innerHTML = isNl ? 
+    "<b>Stap 1:</b> Kies gewenst formaat.<br><b>Stap 2:</b> Selecteer een datum.<br><b>Stap 3:</b> Vul het formulier in.<br><b>Stap 4:</b> Betaal het voorschot.<br><br><i>Formulier verzonden maar niet betaald? Contacteer ons via WhatsApp!</i>" : 
+    "<b>Step 1:</b> Choose preferred size.<br><b>Step 2:</b> Select an available date.<br><b>Step 3:</b> Fill out the form.<br><b>Step 4:</b> Pay the deposit.<br><br><i>Sent form but didn't pay? Contact us via WhatsApp!</i>";
+  document.getElementById("contentPay").textContent = isNl ? "Een voorschot van €50 is vereist om je afspraak te bevestigen." : "A €50 deposit is required to confirm your booking.";
+
+  const enText = "Welcome to <b>Inkjection</b>, a private studio where <b>hygiene</b> and <b>precision</b> are top priorities. I believe a tattoo is more than just ink; it's <b>your story</b>. That's why I pay attention to every single detail of your wishes and collaborate creatively to elevate your ideas. My goal? To make you happier than you expected with a unique piece of art you'll be proud of for a lifetime.";
+  const nlText = "Welkom bij <b>Inkjection</b>, een privéstudio waar <b>hygiëne</b> en <b>precisie</b> topprioriteiten zijn. Ik geloof dat een tatoeage meer is dan alleen inkt; het is <b>jouw verhaal</b>. Daarom besteed ik aandacht aan elk detail van je wensen en werken we creatief samen om je ideeën naar een hoger niveau te tillen. Mijn doel? Om je gelukkiger te maken dan je had verwacht met uniek kunstwerk waar je een leven lang trots op zult zijn.";
+  document.getElementById("aboutText").innerHTML = isNl ? nlText : enText;
+
+  startInfiniteScroll();
   renderCalendar();
 }
-
-function openGiftModal() { toggleMenu(); document.getElementById('giftModal').style.display = 'block'; }
-function setGiftAmt(amt) {
-    selectedGiftAmt = amt;
-    document.getElementById('dispAmt').textContent = amt ? amt + '€' : '?€';
-    document.querySelectorAll('.amt-opt').forEach(b => b.classList.toggle('active', b.textContent === amt + '€'));
-}
-function sendGiftWA() {
-    const f = document.getElementById('inpGiftFrom').value, t = document.getElementById('inpGiftTo').value;
-    if(!selectedGiftAmt || !f) { alert(lang === 'nl' ? 'Vul alle velden in' : 'Please fill all fields'); return; }
-    const msg = `🎫 *INKJECTION GIFT VOUCHER*%0A--------------------------%0A💰 *Amount:* ${selectedGiftAmt}€%0A👤 *From:* ${f}%0A🎁 *To:* ${t}%0A--------------------------`;
-    window.open(`https://wa.me/${MY_WA}?text=${msg}`, '_blank');
-}
-
-function handleSelection(choice) { userSizeChoice = choice; resetInputs(); closeModal('selectionModal'); openModalSync('calModal'); }
 
 async function fetchData() {
   const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${SHEET_NAME}&t=${Date.now()}`;
@@ -344,6 +428,16 @@ function renderCalendar() {
   }
 }
 
+function handleSelection(size) { userSizeChoice = size; closeModal('selectionModal'); openModalSync('calModal'); }
+function setGiftAmt(a) { selectedGiftAmt = a; document.getElementById('dispAmt').textContent = a + '€'; document.getElementById('inpGiftAmt').value = a; }
+function sendGiftWA() {
+    const from = document.getElementById('inpGiftFrom').value || '...';
+    const to = document.getElementById('inpGiftTo').value || '...';
+    if(!selectedGiftAmt) { alert("Select amount"); return; }
+    const msg = `Cadeaubon Order:%0AAmount: ${selectedGiftAmt}€%0AFrom: ${from}%0ATo: ${to}`;
+    window.open(`https://wa.me/${MY_WA}?text=${msg}`);
+}
+
 function updateFileLabel(num) { const inp = document.getElementById('custImage'+num); if(inp.files[0]) document.getElementById('fileLabel'+num).textContent = inp.files[0].name; }
 
 async function prepareEmail() {
@@ -377,6 +471,7 @@ function resetInputs() {
     ['custName','custGsm','custEmail','custSize','custBody','custIdea','inpGiftAmt','inpGiftFrom','inpGiftTo'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).value = ''; });
     for(let i=1; i<=3; i++) { if(document.getElementById('custImage'+i)) document.getElementById('custImage'+i).value = ''; if(document.getElementById('fileLabel'+i)) document.getElementById('fileLabel'+i).textContent = 'Photo '+i; }
 }
+function openGiftModal() { toggleMenu(); document.getElementById('giftModal').style.display = 'block'; }
 async function openModalSync(id) { await fetchData(); document.getElementById(id).style.display = "block"; }
 function resetFormUI() { document.getElementById("prepareBtn").style.display = "block"; document.getElementById("prepareBtn").disabled = false; document.getElementById("finalStep2Btn").style.display = "none"; }
 </script>
