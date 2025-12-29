@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Inkjection Tattoo</title>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
 :root{ --bg:#000; --text:#fff; --gray: #444; --silver: #e0e0e0; --chrome: linear-gradient(135deg, #f5f7fa 0%, #b8c6db 50%, #f5f7fa 100%); }
@@ -197,7 +199,7 @@ body { margin: 0; background-color: #000; color: #fff; font-family: Arial, sans-
     <h2 id="reviewTitle" style="font-size: 16px; text-align: center; letter-spacing: 3px; margin-bottom: 25px;">CLIENT REVIEWS</h2>
     <div class="review-card">
         <div class="review-header"><div class="review-avatar" style="background:#444">K</div><div><b>Kyra Derveaux</b><div class="review-stars">★★★★★</div></div></div>
-        <p class="review-body">"Samen met mijn zus en mama een tattoo laten zetten ve hebben hier een héél aangename ervaring gehad! Ze nam echt de tijd om alles goed te bespreken en plaatste de tattoo met veel zorg en precisie."</p>
+        <p class="review-body">"Samen met mijn zus en mama een tattoo laten zetten we hebben hier een héél aangename ervaring gehad! Ze nam echt de tijd om alles goed te bespreken en plaatste de tattoo met veel zorg en precisie."</p>
     </div>
     <div class="review-card">
         <div class="review-header"><div class="review-avatar" style="background:#444">W</div><div><b>Wally Goovaert</b><div class="review-stars">★★★★★</div></div></div>
@@ -261,7 +263,7 @@ body { margin: 0; background-color: #000; color: #fff; font-family: Arial, sans-
     <textarea id="custIdea" placeholder="Idea (Optional)" class="form-input" rows="3"></textarea>
     <div class="file-box"><span id="fileLabel1">Photo 1</span><input type="file" id="custImage1" accept="image/*" class="custImageInput" onchange="updateFileLabel(1)"></div>
     <div class="file-box"><span id="fileLabel2">Photo 2</span><input type="file" id="custImage2" accept="image/*" class="custImageInput" onchange="updateFileLabel(2)"></div>
-    <div class="file-box"><span id="fileLabel3">Photo 3</span><input type="file" id="custImage3" accept="image/*" class="custImageInput" onchange="updateFileLabel(3)"></div>
+    <div class="file-box"><span id="fileLabel3">Photo 3</span><input type="file" id="custImage3" accept="image/*" class="custImageInput" onchange="updateFileLabel(2)"></div>
     <div id="uploadLoading">Processing Photos...</div>
     <button id="prepareBtn" class="btn-main" style="background:#fff; color:#000; border:none;" onclick="prepareEmail()">NEXT STEP</button>
     <button id="finalStep2Btn" class="btn-main" onclick="openPayment()" style="display:none; background:#25D366; border:none;">CONTINUE</button>
@@ -294,10 +296,21 @@ body { margin: 0; background-color: #000; color: #fff; font-family: Arial, sans-
 <div id="workModal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeModal('workModal')">×</span><div class="portfolio-grid" id="portfolioGrid"></div></div></div>
 
 <script>
-const SHEET_ID = '1-Cmr2UoQB89Oo4D-Qcukhr7CGjs7eAEJbuSlWtyjFk4', SHEET_NAME = 'Sayfa1'; 
+// --- FIREBASE V.1.1 OTOMASYON ---
+const firebaseConfig = {
+    apiKey: "AIzaSyA5e7A-Ha8dJWj5dUE_j_g3WeD0QhrDkZY",
+    authDomain: "inkjection-admin.firebaseapp.com",
+    projectId: "inkjection-admin",
+    storageBucket: "inkjection-admin.firebasestorage.app",
+    messagingSenderId: "272546510196",
+    appId: "1:272546510196:web:ac81ad4ce4c3ce1db82821"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
 const MY_EMAIL = "Inkjection.tattoo95@gmail.com";
 const MY_WA = "32476633794";
-let googleBookings = {}, lang = "nl", userSizeChoice = "small", selectedGiftAmt = 0;
+let blockedDates = new Set(), lang = "nl", userSizeChoice = "small", selectedGiftAmt = 0;
 const now = new Date(); now.setHours(0,0,0,0);
 let viewMonth = now.getMonth(), viewYear = now.getFullYear();
 
@@ -306,6 +319,58 @@ let currentWordIdx = 0;
 let scrollInterval;
 
 window.onload = () => { setTimeout(() => { document.getElementById('splash').style.display = 'none'; }, 2000); fetchData(); updateLang(); };
+
+async function fetchData() {
+    const blockedSnap = await db.collection("blockedDays").get();
+    blockedDates.clear();
+    blockedSnap.forEach(doc => blockedDates.add(doc.id));
+
+    const photoSnap = await db.collection("photos").orderBy("createdAt", "desc").limit(24).get();
+    const workGrid = document.getElementById("portfolioGrid");
+    workGrid.innerHTML = "";
+    photoSnap.forEach(doc => {
+        const img = document.createElement("img");
+        img.src = doc.data().url;
+        workGrid.appendChild(img);
+    });
+    renderCalendar();
+}
+
+function renderCalendar() {
+  const daysEl = document.getElementById("days");
+  const nlM = ["JANUARI","FEBRUARI","MAART","APRIL","MEI","JUNI","JULI","AUGUSTUS","SEPTEMBER","OKTOBER","NOVEMBER","DECEMBER"];
+  const enM = ["JANUARY","FEBRUARY","MARCH","APRIL","MAY","JUNE","JULY","AUGUST","SEPTEMBER","OCTOBER","NOVEMBER","DECEMBER"];
+  document.getElementById("calTitle").textContent = (lang === "nl" ? nlM[viewMonth] : enM[viewMonth]) + " " + viewYear;
+  daysEl.innerHTML = "";
+  
+  const currentTotalMonths = now.getFullYear() * 12 + now.getMonth();
+  const viewTotalMonths = viewYear * 12 + viewMonth;
+  
+  const maxForwardMonths = (now.getDate() >= 20) ? 3 : 2;
+
+  document.getElementById("prevBtn").style.visibility = (viewTotalMonths <= currentTotalMonths) ? "hidden" : "visible";
+  document.getElementById("nextBtn").style.visibility = (viewTotalMonths >= currentTotalMonths + maxForwardMonths) ? "hidden" : "visible";
+
+  const first = new Date(viewYear, viewMonth, 1).getDay();
+  const shift = first === 0 ? 6 : first - 1;
+  for(let i=0; i<shift; i++) daysEl.appendChild(document.createElement("div"));
+  
+  const total = new Date(viewYear, viewMonth + 1, 0).getDate();
+  for(let d=1; d<=total; d++) {
+    const dObj = new Date(viewYear, viewMonth, d);
+    const id = `${viewYear}-${(viewMonth+1).toString().padStart(2,'0')}-${d.toString().padStart(2,'0')}`;
+    const isPast = (dObj < now);
+    let isB = blockedDates.has(id) || (userSizeChoice === 'large' && dObj.getDay() >= 1 && dObj.getDay() <= 5);
+    
+    let el = document.createElement("div");
+    el.className = "day " + (isB ? "booked" : "available");
+    if(isPast) { el.classList.add("past-day"); } else if(isB) { el.classList.add("booked-future"); }
+    el.textContent = d;
+    if(!isB && !isPast) el.onclick = () => { resetInputs(); closeModal('calModal'); document.getElementById("formDate").value = id; document.getElementById("formModal").style.display = "block"; resetFormUI(); };
+    daysEl.appendChild(el);
+  }
+}
+
 function toggleMenu() { document.getElementById('sideMenu').classList.toggle('active'); }
 function toggleContactPanel() { 
     document.querySelectorAll('.info-wrapper').forEach(w => w.classList.remove('active-tab'));
@@ -340,7 +405,12 @@ function startInfiniteScroll() {
 }
 
 function confirmPaymentAlert() {
-    alert(lang === 'nl' ? 'Vergeet niet om op "SEND FORM" te klikken na de betaling!' : 'Do not forget to click "SEND FORM" after payment!');
+    const alerts = {
+        nl: { msg: 'Vergeet niet om op "SEND FORM" te klikken na de betaling!' },
+        en: { msg: 'Do not forget to click "SEND FORM" after payment!' }
+    };
+    const active = lang === 'nl' ? alerts.nl : alerts.en;
+    alert(active.msg);
 }
 
 function updateLang() {
@@ -353,7 +423,7 @@ function updateLang() {
   document.getElementById("aboutTitle").textContent = isNl ? "OVER MIJ" : "ABOUT ME";
   document.getElementById("payTitle").textContent = isNl ? "VOORSCHOT" : "DEPOSIT";
   document.getElementById("payNote").textContent = isNl ? "BELANGRIJK: Stuur ALTIJD het formulier na betaling, anders hebben wij uw gegevens niet!" : "IMPORTANT: ALWAYS send the form after payment, otherwise we won't have your details!";
-  document.getElementById("gentleNote").textContent = isNl ? "Het is erg belangrijk dat u uw gegevens verzendt (zelfs her u de betaling nu niet uitvoert), zodat we kunnen beginnen met de voorbereiding van uw ontwerp." : "It is very important that you send your details (even if you do not make the payment now), so we can start preparing your design.";
+  document.getElementById("gentleNote").textContent = isNl ? "Het is erg belangrijk dat u uw gegevens verzendt (zelfs als u de betaling nu niet uitvoert), zodat we kunnen beginnen met de voorbereiding van uw ontwerp." : "It is very important that you send your details (even if you do not make the payment now), so we can start preparing your design.";
   document.getElementById("waBtnLabel").textContent = isNl ? "VRAGEN OVER BETALING" : "QUESTIONS ABOUT PAYMENT";
   document.getElementById("formTitle").textContent = isNl ? "Boeking Aanvragen" : "Request Booking";
   document.getElementById("menuGiftLabel").textContent = isNl ? "CADEAUBON" : "GIFT VOUCHER";
@@ -369,65 +439,16 @@ function updateLang() {
   document.getElementById("labelBook").textContent = isNl ? "HOE BOEKEN?" : "HOW TO BOOK?";
   document.getElementById("labelPay").textContent = isNl ? "BETALING" : "PAYMENT";
   document.getElementById("contentBook").innerHTML = isNl ? 
-    "<b>Stap 1:</b> Kies gewenst formaat.<br><b>Stap 2:</b> Selecteer bir datum.<br><b>Stap 3:</b> Vul het formulier in.<br><b>Stap 4:</b> Betaal het voorschot.<br><br><i>Formulier verzonden maar niet betaald? Contacteer ons via WhatsApp!</i>" : 
+    "<b>Stap 1:</b> Kies gewenst formaat.<br><b>Stap 2:</b> Selecteer een datum.<br><b>Stap 3:</b> Vul het formulier in.<br><b>Stap 4:</b> Betaal het voorschot.<br><br><i>Formulier verzonden maar niet betaald? Contacteer ons via WhatsApp!</i>" : 
     "<b>Step 1:</b> Choose preferred size.<br><b>Step 2:</b> Select an available date.<br><b>Step 3:</b> Fill out the form.<br><b>Step 4:</b> Pay the deposit.<br><br><i>Sent form but didn't pay? Contact us via WhatsApp!</i>";
   document.getElementById("contentPay").textContent = isNl ? "Een voorschot van €50 is vereist om je afspraak te bevestigen." : "A €50 deposit is required to confirm your booking.";
 
   const enText = "Welcome to <b>Inkjection</b>, a private studio where <b>hygiene</b> and <b>precision</b> are top priorities. I believe a tattoo is more than just ink; it's <b>your story</b>. That's why I pay attention to every single detail of your wishes and collaborate creatively to elevate your ideas. My goal? To make you happier than you expected with a unique piece of art you'll be proud of for a lifetime.";
-  const nlText = "Welkom bij <b>Inkjection</b>, een privéstudio waar <b>hygiëne</b> en <b>precisie</b> topprioriteiten zijn. Ik geloof dat een tatoeage meer is dan alleen inkt; het is <b>jouw verhaal</b>. Daarom besteed ik aandacht aan elk detail van je wensen ve werken we creatief samen om je ideeën naar een hoger niveau te tillen. Mijn doel? Om je gelukkiger te maken dan je had verwacht met uniek kunstwerk waar je een leven lang trots op zult zijn.";
+  const nlText = "Welkom bij <b>Inkjection</b>, een privéstudio waar <b>hygiëne</b> en <b>precisie</b> topprioriteiten zijn. Ik geloof dat een tatoeage meer is dan alleen inkt; het is <b>jouw verhaal</b>. Daarom besteed ik aandacht aan elk detail van je wensen ve werken we creatief samen om je ideeën naar bir hoger niveau te tillen. Mijn doel? Om je gelukkiger te maken dan je had verwacht met uniek kunstwerk waar je bir leven lang trots op zult sind.";
   document.getElementById("aboutText").innerHTML = isNl ? nlText : enText;
 
   startInfiniteScroll();
   renderCalendar();
-}
-
-async function fetchData() {
-  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${SHEET_NAME}&t=${Date.now()}`;
-  try {
-    const res = await fetch(url); const text = await res.text();
-    const rows = text.split(/\r?\n/).map(r => r.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/^"|"$/g, '').trim()));
-    googleBookings = {}; const workGrid = document.getElementById("portfolioGrid"); workGrid.innerHTML = "";
-    rows.forEach(cols => {
-      if(cols[0] && cols[1]?.toLowerCase()==='booked') {
-        let dV = cols[0]; if(dV.includes("Date(")) { let m = dV.match(/\d+/g); dV = `${m[0]}-${(parseInt(m[1])+1).toString().padStart(2,'0')}-${m[2].padStart(2,'0')}`; }
-        googleBookings[dV] = true;
-      }
-      if(cols[2]?.startsWith('http')) { const img = document.createElement("img"); img.src = cols[2]; workGrid.appendChild(img); }
-    });
-    renderCalendar();
-  } catch (e) {}
-}
-
-function renderCalendar() {
-  const daysEl = document.getElementById("days");
-  const nlM = ["JANUARI","FEBRUARI","MAART","APRIL","MEI","JUNI","JULI","AUGUSTUS","SEPTEMBER","OCTOBER","NOVEMBER","DECEMBER"];
-  const enM = ["JANUARY","FEBRUARY","MARCH","APRIL","MAY","JUNE","JULY","AUGUST","SEPTEMBER","OCTOBER","NOVEMBER","DECEMBER"];
-  document.getElementById("calTitle").textContent = (lang === "nl" ? nlM[viewMonth] : enM[viewMonth]) + " " + viewYear;
-  daysEl.innerHTML = "";
-  
-  // NAVİGASYON SINIRLAMA MANTIĞI
-  const currentTotalMonths = now.getFullYear() * 12 + now.getMonth();
-  const viewTotalMonths = viewYear * 12 + viewMonth;
-  
-  document.getElementById("prevBtn").style.visibility = (viewTotalMonths <= currentTotalMonths) ? "hidden" : "visible";
-  document.getElementById("nextBtn").style.visibility = (viewTotalMonths >= currentTotalMonths + 2) ? "hidden" : "visible";
-
-  const first = new Date(viewYear, viewMonth, 1).getDay();
-  const shift = first === 0 ? 6 : first - 1;
-  for(let i=0; i<shift; i++) daysEl.appendChild(document.createElement("div"));
-  const total = new Date(viewYear, viewMonth + 1, 0).getDate();
-  for(let d=1; d<=total; d++) {
-    const dObj = new Date(viewYear, viewMonth, d);
-    const id = `${viewYear}-${(viewMonth+1).toString().padStart(2,'0')}-${d.toString().padStart(2,'0')}`;
-    const isPast = (dObj < now);
-    let isB = googleBookings[id] || (userSizeChoice === 'large' && dObj.getDay() >= 1 && dObj.getDay() <= 5);
-    let el = document.createElement("div");
-    el.className = "day " + (isB ? "booked" : "available");
-    if(isPast) { el.classList.add("past-day"); } else if(isB) { el.classList.add("booked-future"); }
-    el.textContent = d;
-    if(!isB && !isPast) el.onclick = () => { resetInputs(); closeModal('calModal'); document.getElementById("formDate").value = id; document.getElementById("formModal").style.display = "block"; resetFormUI(); };
-    daysEl.appendChild(el);
-  }
 }
 
 function handleSelection(size) { userSizeChoice = size; closeModal('selectionModal'); openModalSync('calModal'); }
@@ -469,9 +490,8 @@ function resetFormAfterSend() { setTimeout(() => { location.reload(); }, 1000); 
 function changeMonth(s) { 
     const currentTotalMonths = now.getFullYear() * 12 + now.getMonth();
     const nextTotalMonths = viewYear * 12 + viewMonth + s;
-    
-    // 3 AY SINIRI (Şu anki ay + 2 sonraki ay)
-    if (nextTotalMonths >= currentTotalMonths && nextTotalMonths <= currentTotalMonths + 2) {
+    const maxForwardMonths = (now.getDate() >= 20) ? 3 : 2;
+    if (nextTotalMonths >= currentTotalMonths && nextTotalMonths <= currentTotalMonths + maxForwardMonths) {
         viewMonth += s; 
         if(viewMonth > 11) { viewMonth = 0; viewYear++; } 
         else if(viewMonth < 0) { viewMonth = 11; viewYear--; } 
