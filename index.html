@@ -666,32 +666,6 @@ const aftercareWrapper = document.createElement('div');
 aftercareWrapper.className = 'info-wrapper';
 aftercareWrapper.id = 'tabAftercare';
 
-function updateValentineContent() {
-    const isNl = (lang === "nl");
-    const title = isNl ? "VALENTIJN SPECIAL" : "VALENTINE'S SPECIAL";
-    const message = isNl ? 
-        "Vier de liefde! Kom samen met je partner voor tattoos en ontvang <b>20% KORTING</b> op de totaalprijs. ✨" : 
-        "Celebrate love! Come together with your partner for tattoos and get <b>20% OFF</b> the total price. ✨";
-    
-    valentineWrapper.innerHTML = `
-        <div class="menu-contact-btn" style="background: linear-gradient(45deg, #ff416c, #ff4b2b); border: none; margin-bottom: 0;">
-            <span style="color: white; font-weight: 800; letter-spacing: 1.5px;">${title}</span>
-            <i class="fas fa-heart" style="color: white;"></i>
-        </div>
-        <div class="info-tab-content" style="display: none; padding: 20px; background: rgba(255, 65, 108, 0.05); border: 1px solid rgba(255, 65, 108, 0.2); border-radius: 0 0 20px 20px;">
-            <p style="margin: 0; color: #eee; font-size: 13.5px; line-height: 1.7; text-align: left;">
-                ${message}
-                <br><br>
-                <a href="https://wa.me/32476633794?text=Valentine%20Special%20Offer" style="color: #ff4b2b; font-weight: bold; text-decoration: none; font-size: 12px; display: flex; align-items: center; gap: 8px;">
-                    <i class="fab fa-whatsapp"></i> BOOK YOUR SESSION
-                </a>
-            </p>
-        </div>
-    `;
-
-    valentineWrapper.querySelector('.menu-contact-btn').onclick = () => toggleTabCustom('tabValentine');
-}
-
 function updateAftercareContent() {
     const isNl = (lang === "nl");
     const title = isNl ? "NAZORG" : "AFTERCARE GUIDE";
@@ -745,23 +719,8 @@ setLang = function(l) {
     updateAftercareContent();
 };
 
-// Hearts Logic
-const heartStyle = document.createElement('style');
-heartStyle.innerHTML = `
-    .floating-heart { position: fixed; bottom: -20px; color: rgba(255, 0, 0, 0.6); pointer-events: none; z-index: 9999; animation: moveUp linear forwards; }
-    @keyframes moveUp { to { transform: translateY(-110vh) rotate(360deg); } }
-`;
-document.head.appendChild(heartStyle);
-
-setInterval(() => {
-    const heart = document.createElement('i');
-    heart.className = 'fas fa-heart floating-heart';
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.fontSize = (Math.random() * 12 + 10) + "px";
-    heart.style.animationDuration = (Math.random() * 3 + 5) + "s";
-    document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 7000);
-}, 450);
 </script>
 </body>
 </html>
+
+
