@@ -444,19 +444,31 @@ async function fetchData() {
     blockedDates.clear();
     blockedSnap.forEach(function(doc) { blockedDates.add(doc.id); });
 
-    var photoSnap = await db.collection("photos").orderBy("createdAt", "desc").limit(24).get();
+    var photoSnap = await db.collection("photos").get();
+    var allPhotos = [];
+    photoSnap.forEach(function(doc) { allPhotos.push({ id: doc.id, data: doc.data() }); });
+    allPhotos.sort(function(a, b) {
+        var oa = a.data.order !== undefined ? a.data.order : 999999;
+        var ob = b.data.order !== undefined ? b.data.order : 999999;
+        if(oa === ob) {
+            var ta = a.data.createdAt ? a.data.createdAt.seconds : 0;
+            var tb = b.data.createdAt ? b.data.createdAt.seconds : 0;
+            return tb - ta;
+        }
+        return oa - ob;
+    });
     var slider = document.getElementById("sliderContainer");
     slider.innerHTML = "";
     portfolioUrls = [];
     var idx = 0;
-    photoSnap.forEach(function(doc) {
-        var url = doc.data().url;
+    allPhotos.forEach(function(item) {
+        var url = item.data.url;
         portfolioUrls.push(url);
-        var item = document.createElement("div");
-        item.className = "slider-item";
-        item.setAttribute("onclick", "openLightbox(" + idx + ")");
-        item.innerHTML = '<img src="' + url + '" loading="lazy" alt="Tattoo work">';
-        slider.appendChild(item);
+        var el = document.createElement("div");
+        el.className = "slider-item";
+        el.setAttribute("onclick", "openLightbox(" + idx + ")");
+        el.innerHTML = '<img src="' + url + '" loading="lazy" alt="Tattoo work">';
+        slider.appendChild(el);
         idx++;
     });
     renderCalendar();
