@@ -660,20 +660,30 @@ function sendGiftWA() {
 function updateFileLabel(num) { var inp = document.getElementById('custImage'+num); if(inp.files[0]) document.getElementById('fileLabel'+num).textContent = inp.files[0].name; }
 
 var web3formReady = false;
+var photoLinks = [];
 
 async function prepareEmail() {
   var n = document.getElementById("custName").value.trim();
   var g = document.getElementById("custGsm").value.trim();
   var s = document.getElementById("custSize").value.trim();
   var b = document.getElementById("custBody").value.trim();
-  var i = document.getElementById("custIdea").value.trim();
   if(!n || !g || !s || !b) { alert("Please fill all required fields"); return; }
-  var prepBtn = document.getElementById("prepareBtn");
-  prepBtn.disabled = true;
+  var prepBtn = document.getElementById("prepareBtn"); var loader = document.getElementById("uploadLoading");
+  prepBtn.disabled = true; loader.style.display = "block";
+  photoLinks = [];
+  for(var x=1; x<=3; x++) {
+    var file = document.getElementById('custImage'+x).files[0];
+    if(file) {
+        var fd = new FormData(); fd.append("image", file);
+        try { var res = await fetch("https://api.imgbb.com/1/upload?key=E769a205ed9c09d1a58e8fa4b8d32c35", { method: "POST", body: fd });
+            var data = await res.json(); if(data.success) photoLinks.push(data.data.display_url);
+        } catch(e) { console.log('Photo upload failed:', e); }
+    }
+  }
   web3formReady = true;
   var waMsg = lang === "nl" ? 'Vraag over betaling voor afspraak op ' + document.getElementById("formDate").value : 'Question about payment for appointment on ' + document.getElementById("formDate").value;
   document.getElementById("finalWaLink").href = 'https://wa.me/' + MY_WA + '?text=' + encodeURIComponent(waMsg);
-  prepBtn.style.display = "none"; document.getElementById("finalStep2Btn").style.display = "block";
+  loader.style.display = "none"; prepBtn.style.display = "none"; document.getElementById("finalStep2Btn").style.display = "block";
 }
 
 async function sendWeb3Form() {
@@ -682,34 +692,27 @@ async function sendWeb3Form() {
   var originalText = btn.textContent;
   btn.textContent = "SENDING...";
   btn.style.pointerEvents = "none";
-  var loader = document.getElementById("uploadLoading");
-  loader.style.display = "block";
 
   try {
-    var formData = new FormData();
-    formData.append("access_key", "d37aac4e-21e4-489c-b910-fa2f20667bfc");
-    formData.append("subject", "New Tattoo Booking: " + document.getElementById("custName").value.trim());
-    formData.append("from_name", "Inkjection Website");
-    formData.append("Name", document.getElementById("custName").value.trim());
-    formData.append("GSM", document.getElementById("custGsm").value.trim());
-    formData.append("Date", document.getElementById("formDate").value);
-    formData.append("Size", document.getElementById("custSize").value.trim());
-    formData.append("Body Part", document.getElementById("custBody").value.trim());
-    formData.append("Idea", document.getElementById("custIdea").value.trim() || 'N/A');
-
-    for(var x=1; x<=3; x++) {
-      var file = document.getElementById('custImage'+x).files[0];
-      if(file) {
-        formData.append("attachment", file);
-      }
-    }
-
     var res = await fetch("https://api.web3forms.com/submit", {
       method: "POST",
-      body: formData
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        access_key: "d37aac4e-21e4-489c-b910-fa2f20667bfc",
+        subject: "New Tattoo Booking: " + document.getElementById("custName").value.trim(),
+        from_name: "Inkjection Website",
+        Name: document.getElementById("custName").value.trim(),
+        GSM: document.getElementById("custGsm").value.trim(),
+        Date: document.getElementById("formDate").value,
+        Size: document.getElementById("custSize").value.trim(),
+        "Body Part": document.getElementById("custBody").value.trim(),
+        Idea: document.getElementById("custIdea").value.trim() || 'N/A',
+        "Photo 1": photoLinks[0] || 'No photo',
+        "Photo 2": photoLinks[1] || '',
+        "Photo 3": photoLinks[2] || ''
+      })
     });
     var data = await res.json();
-    loader.style.display = "none";
     if(data.success) {
       btn.textContent = lang === "nl" ? "VERZONDEN!" : "SENT!";
       btn.style.background = "#25D366";
@@ -722,7 +725,6 @@ async function sendWeb3Form() {
       setTimeout(function() { btn.textContent = originalText; }, 3000);
     }
   } catch(e) {
-    loader.style.display = "none";
     btn.textContent = "ERROR - TRY AGAIN";
     btn.style.pointerEvents = "auto";
     setTimeout(function() { btn.textContent = originalText; }, 3000);
