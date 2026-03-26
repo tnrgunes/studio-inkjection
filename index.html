@@ -118,13 +118,28 @@ background: rgba(255,255,255,0.03); border-radius: 0 0 12px 12px; border: 1px so
 .review-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 1px solid rgba(255,255,255,0.2); font-size: 14px; }
 .review-body { font-size: 13px; line-height: 1.6; font-style: italic; opacity: 0.95; margin: 0; }
 
-.btn-main{display:block; margin:18px auto; padding:20px; width:100%; max-width:320px; color:#fff; font-weight:bold; border-radius:60px; text-decoration:none; border:1px solid rgba(255,255,255,0.4); background:rgba(0,0,0,0.5); backdrop-filter: blur(10px); font-size:14px; letter-spacing:2px; text-transform: uppercase;}
-.whatsapp-main{background:rgba(37, 211, 102, 0.25); border-color: rgba(37, 211, 102, 0.5);}
+.btn-main{display:block; margin:18px auto; padding:20px; width:100%; max-width:320px; color:#fff; font-weight:bold; border-radius:60px; text-decoration:none; border:1px solid rgba(255,255,255,0.15); background:rgba(0,0,0,0.5); backdrop-filter: blur(10px); font-size:14px; letter-spacing:2px; text-transform: uppercase; position: relative; overflow: hidden; z-index: 1;}
+.btn-main::before { content: ‘’; position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px; border-radius: 62px; background: conic-gradient(from var(–btn-angle, 0deg), transparent 0%, rgba(255,255,255,0.15) 10%, transparent 20%, transparent 50%, rgba(255,255,255,0.1) 60%, transparent 70%); z-index: -1; animation: rotateBorder 4s linear infinite; }
+.btn-main::after { content: ‘’; position: absolute; top: 1px; left: 1px; right: 1px; bottom: 1px; border-radius: 60px; background: rgba(0,0,0,0.85); z-index: -1; }
+@keyframes rotateBorder { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+.btn-main:active { transform: scale(0.98); }
+.whatsapp-main { border-color: rgba(37,211,102,0.3); }
+.whatsapp-main::before { background: conic-gradient(from var(–btn-angle, 0deg), transparent 0%, rgba(37,211,102,0.25) 10%, transparent 20%, transparent 50%, rgba(37,211,102,0.2) 60%, transparent 70%); }
+.whatsapp-main::after { background: rgba(10,30,15,0.9); }
 .wa-small-btn { padding: 12px; font-size: 11px; max-width: 280px; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; }
+
+/* POPUP WHATSAPP BUTTON */
+.popup-wa-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 16px; border-radius: 30px; background: rgba(37,211,102,0.25); border: 1px solid rgba(37,211,102,0.5); color: #fff; font-weight: 700; font-size: 13px; letter-spacing: 1.5px; text-decoration: none; text-transform: uppercase; cursor: pointer; touch-action: manipulation; box-shadow: 0 0 15px rgba(37,211,102,0.15); transition: box-shadow 0.3s; }
+.popup-wa-btn:active { box-shadow: 0 0 25px rgba(37,211,102,0.3); transform: scale(0.98); }
 
 .modal { display: none; position: fixed; z-index: 10005; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); backdrop-filter: blur(10px); }
 .modal-content { background: rgba(15,15,15,0.98); margin: 60px auto; padding: 25px; border-radius: 30px; width: 95%; max-width: 400px; position: relative; border: 1px solid rgba(255,255,255,0.15); max-height: 85vh; overflow-y: auto; }
 .close-modal { position: sticky; top: 0; float: right; color: #fff; font-size: 32px; z-index: 10006; background: rgba(15,15,15,0.6); border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; margin-right: -10px; margin-top: -10px; cursor:pointer; touch-action:manipulation;}
+
+/* MY WORK MODAL */
+#workModal .modal-content { max-width: 100%; width: 95%; padding: 10px; }
+.portfolio-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; width: 100%; margin-top: 10px; }
+.portfolio-grid img { width: 100%; height: auto; aspect-ratio: 1/1; object-fit: cover; border-radius: 10px; cursor: pointer; }
 
 /* PORTFOLIO SLIDER */
 .slider-section { margin-top: 30px; position: relative; width: 100vw; margin-left: calc(-50vw + 50%); overflow: hidden; }
@@ -145,6 +160,33 @@ background: rgba(255,255,255,0.03); border-radius: 0 0 12px 12px; border: 1px so
 .lightbox-nav { position: absolute; top: 50%; transform: translateY(-50%); font-size: 22px; color: #fff; cursor: pointer; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.1); border-radius: 50%; }
 .lightbox-prev { left: 12px; }
 .lightbox-next { right: 12px; }
+
+/* DESIGNS SLIDER */
+.designs-slider-section { margin-top: 20px; position: relative; width: 100vw; margin-left: calc(-50vw + 50%); overflow: hidden; }
+.designs-slider-container { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; gap: 8px; padding: 0 20px; }
+.designs-slider-container::-webkit-scrollbar { display: none; }
+.designs-slider-item { flex: 0 0 70%; scroll-snap-align: center; border-radius: 12px; overflow: hidden; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); }
+.designs-slider-item img { width: 100%; aspect-ratio: 1/1; object-fit: cover; display: block; }
+.designs-slider-item .ds-info { padding: 12px 15px; }
+.designs-slider-item .ds-price { font-size: 18px; font-weight: 800; color: #fff; margin-bottom: 4px; }
+.designs-slider-item .ds-old-price { text-decoration: line-through; color: rgba(255,255,255,0.35); font-size: 13px; margin-right: 6px; font-weight: 400; }
+.designs-slider-item .ds-discount { font-size: 18px; font-weight: 800; color: #ff3b3b; }
+.designs-slider-item .ds-desc { font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 10px; }
+.designs-slider-item .ds-sold { text-align: center; padding: 10px; color: #ff3b3b; font-weight: 800; font-size: 12px; letter-spacing: 2px; }
+.designs-slider-item .ds-sold-img { opacity: 0.4; }
+.designs-slider-arrows { position: absolute; top: 40%; left: 0; right: 0; display: flex; justify-content: space-between; padding: 0 8px; transform: translateY(-50%); pointer-events: none; z-index: 5; }
+
+/* SINGLE DESIGN POPUP */
+.design-popup { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); backdrop-filter: blur(10px); z-index: 20000; overflow-y: auto; }
+.design-popup.active { display: block; }
+.design-popup-inner { max-width: 400px; width: 92%; margin: 50px auto; padding-bottom: 40px; }
+.design-popup-close { position: fixed; top: 15px; right: 15px; font-size: 28px; color: #fff; cursor: pointer; z-index: 20001; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.1); border-radius: 50%; }
+.design-popup img { width: 100%; border-radius: 12px; display: block; margin-bottom: 15px; }
+.design-popup .dp-price { font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 6px; }
+.design-popup .dp-old-price { text-decoration: line-through; color: rgba(255,255,255,0.35); font-size: 15px; margin-right: 8px; font-weight: 400; }
+.design-popup .dp-discount { font-size: 22px; font-weight: 800; color: #ff3b3b; }
+.design-popup .dp-desc { font-size: 14px; color: rgba(255,255,255,0.7); line-height: 1.6; margin-bottom: 18px; }
+.design-popup .dp-sold { text-align: center; padding: 14px; color: #ff3b3b; font-weight: 800; font-size: 14px; letter-spacing: 3px; }
 
 /* DESIGNS MODAL */
 #designsModal .modal-content { max-width: 100%; width: 95%; padding: 15px; }
@@ -286,9 +328,23 @@ background: rgba(255,255,255,0.03); border-radius: 0 0 12px 12px; border: 1px so
 </div>
 
 <div class="container" style="padding-top: 30px;">
+  <button class="btn-main" onclick="openWorkModal()" id="btnWork">MIJN WERK</button>
   <button class="btn-main" onclick="openDesignsModal()" id="btnDesigns">ONTWERPEN</button>
   <button class="btn-main" onclick="openModalSync('selectionModal')" id="btnCal">VRIJE DAGEN</button>
   <a class="btn-main whatsapp-main" href="https://wa.me/32476633794" target="_blank">WHATSAPP</a>
+</div>
+
+<!-- DESIGNS SLIDER -->
+
+<div class="designs-slider-section" id="designsSliderSection" style="display:none;">
+  <div class="designs-slider-container" id="designsSliderContainer"></div>
+  <div class="designs-slider-arrows">
+    <div class="slider-arrow" onclick="designSlideLeft()"><i class="fas fa-chevron-left"></i></div>
+    <div class="slider-arrow" onclick="designSlideRight()"><i class="fas fa-chevron-right"></i></div>
+  </div>
+</div>
+
+<div class="container" style="padding-top: 10px;">
 
   <div class="about-section">
     <div class="about-bg"></div>
@@ -407,6 +463,15 @@ background: rgba(255,255,255,0.03); border-radius: 0 0 12px 12px; border: 1px so
 
 <div id="calModal" class="modal"><div class="modal-content"><span class="close-modal" onclick="closeModal('calModal')">&times;</span><div style="display:flex; justify-content:center; align-items:center; gap:20px; margin-bottom:20px;"><button onclick="changeMonth(-1)" id="prevBtn"><i class="fas fa-chevron-left"></i></button><div id="calTitle"></div><button onclick="changeMonth(1)" id="nextBtn"><i class="fas fa-chevron-right"></i></button></div><div class="days" id="days"></div></div></div>
 
+<!-- MY WORK MODAL -->
+
+<div id="workModal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal" onclick="closeModal('workModal')">&times;</span>
+    <div class="portfolio-grid" id="portfolioGrid"></div>
+  </div>
+</div>
+
 <!-- DESIGNS MODAL -->
 
 <div id="designsModal" class="modal">
@@ -416,6 +481,13 @@ background: rgba(255,255,255,0.03); border-radius: 0 0 12px 12px; border: 1px so
     <p id="designsModalSub" style="text-align:center; font-size:12px; color:rgba(255,255,255,0.4); margin-top:0;">Kies een ontwerp en bestel via WhatsApp</p>
     <div class="designs-grid" id="designsGrid"></div>
   </div>
+</div>
+
+<!-- SINGLE DESIGN POPUP -->
+
+<div class="design-popup" id="designPopup">
+  <div class="design-popup-close" onclick="closeDesignPopup()">&times;</div>
+  <div class="design-popup-inner" id="designPopupContent"></div>
 </div>
 
 <script>
@@ -442,7 +514,7 @@ var phrases = { nl: ["INFO", "BOEKEN", "CADEAU", "CONTACT"], en: ["INFO", "BOOKI
 var currentWordIdx = 0;
 var scrollInterval;
 
-window.onload = function() { setTimeout(function() { document.getElementById('splash').style.display = 'none'; }, 2000); fetchData(); updateLang(); };
+window.onload = function() { setTimeout(function() { document.getElementById('splash').style.display = 'none'; }, 2000); fetchData(); loadDesigns(); updateLang(); };
 
 async function fetchData() {
     var blockedSnap = await db.collection("blockedDays").get();
@@ -509,16 +581,127 @@ function lightboxNext() {
     document.getElementById('lightboxImg').src = portfolioUrls[lightboxIndex];
 }
 
+function openWorkModal() {
+    var grid = document.getElementById('portfolioGrid');
+    grid.innerHTML = '';
+    portfolioUrls.forEach(function(url, idx) {
+        var img = document.createElement('img');
+        img.src = url;
+        img.loading = 'lazy';
+        img.alt = 'Tattoo work';
+        img.onclick = function() { closeModal('workModal'); openLightbox(idx); };
+        grid.appendChild(img);
+    });
+    document.getElementById('workModal').style.display = 'block';
+}
+
+// DESIGNS SLIDER
+function designSlideLeft() {
+    var c = document.getElementById('designsSliderContainer');
+    var w = c.querySelector('.designs-slider-item');
+    if(w) c.scrollBy({ left: -(w.offsetWidth + 8), behavior: 'smooth' });
+}
+function designSlideRight() {
+    var c = document.getElementById('designsSliderContainer');
+    var w = c.querySelector('.designs-slider-item');
+    if(w) c.scrollBy({ left: w.offsetWidth + 8, behavior: 'smooth' });
+}
+
+function openDesignPopup(d) {
+    var content = document.getElementById('designPopupContent');
+    var isSold = d.sold === true;
+    var hasDiscount = d.discountPrice && d.discountPrice !== '';
+    var priceHtml = '';
+    var displayPrice = '';
+
+    if(d.price) {
+        if(hasDiscount) {
+            priceHtml = '<span class="dp-old-price">\u20AC' + d.price + '</span><span class="dp-discount">\u20AC' + d.discountPrice + '</span>';
+            displayPrice = '\u20AC' + d.discountPrice;
+        } else {
+            priceHtml = '<span class="dp-price">\u20AC' + d.price + '</span>';
+            displayPrice = '\u20AC' + d.price;
+        }
+    }
+
+    var desc = d.description || '';
+    var waLabel = lang === "nl" ? "BESTEL VIA WHATSAPP" : "ORDER VIA WHATSAPP";
+    var soldLabel = lang === "nl" ? "VERKOCHT" : "SOLD";
+    var waMsg = encodeURIComponent(lang === "nl"
+        ? 'Hallo! Ik ben geinteresseerd in dit ontwerp: ' + d.url + '\nPrijs: ' + displayPrice + '\n' + desc
+        : 'Hello! I am interested in this design: ' + d.url + '\nPrice: ' + displayPrice + '\n' + desc);
+
+    var btnHtml = '';
+    if(isSold) {
+        btnHtml = '<div class="dp-sold">' + soldLabel + '</div>';
+    } else {
+        btnHtml = '<a href="https://wa.me/' + MY_WA + '?text=' + waMsg + '" target="_blank" class="popup-wa-btn"><i class="fab fa-whatsapp" style="font-size:18px;"></i> ' + waLabel + '</a>';
+    }
+
+    content.innerHTML = '<img src="' + d.url + '" alt="Design"' + (isSold ? ' style="opacity:0.4"' : '') + '>'
+        + (priceHtml ? '<div style="margin-bottom:8px;">' + priceHtml + '</div>' : '')
+        + (desc ? '<div class="dp-desc">' + desc + '</div>' : '')
+        + btnHtml;
+
+    document.getElementById('designPopup').classList.add('active');
+}
+
+function closeDesignPopup() {
+    document.getElementById('designPopup').classList.remove('active');
+}
+
+function buildDesignsSlider(snap) {
+    var container = document.getElementById('designsSliderContainer');
+    var section = document.getElementById('designsSliderSection');
+    container.innerHTML = '';
+    var count = 0;
+    snap.forEach(function(doc) {
+        var d = doc.data();
+        var isSold = d.sold === true;
+        var hasDiscount = d.discountPrice && d.discountPrice !== '';
+        var priceHtml = '';
+        if(d.price) {
+            if(hasDiscount) {
+                priceHtml = '<span class="ds-old-price">\u20AC' + d.price + '</span><span class="ds-discount">\u20AC' + d.discountPrice + '</span>';
+            } else {
+                priceHtml = '<span class="ds-price">\u20AC' + d.price + '</span>';
+            }
+        }
+        var desc = d.description || '';
+        var item = document.createElement('div');
+        item.className = 'designs-slider-item';
+        var imgClass = isSold ? ' class="ds-sold-img"' : '';
+        var soldLabel = lang === "nl" ? "VERKOCHT" : "SOLD";
+        item.innerHTML = '<img src="' + d.url + '"' + imgClass + ' loading="lazy">'
+            + '<div class="ds-info">'
+            + (priceHtml ? '<div>' + priceHtml + '</div>' : '')
+            + (desc ? '<div class="ds-desc">' + desc + '</div>' : '')
+            + (isSold ? '<div class="ds-sold">' + soldLabel + '</div>' : '')
+            + '</div>';
+        item.onclick = function() { openDesignPopup(d); };
+        container.appendChild(item);
+        count++;
+    });
+    section.style.display = count > 0 ? 'block' : 'none';
+}
+
+var designsSnap = null;
+
+async function loadDesigns() {
+    designsSnap = await db.collection("designs").orderBy("createdAt", "desc").get();
+    buildDesignsSlider(designsSnap);
+}
+
 async function fetchDesigns() {
-    var snap = await db.collection("designs").orderBy("createdAt", "desc").get();
+    if(!designsSnap) await loadDesigns();
     var grid = document.getElementById("designsGrid");
     grid.innerHTML = "";
-    if(snap.empty) {
+    if(designsSnap.empty) {
         var emptyMsg = lang === "nl" ? "Momenteel geen ontwerpen beschikbaar." : "No designs available at the moment.";
         grid.innerHTML = '<div class="designs-empty">' + emptyMsg + '</div>';
         return;
     }
-    snap.forEach(function(doc) {
+    designsSnap.forEach(function(doc) {
         var d = doc.data();
         var isSold = d.sold === true;
         var hasDiscount = d.discountPrice && d.discountPrice !== '';
@@ -653,6 +836,7 @@ function updateLang() {
   document.getElementById("btnCal").textContent = isNl ? "VRIJE DAGEN" : "OPEN DAYS";
   document.getElementById("scheduleLabel").textContent = isNl ? "PLAN JE SESSIE" : "SCHEDULE YOUR SESSION";
   document.getElementById("btnDesigns").textContent = isNl ? "ONTWERPEN" : "DESIGNS";
+  document.getElementById("btnWork").textContent = isNl ? "MIJN WERK" : "MY WORK";
   document.getElementById("designsModalTitle").textContent = isNl ? "ONTWERPEN" : "DESIGNS";
   document.getElementById("designsModalSub").textContent = isNl ? "Kies een ontwerp en bestel via WhatsApp" : "Choose a design and order via WhatsApp";
   document.getElementById("aboutTitle").textContent = isNl ? "OVER MIJ" : "ABOUT ME";
