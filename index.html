@@ -157,8 +157,8 @@ background: rgba(255,255,255,0.03); border-radius: 0 0 12px 12px; border: 1px so
 .design-card-info .design-wa-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px; border-radius: 30px; border: none; background: rgba(37, 211, 102, 0.25); border: 1px solid rgba(37, 211, 102, 0.5); color: #fff; font-weight: 700; font-size: 12px; letter-spacing: 1.5px; text-decoration: none; text-transform: uppercase; cursor: pointer; }
 .designs-empty { text-align: center; padding: 40px 20px; color: rgba(255,255,255,0.4); font-size: 14px; }
 .design-sold-overlay { position: relative; }
-.design-sold-overlay::after { content: “SOLD”; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%) rotate(-15deg); background: rgba(255,59,59,0.9); color: #fff; font-size: 28px; font-weight: 900; letter-spacing: 6px; padding: 8px 30px; border-radius: 8px; pointer-events: none; }
 .design-sold-overlay img { opacity: 0.4; }
+.design-sold-stamp { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%) rotate(-15deg); background: rgba(255,59,59,0.9); color: #fff; font-size: 28px; font-weight: 900; letter-spacing: 6px; padding: 8px 30px; border-radius: 8px; pointer-events: none; }
 .design-old-price { text-decoration: line-through; color: rgba(255,255,255,0.35); font-size: 14px; margin-right: 8px; font-weight: 400; }
 .design-discount-price { font-size: 20px; font-weight: 800; color: #ff3b3b; }
 
@@ -537,7 +537,7 @@ async function fetchDesigns() {
 
         var desc = d.description || '';
         var waLabel = lang === "nl" ? "BESTEL VIA WHATSAPP" : "ORDER VIA WHATSAPP";
-        var soldLabel = lang === "nl" ? "UITVERKOCHT" : "SOLD OUT";
+        var soldLabel = lang === "nl" ? "VERKOCHT" : "SOLD OUT";
         var waMsg = encodeURIComponent(lang === "nl"
             ? 'Hallo! Ik ben geinteresseerd in dit ontwerp: ' + d.url + '\nPrijs: ' + displayPrice + '\n' + desc
             : 'Hello! I am interested in this design: ' + d.url + '\nPrice: ' + displayPrice + '\n' + desc);
@@ -545,7 +545,8 @@ async function fetchDesigns() {
         var card = document.createElement("div");
         card.className = "design-card";
 
-        var imgWrapper = isSold ? '<div class="design-sold-overlay"><img src="' + d.url + '" alt="Design" loading="lazy"></div>' : '<img src="' + d.url + '" alt="Design" loading="lazy">';
+        var soldStamp = lang === "nl" ? "VERKOCHT" : "SOLD";
+        var imgWrapper = isSold ? '<div class="design-sold-overlay"><img src="' + d.url + '" alt="Design" loading="lazy"><div class="design-sold-stamp">' + soldStamp + '</div></div>' : '<img src="' + d.url + '" alt="Design" loading="lazy">';
 
         var btnHtml = '';
         if(isSold) {
