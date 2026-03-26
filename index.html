@@ -156,6 +156,11 @@ background: rgba(255,255,255,0.03); border-radius: 0 0 12px 12px; border: 1px so
 .design-card-info .design-desc { font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.5; margin-bottom: 14px; }
 .design-card-info .design-wa-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px; border-radius: 30px; border: none; background: rgba(37, 211, 102, 0.25); border: 1px solid rgba(37, 211, 102, 0.5); color: #fff; font-weight: 700; font-size: 12px; letter-spacing: 1.5px; text-decoration: none; text-transform: uppercase; cursor: pointer; }
 .designs-empty { text-align: center; padding: 40px 20px; color: rgba(255,255,255,0.4); font-size: 14px; }
+.design-sold-overlay { position: relative; }
+.design-sold-overlay::after { content: “SOLD”; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%) rotate(-15deg); background: rgba(255,59,59,0.9); color: #fff; font-size: 28px; font-weight: 900; letter-spacing: 6px; padding: 8px 30px; border-radius: 8px; pointer-events: none; }
+.design-sold-overlay img { opacity: 0.4; }
+.design-old-price { text-decoration: line-through; color: rgba(255,255,255,0.35); font-size: 14px; margin-right: 8px; font-weight: 400; }
+.design-discount-price { font-size: 20px; font-weight: 800; color: #ff3b3b; }
 
 .ticket { background: #111; border: 1px solid #333; border-radius: 12px; position: relative; padding: 20px; margin-bottom: 20px; overflow: hidden; text-align: left; }
 .ticket::before { content: ‘’; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent); animation: shine 3s infinite; }
@@ -515,21 +520,46 @@ async function fetchDesigns() {
     }
     snap.forEach(function(doc) {
         var d = doc.data();
-        var price = d.price ? ('\u20AC' + d.price) : '';
+        var isSold = d.sold === true;
+        var hasDiscount = d.discountPrice && d.discountPrice !== '';
+        var priceHtml = '';
+        var displayPrice = '';
+
+        if(d.price) {
+            if(hasDiscount) {
+                priceHtml = '<span class="design-old-price">\u20AC' + d.price + '</span><span class="design-discount-price">\u20AC' + d.discountPrice + '</span>';
+                displayPrice = '\u20AC' + d.discountPrice;
+            } else {
+                priceHtml = '<div class="design-price">\u20AC' + d.price + '</div>';
+                displayPrice = '\u20AC' + d.price;
+            }
+        }
+
         var desc = d.description || '';
         var waLabel = lang === "nl" ? "BESTEL VIA WHATSAPP" : "ORDER VIA WHATSAPP";
+        var soldLabel = lang === "nl" ? "UITVERKOCHT" : "SOLD OUT";
         var waMsg = encodeURIComponent(lang === "nl"
-            ? 'Hallo! Ik ben geinteresseerd in dit ontwerp: ' + d.url + '\nPrijs: ' + price + '\n' + desc
-            : 'Hello! I am interested in this design: ' + d.url + '\nPrice: ' + price + '\n' + desc);
+            ? 'Hallo! Ik ben geinteresseerd in dit ontwerp: ' + d.url + '\nPrijs: ' + displayPrice + '\n' + desc
+            : 'Hello! I am interested in this design: ' + d.url + '\nPrice: ' + displayPrice + '\n' + desc);
+
         var card = document.createElement("div");
         card.className = "design-card";
-        card.innerHTML = '<img src="' + d.url + '" alt="Design" loading="lazy">'
+
+        var imgWrapper = isSold ? '<div class="design-sold-overlay"><img src="' + d.url + '" alt="Design" loading="lazy"></div>' : '<img src="' + d.url + '" alt="Design" loading="lazy">';
+
+        var btnHtml = '';
+        if(isSold) {
+            btnHtml = '<div style="text-align:center;padding:12px;color:#ff3b3b;font-weight:800;font-size:13px;letter-spacing:2px;">' + soldLabel + '</div>';
+        } else {
+            btnHtml = '<a href="https://wa.me/' + MY_WA + '?text=' + waMsg + '" target="_blank" class="design-wa-btn"><i class="fab fa-whatsapp"></i> ' + waLabel + '</a>';
+        }
+
+        card.innerHTML = imgWrapper
             + '<div class="design-card-info">'
-            + (price ? '<div class="design-price">' + price + '</div>' : '')
+            + (priceHtml ? '<div style="margin-bottom:6px;">' + priceHtml + '</div>' : '')
             + (desc ? '<div class="design-desc">' + desc + '</div>' : '')
-            + '<a href="https://wa.me/' + MY_WA + '?text=' + waMsg + '" target="_blank" class="design-wa-btn">'
-            + '<i class="fab fa-whatsapp"></i> ' + waLabel
-            + '</a></div>';
+            + btnHtml
+            + '</div>';
         grid.appendChild(card);
     });
 }
