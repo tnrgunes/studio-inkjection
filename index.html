@@ -331,7 +331,7 @@ background: rgba(255,255,255,0.03); border-radius: 0 0 12px 12px; border: 1px so
   <button class="btn-main" onclick="openWorkModal()" id="btnWork">MIJN WERK</button>
   <button class="btn-main" onclick="openDesignsModal()" id="btnDesigns">ONTWERPEN</button>
   <button class="btn-main" onclick="openModalSync('selectionModal')" id="btnCal">VRIJE DAGEN</button>
-  <a class="btn-main whatsapp-main" href="https://wa.me/32476633794" target="_blank">WHATSAPP</a>
+  <a class="btn-main whatsapp-main" id="btnWA" href="https://wa.me/32476633794" target="_blank">AFSPRAAK</a>
 </div>
 
 <!-- DESIGNS SLIDER -->
@@ -625,11 +625,11 @@ function openDesignPopup(d) {
     }
 
     var desc = d.description || '';
-    var waLabel = lang === "nl" ? "BESTEL VIA WHATSAPP" : "ORDER VIA WHATSAPP";
+    var waLabel = lang === "nl" ? "AFSPRAAK VIA WHATSAPP" : "BOOK APPOINTMENT";
     var soldLabel = lang === "nl" ? "VERKOCHT" : "SOLD";
     var waMsg = encodeURIComponent(lang === "nl"
-        ? 'Hallo! Ik ben geinteresseerd in dit ontwerp: ' + d.url + '\nPrijs: ' + displayPrice + '\n' + desc
-        : 'Hello! I am interested in this design: ' + d.url + '\nPrice: ' + displayPrice + '\n' + desc);
+        ? 'Hallo! Ik wil graag een afspraak maken voor dit ontwerp: ' + d.url + '\nPrijs: ' + displayPrice + '\n' + desc
+        : 'Hello! I would like to book an appointment for this design: ' + d.url + '\nPrice: ' + displayPrice + '\n' + desc);
 
     var btnHtml = '';
     if(isSold) {
@@ -719,11 +719,11 @@ async function fetchDesigns() {
         }
 
         var desc = d.description || '';
-        var waLabel = lang === "nl" ? "BESTEL VIA WHATSAPP" : "ORDER VIA WHATSAPP";
+        var waLabel = lang === "nl" ? "AFSPRAAK VIA WHATSAPP" : "BOOK APPOINTMENT";
         var soldLabel = lang === "nl" ? "VERKOCHT" : "SOLD OUT";
         var waMsg = encodeURIComponent(lang === "nl"
-            ? 'Hallo! Ik ben geinteresseerd in dit ontwerp: ' + d.url + '\nPrijs: ' + displayPrice + '\n' + desc
-            : 'Hello! I am interested in this design: ' + d.url + '\nPrice: ' + displayPrice + '\n' + desc);
+            ? 'Hallo! Ik wil graag een afspraak maken voor dit ontwerp: ' + d.url + '\nPrijs: ' + displayPrice + '\n' + desc
+            : 'Hello! I would like to book an appointment for this design: ' + d.url + '\nPrice: ' + displayPrice + '\n' + desc);
 
         var card = document.createElement("div");
         card.className = "design-card";
@@ -838,7 +838,8 @@ function updateLang() {
   document.getElementById("btnDesigns").textContent = isNl ? "ONTWERPEN" : "DESIGNS";
   document.getElementById("btnWork").textContent = isNl ? "MIJN WERK" : "MY WORK";
   document.getElementById("designsModalTitle").textContent = isNl ? "ONTWERPEN" : "DESIGNS";
-  document.getElementById("designsModalSub").textContent = isNl ? "Kies een ontwerp en bestel via WhatsApp" : "Choose a design and order via WhatsApp";
+  document.getElementById("designsModalSub").textContent = isNl ? "Kies een ontwerp en maak een afspraak via WhatsApp" : "Choose a design and book your appointment via WhatsApp";
+  document.getElementById("btnWA").textContent = isNl ? "AFSPRAAK" : "APPOINTMENT";
   document.getElementById("aboutTitle").textContent = isNl ? "OVER MIJ" : "ABOUT ME";
   document.getElementById("payTitle").textContent = isNl ? "VOORSCHOT" : "DEPOSIT";
   document.getElementById("payNote").textContent = isNl ? "BELANGRIJK: Stuur ALTIJD het formulier na betaling, anders hebben wij uw gegevens niet!" : "IMPORTANT: ALWAYS send the form after payment, otherwise we won't have your details!";
