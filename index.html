@@ -626,7 +626,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-he
         </div>
         <div class="price-card" onclick="handleSelection('medium')">
           <div class="price-card-left"><b>MEDIUM</b><span>8 - 15 cm</span></div>
-          <div><span class="price-card-right" id="priceMed">Vanaf €150</span><i class="fas fa-chevron-right"></i></div>
+          <div><span class="price-card-right" id="priceMed">Vanaf €120</span><i class="fas fa-chevron-right"></i></div>
         </div>
         <div class="price-card" onclick="handleSelection('large')">
           <div class="price-card-left"><b>LARGE</b><span>15+ cm</span></div>
@@ -795,7 +795,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-he
       </div>
       <div class="size-option" onclick="handleSelection('medium')">
         <div><b>MEDIUM</b><span>8 - 15 cm</span></div>
-        <div><span class="size-price" id="sizePriceM">Vanaf €150</span><i class="fas fa-chevron-right" style="opacity:.3"></i></div>
+        <div><span class="size-price" id="sizePriceM">Vanaf €120</span><i class="fas fa-chevron-right" style="opacity:.3"></i></div>
       </div>
       <div class="size-option" onclick="handleSelection('large')">
         <div><b>LARGE</b><span>15+ cm</span></div>
@@ -917,10 +917,10 @@ function updateLang(){
   document.getElementById("pricingLabel").textContent=n?"TARIEVEN":"PRICING";
   document.getElementById("pricingTitle").textContent=n?"KIES JE FORMAAT":"CHOOSE YOUR SIZE";
   document.getElementById("priceSmall").textContent=n?"Vanaf \u20AC80":"From \u20AC80";
-  document.getElementById("priceMed").textContent=n?"Vanaf \u20AC150":"From \u20AC150";
+  document.getElementById("priceMed").textContent=n?"Vanaf \u20AC120":"From \u20AC120";
   document.getElementById("priceLg").textContent=n?"Op afspraak":"On request";
   document.getElementById("sizePriceS").textContent=n?"Vanaf \u20AC80":"From \u20AC80";
-  document.getElementById("sizePriceM").textContent=n?"Vanaf \u20AC150":"From \u20AC150";
+  document.getElementById("sizePriceM").textContent=n?"Vanaf \u20AC120":"From \u20AC120";
   document.getElementById("sizePriceL").textContent=n?"Op afspraak":"On request";
   document.getElementById("designsLabel").textContent="READY-TO-INK";
   document.getElementById("designsTitle").textContent=n?"ONTWERPEN":"DESIGNS";
@@ -928,7 +928,7 @@ function updateLang(){
   document.getElementById("designsModalTitle").textContent=n?"ONTWERPEN":"DESIGNS";
   document.getElementById("designsModalSub").textContent=n?"Kies een ontwerp en maak een afspraak via WhatsApp":"Choose a design and book via WhatsApp";
   document.getElementById("aboutTitle").textContent=n?"OVER MIJ":"ABOUT ME";
-  document.getElementById("aboutText").innerHTML=n?'Welkom bij <b>Inkjection</b>, een priv\u00E9studio waar <b>hygi\u00EBne</b> en <b>precisie</b> topprioriteiten zijn. Ik geloof dat een tatoeage meer is dan alleen inkt; het is <b>jouw verhaal</b>. Daarom besteed ik aandacht aan elk detail van je wensen en werk ik creatief samen om je idee\u00EBn naar een hoger niveau te tillen. Mijn doel is om je gelukkiger te maken dan je had verwacht, met een uniek kunstwerk waar je een leven lang trots op zult zijn.':'Welcome to <b>Inkjection</b>, a private studio where <b>hygiene</b> and <b>precision</b> are top priorities. I believe a tattoo is more than just ink; it\'s <b>your story</b>. That\'s why I pay attention to every single detail of your wishes and collaborate creatively to elevate your ideas. My goal? To make you happier than you expected with a unique piece of art you\'ll be proud of for a lifetime.';
+  document.getElementById("aboutText").innerHTML=n?'Hoi, ik ben <b>Talitha</b>! Welkom bij <b>Inkjection</b>, mijn priv\u00E9studio waar <b>hygi\u00EBne</b> en <b>precisie</b> topprioriteiten zijn. Ik geloof dat een tatoeage meer is dan alleen inkt; het is <b>jouw verhaal</b>. Daarom besteed ik aandacht aan elk detail van je wensen en werk ik creatief samen om je idee\u00EBn naar een hoger niveau te tillen. Mijn doel is om je gelukkiger te maken dan je had verwacht, met een uniek kunstwerk waar je een leven lang trots op zult zijn.':'Hi, I\'m <b>Talitha</b>! Welcome to <b>Inkjection</b>, my private studio where <b>hygiene</b> and <b>precision</b> are top priorities. I believe a tattoo is more than just ink; it\'s <b>your story</b>. That\'s why I pay attention to every single detail of your wishes and collaborate creatively to elevate your ideas. My goal? To make you happier than you expected with a unique piece of art you\'ll be proud of for a lifetime.';
   document.getElementById("reviewTitle").textContent=n?"WAT KLANTEN ZEGGEN":"WHAT CLIENTS SAY";
   document.getElementById("labelBook").textContent=n?"HOE BOEKEN?":"HOW TO BOOK?";
   document.getElementById("labelAftercare").textContent=n?"NAZORG":"AFTERCARE";
