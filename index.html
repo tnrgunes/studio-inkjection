@@ -12,6 +12,9 @@
 <meta property="og:description" content="Professionele tattoo studio in Zandhoven, regio Antwerpen. Bekijk mijn portfolio en boek online.">
 <meta property="og:image" content="https://i.ibb.co/tPTrSN8k/image.png">
 <meta name="theme-color" content="#0a0a0a">
+<link rel="icon" type="image/png" href="https://i.ibb.co/tPTrSN8k/image.png">
+<link rel="shortcut icon" type="image/png" href="https://i.ibb.co/tPTrSN8k/image.png">
+<link rel="apple-touch-icon" href="https://i.ibb.co/tPTrSN8k/image.png">
 
 <script type="application/ld+json">
 {
@@ -59,10 +62,16 @@ html,body{overflow-x:hidden;width:100%;max-width:100%;scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-height:1.6;-webkit-font-smoothing:antialiased;position:relative}
 
 /* SPLASH */
-#splash{position:fixed;top:0;left:0;width:100%;height:100%;background:#000;display:flex;align-items:center;justify-content:center;z-index:999999;transition:opacity .6s}
+#splash{position:fixed;top:0;left:0;width:100%;height:100%;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999999;transition:opacity .6s}
 #splash.hide{opacity:0;pointer-events:none}
-#splash img{width:130px;border-radius:50%;animation:sp 1.5s ease infinite}
-@keyframes sp{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.05);opacity:1}}
+#splash img{width:130px;border-radius:50%;filter:blur(20px);opacity:0;transform:scale(1.2) rotate(-40deg);animation:splashLogo 1.7s cubic-bezier(.19,1,.22,1) forwards}
+#splash .splash-name{margin-top:20px;font-family:var(--font-display);font-size:15px;font-weight:600;letter-spacing:7px;color:#fff;opacity:0;transform:translateY(18px);animation:splashName 1s ease forwards;animation-delay:1s}
+@keyframes splashLogo{
+  0%{filter:blur(20px);opacity:0;transform:scale(1.2) rotate(-40deg)}
+  55%{filter:blur(3px);opacity:1;transform:scale(1.04) rotate(10deg)}
+  100%{filter:blur(0);opacity:1;transform:scale(1) rotate(0deg)}
+}
+@keyframes splashName{to{opacity:1;transform:translateY(0)}}
 
 /* HERO BG */
 .hero-bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;background-image:linear-gradient(to bottom,rgba(0,0,0,.5),rgba(0,0,0,.7) 50%,#0a0a0a),url('https://i.ibb.co/1cqzt5D/MG-1164.jpg');background-size:cover;background-position:center}
@@ -145,6 +154,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-he
 .lightbox-nav{position:absolute;top:50%;transform:translateY(-50%);font-size:18px;color:#fff;cursor:pointer;width:42px;height:42px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.1);border-radius:50%}
 .lightbox-prev{left:10px}
 .lightbox-next{right:10px}
+.lightbox.single-photo .lightbox-nav{display:none}
 
 /* ABOUT */
 .about-card{position:relative;border-radius:var(--radius-lg);overflow:hidden;min-height:360px;display:flex;flex-direction:column;justify-content:flex-end;border:1px solid var(--border)}
@@ -162,6 +172,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-he
 .review-name{font-weight:600;font-size:12px}
 .review-stars{color:var(--accent);font-size:10px;letter-spacing:1px;margin-top:1px}
 .review-body{font-size:12px;line-height:1.65;color:var(--text-soft);font-style:italic}
+.review-photos{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.review-photo{width:64px;height:64px;border-radius:10px;object-fit:cover;cursor:pointer;border:1px solid var(--border);transition:.2s}
+.review-photo:active{transform:scale(.92);border-color:var(--accent)}
 
 /* BTN OUTLINE */
 .btn-outline{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;width:100%;border-radius:60px;background:transparent;border:1px solid var(--border);color:var(--text);font-weight:600;font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:.2s;font-family:var(--font-body);text-decoration:none;margin-bottom:10px}
@@ -296,6 +309,24 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-he
   background: rgba(37,211,102,0.06); border: 1px solid rgba(37,211,102,0.1);
 }
 .cal-hint-wa i { color: var(--wa-green); font-size: 14px; }
+
+/* COOKIE CONSENT */
+.cookie-banner{position:fixed;left:12px;right:12px;bottom:12px;z-index:10010;background:rgba(14,14,16,.97);backdrop-filter:blur(24px);border:1px solid var(--border);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:14px;box-shadow:0 15px 60px rgba(0,0,0,.55);transform:translateY(160%);transition:transform .55s cubic-bezier(.4,0,.2,1);max-width:440px;margin:0 auto}
+.cookie-banner.visible{transform:translateY(0)}
+.cookie-icon{width:34px;height:34px;border-radius:10px;background:var(--accent-glow);border:1px solid rgba(201,169,110,.25);display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:14px;margin-bottom:2px}
+.cookie-text{font-size:12px;line-height:1.65;color:var(--text-soft)}
+.cookie-text a{color:var(--accent);text-decoration:underline;cursor:pointer}
+.cookie-actions{display:flex;gap:10px}
+.cookie-btn{flex:1;padding:13px;border-radius:30px;font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;border:1px solid var(--border);transition:.2s;font-family:var(--font-body)}
+.cookie-decline{background:transparent;color:var(--text-soft)}
+.cookie-decline:active{background:rgba(255,255,255,.06)}
+.cookie-accept{background:linear-gradient(135deg,var(--accent),#b8923f);color:#000;border:none}
+.cookie-accept:active{transform:scale(.97)}
+@media(min-width:768px){
+  .cookie-banner{left:auto;right:24px;bottom:24px;max-width:380px}
+  .cookie-decline:hover{background:rgba(255,255,255,.08);border-color:var(--border-hover)}
+  .cookie-accept:hover{box-shadow:0 6px 30px rgba(201,169,110,.35)}
+}
 
 /* STICKY WA */
 .sticky-wa{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:9999;width:calc(100% - 36px);max-width:380px;display:flex;align-items:center;justify-content:center;gap:10px;padding:15px 20px;border-radius:60px;background:var(--wa-green);color:#fff;font-weight:800;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;box-shadow:0 4px 30px rgba(37,211,102,.35);transition:transform .2s,opacity .3s;font-family:var(--font-body);opacity:0;pointer-events:none}
@@ -442,6 +473,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-he
   .review-avatar{width:34px;height:34px;font-size:12px}
   .review-name{font-size:14px}
   .review-body{font-size:13px;line-height:1.7}
+  .review-photo{width:76px;height:76px}
+  .review-photo:hover{border-color:var(--accent);transform:translateY(-2px)}
   .about-card-content{padding:36px 30px}
   .about-card-content h2{font-size:26px;letter-spacing:6px}
   .about-card-content p{font-size:14px;line-height:1.8}
@@ -503,7 +536,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-he
 
 <body>
 
-<div id="splash"><img src="https://i.ibb.co/tPTrSN8k/image.png" alt="Inkjection"></div>
+<div id="splash"><img src="https://i.ibb.co/tPTrSN8k/image.png" alt="Inkjection"><div class="splash-name">INKJECTION</div></div>
 <div class="hero-bg"></div>
 
 <!-- NAV -->
@@ -721,6 +754,14 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-he
     <div class="review-header"><div class="review-avatar">T</div><div><div class="review-name">Taner G&uuml;ne&scedil;</div><div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div></div></div>
     <p class="review-body">"Very clean and hygienic tattoo artist, very kind and does exactly what you want, I definitely recommend you to go!"</p>
   </div>
+  <div class="review-card">
+    <div class="review-header"><div class="review-avatar">E</div><div><div class="review-name">Emma Van uytven</div><div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div></div></div>
+    <p class="review-body">"Super fijne ervaring! Buiten gegaan met fantastisch mooie tattoo ter ere van mijn overleden grootvader en een heel fijne babbel! 1000x Dank! Een heel eerlijke prijs!"</p>
+    <div class="review-photos">
+      <img class="review-photo" loading="lazy" alt="Foto review Emma Van uytven" src="https://lh3.googleusercontent.com/grass-cs/ACvplmPiPUAjd7Bahbj0uWjGr-5BlhIqQoLmptuBUwloWpRWJ9TkuX1wC8jRg9F0GEkysC0BAMaSu2ghjCf41Y1uiOwW-uwA0IKqJDhnzbRpgfUcJgDBtCatUCoY-p0AGvF870EgzVd-X5eb4cAu=s3072-w3072-h1460-rw" onclick="openLightbox(0,['https://lh3.googleusercontent.com/grass-cs/ACvplmPiPUAjd7Bahbj0uWjGr-5BlhIqQoLmptuBUwloWpRWJ9TkuX1wC8jRg9F0GEkysC0BAMaSu2ghjCf41Y1uiOwW-uwA0IKqJDhnzbRpgfUcJgDBtCatUCoY-p0AGvF870EgzVd-X5eb4cAu=s3072-w3072-h1460-rw','https://lh3.googleusercontent.com/grass-cs/ACvplmMrC0GO9OrZa8OnXg8JfMiFXtEAQzVGPa8WovHu0hHfP05FM2Q4NWGg2N_uoTUB0PIJ5MzmweY41JJzgmSyZDSFleJV2ADeS8UIwNF4Mfh43Wq92wg_7i9PiMSNC-WjR7D_luEHNIyqMZxf=s3072-w3072-h1460-rw'])">
+      <img class="review-photo" loading="lazy" alt="Foto review Emma Van uytven" src="https://lh3.googleusercontent.com/grass-cs/ACvplmMrC0GO9OrZa8OnXg8JfMiFXtEAQzVGPa8WovHu0hHfP05FM2Q4NWGg2N_uoTUB0PIJ5MzmweY41JJzgmSyZDSFleJV2ADeS8UIwNF4Mfh43Wq92wg_7i9PiMSNC-WjR7D_luEHNIyqMZxf=s3072-w3072-h1460-rw" onclick="openLightbox(1,['https://lh3.googleusercontent.com/grass-cs/ACvplmPiPUAjd7Bahbj0uWjGr-5BlhIqQoLmptuBUwloWpRWJ9TkuX1wC8jRg9F0GEkysC0BAMaSu2ghjCf41Y1uiOwW-uwA0IKqJDhnzbRpgfUcJgDBtCatUCoY-p0AGvF870EgzVd-X5eb4cAu=s3072-w3072-h1460-rw','https://lh3.googleusercontent.com/grass-cs/ACvplmMrC0GO9OrZa8OnXg8JfMiFXtEAQzVGPa8WovHu0hHfP05FM2Q4NWGg2N_uoTUB0PIJ5MzmweY41JJzgmSyZDSFleJV2ADeS8UIwNF4Mfh43Wq92wg_7i9PiMSNC-WjR7D_luEHNIyqMZxf=s3072-w3072-h1460-rw'])">
+    </div>
+  </div>
 </div>
 ```
 
@@ -728,6 +769,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-he
 
   <div class="footer">
     <p>&copy; 2026 Inkjection Tattoo &bull; Zandhoven, Antwerpen</p>
+    <p style="margin-top:10px"><a onclick="openPrivacyFromBanner()" id="footerPrivacyLink" style="color:var(--text-muted);text-decoration:underline;font-size:11px;cursor:pointer">Privacybeleid</a></p>
     <p style="margin-top:8px;font-size:10px;color:rgba(255,255,255,0.25);letter-spacing:1px">Made by <a href="https://digital-ink.be" target="_blank" style="color:rgba(255,255,255,0.4);text-decoration:none;font-weight:600;transition:color .2s">DigitalInk</a></p>
   </div>
 </div>
@@ -738,6 +780,17 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-he
   <i class="fab fa-whatsapp"></i>
   <span id="stickyWaLabel">STUUR EEN BERICHT</span>
 </a>
+
+<!-- COOKIE CONSENT -->
+
+<div class="cookie-banner" id="cookieBanner">
+  <div class="cookie-icon"><i class="fas fa-cookie-bite"></i></div>
+  <div class="cookie-text" id="cookieText">We gebruiken cookies om je bezoek aan onze site te verbeteren. Lees ons <a onclick="openPrivacyFromBanner()" id="cookieLink">privacybeleid</a>.</div>
+  <div class="cookie-actions">
+    <button class="cookie-btn cookie-decline" onclick="setCookieConsent(false)" id="cookieDeclineBtn">WEIGEREN</button>
+    <button class="cookie-btn cookie-accept" onclick="setCookieConsent(true)" id="cookieAcceptBtn">ACCEPTEREN</button>
+  </div>
+</div>
 
 <!-- LIGHTBOX -->
 
@@ -846,6 +899,16 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-he
   </div>
 </div>
 
+<!-- PRIVACY MODAL -->
+
+<div id="privacyModal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal" onclick="closeModal('privacyModal')">&times;</span>
+    <h3 class="modal-title" id="privacyTitle">PRIVACYBELEID</h3>
+    <div id="privacyBody" style="font-size:12.5px;line-height:1.85;color:var(--text-soft)"></div>
+  </div>
+</div>
+
 <!-- DESIGN POPUP -->
 
 <div class="design-popup" id="designPopup">
@@ -870,8 +933,8 @@ var portfolioUrls=[],lightboxIndex=0,designsSnap=null;
 
 // INIT
 window.onload=function(){
-  setTimeout(function(){var s=document.getElementById('splash');s.classList.add('hide');setTimeout(function(){s.style.display='none'},600)},1600);
-  fetchData();loadDesigns();updateLang();
+  setTimeout(function(){var s=document.getElementById('splash');s.classList.add('hide');setTimeout(function(){s.style.display='none'},600)},2300);
+  fetchData();loadDesigns();updateLang();initCookieConsent();
 
   // =============================================
   // AUTO-OPEN CALENDAR IF URL HAS #boek
@@ -880,7 +943,7 @@ window.onload=function(){
   if(window.location.hash === '#boek') {
     setTimeout(function() {
       openModalSync('selectionModal');
-    }, 1800); // waits for splash screen to finish
+    }, 2500); // waits for splash screen to finish
   }
 };
 
@@ -947,6 +1010,23 @@ function updateLang(){
   document.getElementById("legendToday").textContent=n?"Vandaag":"Today";
   document.getElementById("calHintText").innerHTML=n?"Kies een dag &rarr; WhatsApp opent automatisch":"Pick a day &rarr; WhatsApp opens automatically";
   document.getElementById("calTopLabel").textContent=n?"KIES JE DATUM":"PICK YOUR DATE";
+  document.getElementById("cookieText").innerHTML=n?'We gebruiken cookies om je bezoek aan onze site te verbeteren. Lees ons <a onclick="openPrivacyFromBanner()" id="cookieLink">privacybeleid</a>.':'We use cookies to improve your visit to our site. Read our <a onclick="openPrivacyFromBanner()" id="cookieLink">privacy policy</a>.';
+  document.getElementById("cookieDeclineBtn").textContent=n?"WEIGEREN":"DECLINE";
+  document.getElementById("cookieAcceptBtn").textContent=n?"ACCEPTEREN":"ACCEPT";
+  document.getElementById("privacyTitle").textContent=n?"PRIVACYBELEID":"PRIVACY POLICY";
+  document.getElementById("footerPrivacyLink").textContent=n?"Privacybeleid":"Privacy Policy";
+  document.getElementById("privacyBody").innerHTML=n?
+    '<p style="margin-bottom:12px"><b>Wie zijn wij?</b><br>Inkjection Tattoo, Torenstraat 32, 2243 Zandhoven &mdash; <a href="mailto:Inkjection.tattoo95@gmail.com" style="color:var(--accent)">Inkjection.tattoo95@gmail.com</a></p>'+
+    '<p style="margin-bottom:12px"><b>Welke gegevens verzamelen we?</b><br>Wanneer je een afspraak aanvraagt via WhatsApp of het formulier invult (bv. cadeaubon), delen we enkel de gegevens die jij zelf ingeeft (naam, datum, formaat). We slaan geen betaalgegevens op.</p>'+
+    '<p style="margin-bottom:12px"><b>Cookies &amp; techniek</b><br>Deze site gebruikt functionele opslag (o.a. je taalkeuze en cookievoorkeur) en Firebase (Google) om onze portfolio, ontwerpen en beschikbare data te tonen. Er worden geen advertentiecookies of trackers van derden gebruikt.</p>'+
+    '<p style="margin-bottom:12px"><b>Google Maps</b><br>In het contactmenu tonen we een ingesloten Google Maps kaart. Google kan hierbij technische gegevens verzamelen volgens hun eigen privacybeleid.</p>'+
+    '<p><b>Jouw rechten</b><br>Je kan op elk moment inzage, aanpassing of verwijdering van je gegevens vragen via bovenstaand e-mailadres.</p>'
+    :
+    '<p style="margin-bottom:12px"><b>Who we are</b><br>Inkjection Tattoo, Torenstraat 32, 2243 Zandhoven, Belgium &mdash; <a href="mailto:Inkjection.tattoo95@gmail.com" style="color:var(--accent)">Inkjection.tattoo95@gmail.com</a></p>'+
+    '<p style="margin-bottom:12px"><b>What we collect</b><br>When you request an appointment via WhatsApp or fill in a form (e.g. gift voucher), we only share the details you enter yourself (name, date, size). We do not store payment details.</p>'+
+    '<p style="margin-bottom:12px"><b>Cookies &amp; technology</b><br>This site uses functional storage (e.g. your language and cookie choice) and Firebase (Google) to display our portfolio, designs and availability. No advertising cookies or third-party trackers are used.</p>'+
+    '<p style="margin-bottom:12px"><b>Google Maps</b><br>Our contact menu shows an embedded Google Maps location. Google may collect technical data according to its own privacy policy.</p>'+
+    '<p><b>Your rights</b><br>You can request access to, correction of, or deletion of your data at any time via the email address above.</p>';
   renderCalendar();
 }
 
@@ -976,10 +1056,11 @@ function slideLeft(){var c=document.getElementById('sliderContainer'),w=c.queryS
 function slideRight(){var c=document.getElementById('sliderContainer'),w=c.querySelector('.slider-item');if(w)c.scrollBy({left:w.offsetWidth+10,behavior:'smooth'})}
 
 // LIGHTBOX
-function openLightbox(i){lightboxIndex=i;document.getElementById('lightboxImg').src=portfolioUrls[i];document.getElementById('lightbox').classList.add('active')}
+var activeGallery=portfolioUrls;
+function openLightbox(i,gallery){activeGallery=gallery||portfolioUrls;lightboxIndex=i;document.getElementById('lightboxImg').src=activeGallery[i];document.getElementById('lightbox').classList.toggle('single-photo',activeGallery.length<2);document.getElementById('lightbox').classList.add('active')}
 function closeLightbox(){document.getElementById('lightbox').classList.remove('active')}
-function lightboxPrev(){lightboxIndex=(lightboxIndex-1+portfolioUrls.length)%portfolioUrls.length;document.getElementById('lightboxImg').src=portfolioUrls[lightboxIndex]}
-function lightboxNext(){lightboxIndex=(lightboxIndex+1)%portfolioUrls.length;document.getElementById('lightboxImg').src=portfolioUrls[lightboxIndex]}
+function lightboxPrev(){lightboxIndex=(lightboxIndex-1+activeGallery.length)%activeGallery.length;document.getElementById('lightboxImg').src=activeGallery[lightboxIndex]}
+function lightboxNext(){lightboxIndex=(lightboxIndex+1)%activeGallery.length;document.getElementById('lightboxImg').src=activeGallery[lightboxIndex]}
 
 // MY WORK
 function openWorkModal(){
@@ -1131,6 +1212,22 @@ function sendGiftWA(){
   window.open('https://wa.me/'+MY_WA+'?text='+encodeURIComponent('Cadeaubon Order:\nAmount: '+selectedGiftAmt+'\u20AC\nFrom: '+f+'\nTo: '+t));
 }
 function openGiftModal(){document.getElementById('giftModal').style.display='block'}
+
+// COOKIE CONSENT
+function initCookieConsent(){
+  try{
+    if(localStorage.getItem('inkjection_cookie_consent')){return}
+  }catch(e){}
+  setTimeout(function(){
+    var b=document.getElementById('cookieBanner');
+    if(b)b.classList.add('visible');
+  },2400);
+}
+function setCookieConsent(accepted){
+  try{localStorage.setItem('inkjection_cookie_consent',accepted?'accepted':'declined')}catch(e){}
+  document.getElementById('cookieBanner').classList.remove('visible');
+}
+function openPrivacyFromBanner(){document.getElementById('privacyModal').style.display='block'}
 
 // MODAL UTILS
 function closeModal(id){document.getElementById(id).style.display="none"}
