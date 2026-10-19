@@ -1471,14 +1471,14 @@ var BK_TXT={
       noTime:'<i class="fas fa-circle-info"></i>Voor deze dag stelt Talitha een tijdstip voor wanneer ze je aanvraag bevestigt.',
       consent:'Ik ga akkoord dat mijn gegevens bewaard worden om mijn afspraak te regelen. <a onclick="openPrivacyFromBanner()">Privacybeleid</a>',
       send:'VERSTUUR AANVRAAG',sending:'BEZIG...',alt:'Liever via WhatsApp?',
-      eTime:'Kies een tijdstip.',eName:'Vul je naam in.',ePhone:'Vul een geldig telefoonnummer in.',eEmail:'Vul een geldig e-mailadres in.',photo:'FOTO\'S (OPTIONEEL, MAX 2)',addPhoto:'FOTO',ePhoto:'Deze foto kon niet geladen worden.',eConsent:'Vink het akkoord aan om verder te gaan.',
+      eTime:'Kies een tijdstip of "Geen voorkeur".',anyTime:'Geen voorkeur / ander tijdstip',eName:'Vul je naam in.',ePhone:'Vul een geldig telefoonnummer in.',eEmail:'Vul een geldig e-mailadres in.',photo:'FOTO\'S (OPTIONEEL, MAX 2)',addPhoto:'FOTO',ePhoto:'Deze foto kon niet geladen worden.',eConsent:'Vink het akkoord aan om verder te gaan.',
       eTaken:'Dit tijdstip is net geboekt. Kies een ander tijdstip.',eLimit:'Je hebt vandaag al meerdere aanvragen verstuurd. Stuur ons een bericht via WhatsApp.',eGen:'Er ging iets mis. Probeer opnieuw of stuur een WhatsApp.',
       doneT:'BEDANKT!',done:'Je aanvraag is verstuurd. Talitha bekijkt ze zo snel mogelijk en bevestigt je afspraak via WhatsApp of telefoon.<br><br>Pas na die bevestiging is je afspraak definitief.',close:'SLUITEN'},
   en:{title:'REQUEST APPOINTMENT',time:'PICK A TIME',you:'YOUR DETAILS',name:'Name *',phone:'Phone / WhatsApp *',email:'E-mail *',place:'Placement on the body (e.g. forearm)',desc:'Describe your idea (style, size, references...)',
       noTime:'<i class="fas fa-circle-info"></i>For this day Talitha will propose a time when she confirms your request.',
       consent:'I agree that my details are stored to arrange my appointment. <a onclick="openPrivacyFromBanner()">Privacy policy</a>',
       send:'SEND REQUEST',sending:'SENDING...',alt:'Prefer WhatsApp?',
-      eTime:'Please pick a time.',eName:'Please enter your name.',ePhone:'Please enter a valid phone number.',eEmail:'Please enter a valid e-mail address.',photo:'PHOTOS (OPTIONAL, MAX 2)',addPhoto:'PHOTO',ePhoto:'This photo could not be loaded.',eConsent:'Please tick the agreement to continue.',
+      eTime:'Please pick a time or "No preference".',anyTime:'No preference / other time',eName:'Please enter your name.',ePhone:'Please enter a valid phone number.',eEmail:'Please enter a valid e-mail address.',photo:'PHOTOS (OPTIONAL, MAX 2)',addPhoto:'PHOTO',ePhoto:'This photo could not be loaded.',eConsent:'Please tick the agreement to continue.',
       eTaken:'This time was just booked. Please pick another time.',eLimit:'You already sent several requests today. Please message us on WhatsApp.',eGen:'Something went wrong. Please try again or send a WhatsApp.',
       doneT:'THANK YOU!',done:'Your request has been sent. Talitha will check it as soon as possible and confirm your appointment via WhatsApp or phone.<br><br>Your appointment is final only after that confirmation.',close:'CLOSE'}
 };
@@ -1516,6 +1516,12 @@ function renderBookingTimes(){
     b.onclick=function(){bookingTime=t;renderBookingTimes()};
     grid.appendChild(b);
   });
+  if(all.length){
+    var n=document.createElement('button');n.type='button';n.className='time-opt'+(bookingTime==='any'?' active':'');
+    n.style.gridColumn='1 / -1';n.style.fontSize='13px';n.textContent=bkT().anyTime;
+    n.onclick=function(){bookingTime='any';renderBookingTimes()};
+    grid.appendChild(n);
+  }
 }
 function openBooking(dateId){
   closeModal('calModal');
@@ -1640,6 +1646,7 @@ async function submitBooking(){
   var v=function(id){return document.getElementById(id).value.trim()};
   var name=v('bkName'),phone=v('bkPhone'),email=v('bkEmail'),place=v('bkPlacement'),desc=v('bkDesc');
   var hasSlots=(daySlots[bookingDate]||[]).length>0;
+  var claim=hasSlots&&bookingTime&&bookingTime!=='any';
   err.textContent='';
   if(hasSlots&&!bookingTime){err.textContent=t.eTime;return}
   if(name.length<2){err.textContent=t.eName;return}
@@ -1652,16 +1659,16 @@ async function submitBooking(){
   btn.disabled=true;btn.textContent=t.sending;
   try{
     var ref=db.collection('appointments').doc();
-    var data={date:bookingDate,time:hasSlots?bookingTime:'',size:userSizeChoice,name:name,phone:phone,lang:lang,consent:true,status:'pending',createdAt:firebase.firestore.FieldValue.serverTimestamp()};
+    var data={date:bookingDate,time:claim?bookingTime:'',size:userSizeChoice,name:name,phone:phone,lang:lang,consent:true,status:'pending',createdAt:firebase.firestore.FieldValue.serverTimestamp()};
     data.email=email;if(place)data.placement=place;if(desc)data.description=desc;
     if(bookingPhotos.length)data.hasPhotos=true;
     var batch=db.batch();
     batch.set(ref,data);
     if(bookingPhotos.length)batch.set(db.collection('appointmentPhotos').doc(ref.id),{photos:bookingPhotos.slice(0,2)});
-    if(hasSlots)batch.set(db.collection('bookedSlots').doc(bookingDate+'_'+bookingTime),{date:bookingDate,time:bookingTime,appt:ref.id});
+    if(claim)batch.set(db.collection('bookedSlots').doc(bookingDate+'_'+bookingTime),{date:bookingDate,time:bookingTime,appt:ref.id});
     await batch.commit();
     recent.push(Date.now());try{localStorage.setItem('inkjection_bk',JSON.stringify(recent))}catch(e){}
-    if(hasSlots){(takenSlots[bookingDate]=takenSlots[bookingDate]||{})[bookingTime]=true}
+    if(claim){(takenSlots[bookingDate]=takenSlots[bookingDate]||{})[bookingTime]=true}
     ['bkDesc','bkPlacement'].forEach(function(id){document.getElementById(id).value=''});
     bookingPhotos=[];renderBookingPhotos();
     document.getElementById('bkFormView').style.display='none';
@@ -1669,7 +1676,7 @@ async function submitBooking(){
     renderCalendar();
   }catch(e){
     console.warn('booking failed',e);
-    if(hasSlots&&e&&e.code==='permission-denied'){await fetchSlots();bookingTime='';renderBookingTimes();renderCalendar();err.textContent=t.eTaken}
+    if(claim&&e&&e.code==='permission-denied'){await fetchSlots();bookingTime='';renderBookingTimes();renderCalendar();err.textContent=t.eTaken}
     else err.textContent=t.eGen;
   }
   btn.disabled=false;btn.textContent=t.send;
