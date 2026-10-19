@@ -315,6 +315,12 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-he
 .cal-hint-wa.book { background: var(--accent-glow); border-color: var(--border-hover); }
 .cal-hint-wa.book i { color: var(--accent); }
 
+/* SITE CONTENT (managed from admin) */
+body.no-hw .hw-lockup,body.no-hw .hw-dangle-spider,body.no-hw .hw-trickortreat,body.no-hw .hw-mascot,body.no-hw .hw-pumpkincat,body.no-hw .hw-footer-ghost,body.no-hw .hw-label-icon,body.no-hw .hw-corner-icon{display:none!important}
+.site-announce{display:none;margin:0 auto 18px;max-width:440px;padding:10px 16px;border-radius:14px;background:var(--accent-glow);border:1px solid var(--border-hover);font-size:12.5px;line-height:1.55;color:var(--text);text-align:center}
+.site-announce.show{display:block}
+.site-announce i{color:var(--accent-warm);margin-right:6px}
+
 /* BOOKING FORM */
 .bk-summary{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:-4px 0 18px}
 .bk-pill{display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border-radius:20px;background:var(--accent-glow);border:1px solid var(--border-hover);font-size:11px;letter-spacing:1.5px;color:var(--text);font-weight:700;text-transform:uppercase}
@@ -327,6 +333,12 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-he
 .bk-note{font-size:12px;line-height:1.6;color:var(--text-soft);background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:16px}
 .bk-note i{color:var(--accent);margin-right:6px}
 textarea.form-input{resize:vertical;min-height:84px;font-family:var(--font-body)}
+.bk-photos{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.bk-photo{position:relative;width:72px;height:72px;border-radius:12px;overflow:hidden;border:1px solid var(--border)}
+.bk-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.bk-photo button{position:absolute;top:3px;right:3px;width:22px;height:22px;border-radius:50%;border:none;background:rgba(0,0,0,.65);color:#fff;font-size:13px;line-height:1;cursor:pointer}
+.bk-photo-add{width:72px;height:72px;border-radius:12px;border:1px dashed var(--border-hover);background:var(--surface2);color:var(--text-muted);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:10px;letter-spacing:1px;cursor:pointer;text-align:center}
+.bk-photo-add i{font-size:18px;color:var(--accent)}
 .bk-hp{position:absolute!important;left:-9999px!important;width:1px;height:1px;opacity:0}
 .bk-consent{display:flex;gap:10px;align-items:flex-start;font-size:12px;line-height:1.55;color:var(--text-soft);margin:4px 0 16px;cursor:pointer}
 .bk-consent input{margin-top:3px;accent-color:var(--accent);width:16px;height:16px;flex-shrink:0}
@@ -699,10 +711,10 @@ textarea.form-input{resize:vertical;min-height:84px;font-family:var(--font-body)
   </div>
   <div class="menu-expand" id="menuContact">
     <div class="menu-expand-content">
-      <a href="mailto:Inkjection.tattoo95@gmail.com" class="menu-contact-row"><i class="fas fa-envelope"></i>Inkjection.tattoo95@gmail.com</a>
-      <a href="https://wa.me/32476633794" class="menu-contact-row"><i class="fab fa-whatsapp"></i>+32 476 63 37 94</a>
-      <a href="#" class="menu-contact-row"><i class="fas fa-map-marker-alt"></i>Torenstraat 32, 2243 Zandhoven</a>
-      <div class="mini-map"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2500.5833446059633!2d4.658828976935106!3d51.21175623259364!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c3f9f7a7810619%3A0xc367677d292f725a!2sTorenstraat%2032%2C%202243%20Zandhoven!5e0!3m2!1snl!2sbe!4v1709123456789!5m2!1snl!2sbe" allowfullscreen="" loading="lazy"></iframe></div>
+      <a href="mailto:Inkjection.tattoo95@gmail.com" class="menu-contact-row" id="ctEmail"><i class="fas fa-envelope"></i><span>Inkjection.tattoo95@gmail.com</span></a>
+      <a href="https://wa.me/32476633794" class="menu-contact-row" id="ctPhone"><i class="fab fa-whatsapp"></i><span>+32 476 63 37 94</span></a>
+      <a href="#" class="menu-contact-row" id="ctAddress"><i class="fas fa-map-marker-alt"></i><span>Torenstraat 32, 2243 Zandhoven</span></a>
+      <div class="mini-map"><iframe id="ctMap" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2500.5833446059633!2d4.658828976935106!3d51.21175623259364!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c3f9f7a7810619%3A0xc367677d292f725a!2sTorenstraat%2032%2C%202243%20Zandhoven!5e0!3m2!1snl!2sbe!4v1709123456789!5m2!1snl!2sbe" allowfullscreen="" loading="lazy"></iframe></div>
     </div>
   </div>
 
@@ -715,6 +727,7 @@ textarea.form-input{resize:vertical;min-height:84px;font-family:var(--font-body)
 <!-- HERO -->
 
 <section class="hero">
+  <div class="site-announce" id="siteAnnounce"></div>
   <div class="hw-lockup">
     <span class="hw-eyebrow" id="hwEyebrow">Alleen in Oktober</span>
     <span class="hw-word">Halloween</span>
@@ -742,9 +755,9 @@ textarea.form-input{resize:vertical;min-height:84px;font-family:var(--font-body)
     </a>
   </div>
   <div class="hero-socials">
-    <a href="https://www.instagram.com/inkj.ection/" target="_blank"><i class="fab fa-instagram"></i></a>
-    <a href="https://www.tiktok.com/@inkjection.tattoo" target="_blank"><i class="fab fa-tiktok"></i></a>
-    <a href="https://www.facebook.com/share/1XPw4Fx861/" target="_blank"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://www.instagram.com/inkj.ection/" target="_blank" id="soIg"><i class="fab fa-instagram"></i></a>
+    <a href="https://www.tiktok.com/@inkjection.tattoo" target="_blank" id="soTt"><i class="fab fa-tiktok"></i></a>
+    <a href="https://www.facebook.com/share/1XPw4Fx861/" target="_blank" id="soFb"><i class="fab fa-facebook-f"></i></a>
   </div>
   <div class="scroll-hint">
     <span id="scrollLabel">Portfolio</span>
@@ -835,7 +848,7 @@ textarea.form-input{resize:vertical;min-height:84px;font-family:var(--font-body)
     <p class="section-label"><i class="fas fa-spider hw-label-icon"></i>REVIEWS</p>
     <h2 class="section-title" id="reviewTitle">WAT KLANTEN ZEGGEN</h2>
 
-    <div class="reviews-masonry">
+    <div class="reviews-masonry" id="reviewsMasonry">
   <div class="review-card">
     <div class="review-header"><div class="review-avatar">K</div><div><div class="review-name">Kyra Derveaux</div><div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div></div></div>
     <p class="review-body">"Samen met mijn zus en mama een tattoo laten zetten en we hebben hier een h&eacute;&eacute;l aangename ervaring gehad! Ze nam echt de tijd om alles goed te bespreken en plaatste de tattoo met veel zorg en precisie. De omgeving was super fijn en rustig. Heel tevreden over de werking &eacute;n natuurlijk over de prachtige tattoo! Zeker een aanrader!"</p>
@@ -945,7 +958,7 @@ textarea.form-input{resize:vertical;min-height:84px;font-family:var(--font-body)
       <div style="font-size:10px;color:#555">FROM: <span class="ticket-val" id="dispFrom">...</span></div>
       <div class="scratch-circle"><span id="dispAmt">?&euro;</span></div>
     </div>
-    <div class="amt-grid">
+    <div class="amt-grid" id="giftAmtGrid">
       <button class="amt-opt" onclick="setGiftAmt(50)">50&euro;</button>
       <button class="amt-opt" onclick="setGiftAmt(100)">100&euro;</button>
       <button class="amt-opt" onclick="setGiftAmt(250)">250&euro;</button>
@@ -1033,6 +1046,9 @@ textarea.form-input{resize:vertical;min-height:84px;font-family:var(--font-body)
       <input type="email" id="bkEmail" class="form-input" maxlength="120" autocomplete="email">
       <input type="text" id="bkPlacement" class="form-input" maxlength="100">
       <textarea id="bkDesc" class="form-input" maxlength="1000"></textarea>
+      <span class="bk-label" id="bkPhotoLabel">FOTO'S (OPTIONEEL, MAX 2)</span>
+      <div class="bk-photos" id="bkPhotos"></div>
+      <input type="file" id="bkPhotoInput" accept="image/*" multiple style="display:none" onchange="addBookingPhotos(this.files);this.value=''">
       <input type="text" id="bkWebsite" class="bk-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
       <label class="bk-consent"><input type="checkbox" id="bkConsent"><span id="bkConsentText"></span></label>
       <button class="btn-form-primary" id="bkSubmit" onclick="submitBooking()">VERSTUUR AANVRAAG</button>
@@ -1118,7 +1134,8 @@ var MY_WA="32476633794",blockedDates=new Set(),lang="nl",userSizeChoice="small",
 var now=new Date();now.setHours(0,0,0,0);
 var viewMonth=now.getMonth(),viewYear=now.getFullYear();
 var portfolioUrls=[],lightboxIndex=0,designsSnap=null;
-var daySlots={},takenSlots={},bookingDate=null,bookingTime="";
+var daySlots={},takenSlots={},bookingDate=null,bookingTime="",bookingPhotos=[];
+var SITE=null;
 
 // HALLOWEEN MASCOT (dancing skeleton — decorative + doubles as a quick booking shortcut)
 try{
@@ -1166,7 +1183,7 @@ try{
 // INIT
 window.onload=function(){
   setTimeout(function(){var s=document.getElementById('splash');s.classList.add('hide');setTimeout(function(){s.style.display='none'},600)},2300);
-  fetchData();loadDesigns();updateLang();initCookieConsent();
+  fetchData();loadDesigns();updateLang();initCookieConsent();fetchSiteContent();
 
   // =============================================
   // AUTO-OPEN CALENDAR IF URL HAS #boek
@@ -1261,6 +1278,7 @@ function updateLang(){
     '<p style="margin-bottom:12px"><b>Cookies &amp; technology</b><br>This site uses functional storage (e.g. your language and cookie choice) and Firebase (Google) to display our portfolio, designs and availability. No advertising cookies or third-party trackers are used.</p>'+
     '<p style="margin-bottom:12px"><b>Google Maps</b><br>Our contact menu shows an embedded Google Maps location. Google may collect technical data according to its own privacy policy.</p>'+
     '<p><b>Your rights</b><br>You can request access to, correction of, or deletion of your data at any time via the email address above.</p>';
+  applySiteContent();
   renderCalendar();
 }
 
@@ -1394,7 +1412,7 @@ function renderCalendar(){
   daysEl.innerHTML="";
   var currentTotalMonths=now.getFullYear()*12+now.getMonth();
   var viewTotalMonths=viewYear*12+viewMonth;
-  var maxForwardMonths=(now.getDate()>=20)?3:2;
+  var maxForwardMonths=monthsAhead()+((now.getDate()>=20)?1:0);
   document.getElementById("prevBtn").style.visibility=(viewTotalMonths<=currentTotalMonths)?"hidden":"visible";
   document.getElementById("nextBtn").style.visibility=(viewTotalMonths>=currentTotalMonths+maxForwardMonths)?"hidden":"visible";
 
@@ -1408,7 +1426,7 @@ function renderCalendar(){
     var dObj=new Date(viewYear,viewMonth,d);
     var id=viewYear+'-'+(viewMonth+1).toString().padStart(2,'0')+'-'+d.toString().padStart(2,'0');
     var isPast=(dObj<now);
-    var isB=blockedDates.has(id)||(userSizeChoice==='large'&&dObj.getDay()>=1&&dObj.getDay()<=5)||((daySlots[id]||[]).length>0&&freeTimes(id).length===0);
+    var isB=blockedDates.has(id)||(userSizeChoice==='large'&&largeWeekendOnly()&&dObj.getDay()>=1&&dObj.getDay()<=5)||((daySlots[id]||[]).length>0&&freeTimes(id).length===0);
     var isToday=(id===todayStr);
 
     var el=document.createElement("div");
@@ -1429,7 +1447,7 @@ function renderCalendar(){
 function changeMonth(s){
   var ct=now.getFullYear()*12+now.getMonth();
   var nt=viewYear*12+viewMonth+s;
-  var mx=(now.getDate()>=20)?3:2;
+  var mx=monthsAhead()+((now.getDate()>=20)?1:0);
   if(nt>=ct&&nt<=ct+mx){
     viewMonth+=s;
     if(viewMonth>11){viewMonth=0;viewYear++}else if(viewMonth<0){viewMonth=11;viewYear--}
@@ -1449,18 +1467,18 @@ function goToWhatsAppWithDate(dateId){
 
 // BOOKING REQUEST (saved in Firebase, Talitha approves in the admin panel)
 var BK_TXT={
-  nl:{title:'AFSPRAAK AANVRAGEN',time:'KIES EEN TIJDSTIP',you:'JOUW GEGEVENS',name:'Naam *',phone:'Telefoon / WhatsApp *',email:'E-mail (optioneel)',place:'Plaats op het lichaam (bv. onderarm)',desc:'Beschrijf je idee (stijl, grootte, referenties...)',
+  nl:{title:'AFSPRAAK AANVRAGEN',time:'KIES EEN TIJDSTIP',you:'JOUW GEGEVENS',name:'Naam *',phone:'Telefoon / WhatsApp *',email:'E-mail *',place:'Plaats op het lichaam (bv. onderarm)',desc:'Beschrijf je idee (stijl, grootte, referenties...)',
       noTime:'<i class="fas fa-circle-info"></i>Voor deze dag stelt Talitha een tijdstip voor wanneer ze je aanvraag bevestigt.',
       consent:'Ik ga akkoord dat mijn gegevens bewaard worden om mijn afspraak te regelen. <a onclick="openPrivacyFromBanner()">Privacybeleid</a>',
       send:'VERSTUUR AANVRAAG',sending:'BEZIG...',alt:'Liever via WhatsApp?',
-      eTime:'Kies een tijdstip.',eName:'Vul je naam in.',ePhone:'Vul een geldig telefoonnummer in.',eEmail:'Dit e-mailadres lijkt niet juist.',eConsent:'Vink het akkoord aan om verder te gaan.',
+      eTime:'Kies een tijdstip.',eName:'Vul je naam in.',ePhone:'Vul een geldig telefoonnummer in.',eEmail:'Vul een geldig e-mailadres in.',photo:'FOTO\'S (OPTIONEEL, MAX 2)',addPhoto:'FOTO',ePhoto:'Deze foto kon niet geladen worden.',eConsent:'Vink het akkoord aan om verder te gaan.',
       eTaken:'Dit tijdstip is net geboekt. Kies een ander tijdstip.',eLimit:'Je hebt vandaag al meerdere aanvragen verstuurd. Stuur ons een bericht via WhatsApp.',eGen:'Er ging iets mis. Probeer opnieuw of stuur een WhatsApp.',
       doneT:'BEDANKT!',done:'Je aanvraag is verstuurd. Talitha bekijkt ze zo snel mogelijk en bevestigt je afspraak via WhatsApp of telefoon.<br><br>Pas na die bevestiging is je afspraak definitief.',close:'SLUITEN'},
-  en:{title:'REQUEST APPOINTMENT',time:'PICK A TIME',you:'YOUR DETAILS',name:'Name *',phone:'Phone / WhatsApp *',email:'E-mail (optional)',place:'Placement on the body (e.g. forearm)',desc:'Describe your idea (style, size, references...)',
+  en:{title:'REQUEST APPOINTMENT',time:'PICK A TIME',you:'YOUR DETAILS',name:'Name *',phone:'Phone / WhatsApp *',email:'E-mail *',place:'Placement on the body (e.g. forearm)',desc:'Describe your idea (style, size, references...)',
       noTime:'<i class="fas fa-circle-info"></i>For this day Talitha will propose a time when she confirms your request.',
       consent:'I agree that my details are stored to arrange my appointment. <a onclick="openPrivacyFromBanner()">Privacy policy</a>',
       send:'SEND REQUEST',sending:'SENDING...',alt:'Prefer WhatsApp?',
-      eTime:'Please pick a time.',eName:'Please enter your name.',ePhone:'Please enter a valid phone number.',eEmail:'This e-mail address looks wrong.',eConsent:'Please tick the agreement to continue.',
+      eTime:'Please pick a time.',eName:'Please enter your name.',ePhone:'Please enter a valid phone number.',eEmail:'Please enter a valid e-mail address.',photo:'PHOTOS (OPTIONAL, MAX 2)',addPhoto:'PHOTO',ePhoto:'This photo could not be loaded.',eConsent:'Please tick the agreement to continue.',
       eTaken:'This time was just booked. Please pick another time.',eLimit:'You already sent several requests today. Please message us on WhatsApp.',eGen:'Something went wrong. Please try again or send a WhatsApp.',
       doneT:'THANK YOU!',done:'Your request has been sent. Talitha will check it as soon as possible and confirm your appointment via WhatsApp or phone.<br><br>Your appointment is final only after that confirmation.',close:'CLOSE'}
 };
@@ -1483,6 +1501,8 @@ function applyBookingLang(){
   document.getElementById('bkDoneTitle').textContent=t.doneT;
   document.getElementById('bkDoneText').innerHTML=t.done;
   document.getElementById('bkDoneBtn').textContent=t.close;
+  document.getElementById('bkPhotoLabel').textContent=t.photo;
+  renderBookingPhotos();
   if(bookingDate)document.getElementById('bkDateLabel').textContent=bkDateNice(bookingDate);
 }
 function renderBookingTimes(){
@@ -1499,6 +1519,7 @@ function renderBookingTimes(){
 }
 function openBooking(dateId){
   closeModal('calModal');
+  if(SITE&&SITE.booking&&SITE.booking.enabled===false){goToWhatsAppWithDate(dateId);return}
   bookingDate=dateId;bookingTime='';
   var free=freeTimes(dateId);if(free.length===1)bookingTime=free[0];
   applyBookingLang();
@@ -1509,6 +1530,110 @@ function openBooking(dateId){
   renderBookingTimes();
   document.getElementById('bookModal').style.display='block';
 }
+// --- booking photos (resized in the browser, stored with the request) ---
+function shrinkImage(file,maxSide,quality){
+  return new Promise(function(res,rej){
+    var fr=new FileReader();
+    fr.onerror=rej;
+    fr.onload=function(){
+      var img=new Image();
+      img.onerror=rej;
+      img.onload=function(){
+        var w=img.width,h=img.height,k=Math.min(1,maxSide/Math.max(w,h));
+        var c=document.createElement('canvas');c.width=Math.round(w*k);c.height=Math.round(h*k);
+        c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+        res(c.toDataURL('image/jpeg',quality));
+      };
+      img.src=fr.result;
+    };
+    fr.readAsDataURL(file);
+  });
+}
+async function addBookingPhotos(files){
+  var err=document.getElementById('bkError');err.textContent='';
+  for(var i=0;i<files.length&&bookingPhotos.length<2;i++){
+    try{
+      var d=await shrinkImage(files[i],1280,0.72);
+      if(d.length>420000)d=await shrinkImage(files[i],1000,0.6);
+      if(d.length>420000)d=await shrinkImage(files[i],800,0.5);
+      bookingPhotos.push(d);
+    }catch(e){err.textContent=bkT().ePhoto}
+  }
+  renderBookingPhotos();
+}
+function renderBookingPhotos(){
+  var box=document.getElementById('bkPhotos');if(!box)return;box.innerHTML='';
+  bookingPhotos.forEach(function(src,i){
+    var d=document.createElement('div');d.className='bk-photo';
+    d.innerHTML='<img alt=""><button type="button" aria-label="remove">&times;</button>';
+    d.querySelector('img').src=src;
+    d.querySelector('button').onclick=function(){bookingPhotos.splice(i,1);renderBookingPhotos()};
+    box.appendChild(d);
+  });
+  if(bookingPhotos.length<2){
+    var a=document.createElement('div');a.className='bk-photo-add';
+    a.innerHTML='<i class="fas fa-camera"></i><span>'+bkT().addPhoto+'</span>';
+    a.onclick=function(){document.getElementById('bkPhotoInput').click()};
+    box.appendChild(a);
+  }
+}
+
+// --- site content managed from the admin panel (settings/site + reviews) ---
+var SITE_DEFAULTS={"contact": {"address": "Torenstraat 32, 2243 Zandhoven"}};
+function sv(path){var o=SITE;path.split('.').forEach(function(k){o=(o&&o[k]!==undefined)?o[k]:undefined});return o}
+function monthsAhead(){var m=+sv('booking.monthsAhead');return m>=1&&m<=12?m:2}
+function largeWeekendOnly(){return sv('booking.largeWeekendOnly')!==false}
+function escH(t){return String(t==null?'':t).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function richText(t){return escH(t).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/\n/g,'<br>')}
+function txt(key){var v=sv(key);if(!v)return null;var x=v[lang]||v.nl||v.en;return x?String(x):null}
+function setText(id,v){var e=document.getElementById(id);if(e&&v!=null)e.textContent=v}
+function setRich(id,v){var e=document.getElementById(id);if(e&&v!=null)e.innerHTML=richText(v)}
+function applySiteContent(){
+  if(!SITE)return;
+  setText('heroLine1',txt('heroTagline'));
+  setText('heroLine2',txt('heroSub'));
+  setText('trustText',txt('trust'));
+  setRich('aboutText',txt('about'));
+  setRich('contentAftercare',txt('aftercare'));
+  [['small',['priceSmall','sizePriceS']],['medium',['priceMed','sizePriceM']],['large',['priceLg','sizePriceL']]].forEach(function(p){
+    var v=txt('prices.'+p[0]);if(v)p[1].forEach(function(id){setText(id,v)});
+  });
+  var an=document.getElementById('siteAnnounce'),at=txt('announcement');
+  if(an){var on=sv('announcement.on')&&at;an.classList.toggle('show',!!on);if(on)an.innerHTML='<i class="fas fa-bullhorn"></i>'+richText(at)}
+  document.body.classList.toggle('no-hw',sv('theme.halloween')===false);
+  var c=sv('contact')||{};
+  if(c.whatsapp){
+    MY_WA=String(c.whatsapp).replace(/\D/g,'');
+    document.querySelectorAll('a[href^="https://wa.me/"]').forEach(function(a){a.href='https://wa.me/'+MY_WA});
+  }
+  if(c.email){var e=document.getElementById('ctEmail');if(e){e.href='mailto:'+c.email;e.querySelector('span').textContent=c.email}}
+  if(c.phoneDisplay){var ph=document.getElementById('ctPhone');if(ph)ph.querySelector('span').textContent=c.phoneDisplay}
+  if(c.address){var ad=document.getElementById('ctAddress');if(ad)ad.querySelector('span').textContent=c.address;
+    var mp=document.getElementById('ctMap');if(mp&&c.address!==SITE_DEFAULTS.contact.address){var u='https://www.google.com/maps?q='+encodeURIComponent(c.address)+'&output=embed';if(mp.src!==u)mp.src=u}}
+  [['soIg','instagram'],['soTt','tiktok'],['soFb','facebook']].forEach(function(x){var a=document.getElementById(x[0]);if(!a)return;var u=c[x[1]];if(u===''){a.style.display='none'}else if(u){a.href=u;a.style.display=''}});
+  var am=sv('gift.amounts');
+  if(am&&am.length){var g=document.getElementById('giftAmtGrid');if(g){g.innerHTML='';am.slice(0,6).forEach(function(v){var b=document.createElement('button');b.className='amt-opt';b.textContent=v+'€';b.onclick=function(){setGiftAmt(v)};g.appendChild(b)})}}
+}
+async function fetchSiteContent(){
+  if(!db)return;
+  try{var d=await db.collection('settings').doc('site').get();if(d.exists){SITE=d.data();applySiteContent();renderCalendar()}}catch(e){console.warn('site content not loaded',e)}
+  try{
+    var r=await db.collection('reviews').get();
+    if(r.size){
+      var list=[];r.forEach(function(d){list.push(d.data())});
+      list.sort(function(a,b){return (a.order||0)-(b.order||0)});
+      var box=document.getElementById('reviewsMasonry');if(!box)return;
+      box.innerHTML=list.map(function(v){
+        var stars='';for(var i=0;i<Math.max(1,Math.min(5,v.stars||5));i++)stars+='&#9733;';
+        var ph=(v.photos||[]).filter(Boolean).map(function(u){return '<img class="review-photo" loading="lazy" alt="Foto review '+escH(v.name)+'" src="'+escH(u)+'">'}).join('');
+        return '<div class="review-card"><div class="review-header"><div class="review-avatar">'+escH((v.name||'?').charAt(0).toUpperCase())+'</div><div><div class="review-name">'+escH(v.name)+'</div><div class="review-stars">'+stars+'</div></div></div>'+
+          '<p class="review-body">"'+escH(v.text)+'"</p>'+(ph?'<div class="review-photos">'+ph+'</div>':'')+'</div>';
+      }).join('');
+      box.querySelectorAll('.review-photo').forEach(function(img){img.onclick=function(){openLightbox(0,[img.src])}});
+    }
+  }catch(e){console.warn('reviews not loaded',e)}
+}
+
 function bkRecent(){try{var a=JSON.parse(localStorage.getItem('inkjection_bk')||'[]');var c=Date.now()-864e5;return a.filter(function(x){return x>c})}catch(e){return []}}
 async function submitBooking(){
   var t=bkT(),err=document.getElementById('bkError'),btn=document.getElementById('bkSubmit');
@@ -1519,7 +1644,7 @@ async function submitBooking(){
   if(hasSlots&&!bookingTime){err.textContent=t.eTime;return}
   if(name.length<2){err.textContent=t.eName;return}
   if(phone.replace(/\D/g,'').length<8){err.textContent=t.ePhone;return}
-  if(email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){err.textContent=t.eEmail;return}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){err.textContent=t.eEmail;return}
   if(!document.getElementById('bkConsent').checked){err.textContent=t.eConsent;return}
   if(v('bkWebsite')){document.getElementById('bkFormView').style.display='none';document.getElementById('bkDoneView').style.display='block';return} // bot trap
   var recent=bkRecent();if(recent.length>=3){err.textContent=t.eLimit;return}
@@ -1528,14 +1653,17 @@ async function submitBooking(){
   try{
     var ref=db.collection('appointments').doc();
     var data={date:bookingDate,time:hasSlots?bookingTime:'',size:userSizeChoice,name:name,phone:phone,lang:lang,consent:true,status:'pending',createdAt:firebase.firestore.FieldValue.serverTimestamp()};
-    if(email)data.email=email;if(place)data.placement=place;if(desc)data.description=desc;
+    data.email=email;if(place)data.placement=place;if(desc)data.description=desc;
+    if(bookingPhotos.length)data.hasPhotos=true;
     var batch=db.batch();
     batch.set(ref,data);
+    if(bookingPhotos.length)batch.set(db.collection('appointmentPhotos').doc(ref.id),{photos:bookingPhotos.slice(0,2)});
     if(hasSlots)batch.set(db.collection('bookedSlots').doc(bookingDate+'_'+bookingTime),{date:bookingDate,time:bookingTime,appt:ref.id});
     await batch.commit();
     recent.push(Date.now());try{localStorage.setItem('inkjection_bk',JSON.stringify(recent))}catch(e){}
     if(hasSlots){(takenSlots[bookingDate]=takenSlots[bookingDate]||{})[bookingTime]=true}
     ['bkDesc','bkPlacement'].forEach(function(id){document.getElementById(id).value=''});
+    bookingPhotos=[];renderBookingPhotos();
     document.getElementById('bkFormView').style.display='none';
     document.getElementById('bkDoneView').style.display='block';
     renderCalendar();
