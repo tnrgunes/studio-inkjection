@@ -312,6 +312,33 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-he
   background: rgba(37,211,102,0.06); border: 1px solid rgba(37,211,102,0.1);
 }
 .cal-hint-wa i { color: var(--wa-green); font-size: 14px; }
+.cal-hint-wa.book { background: var(--accent-glow); border-color: var(--border-hover); }
+.cal-hint-wa.book i { color: var(--accent); }
+
+/* BOOKING FORM */
+.bk-summary{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:-4px 0 18px}
+.bk-pill{display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border-radius:20px;background:var(--accent-glow);border:1px solid var(--border-hover);font-size:11px;letter-spacing:1.5px;color:var(--text);font-weight:700;text-transform:uppercase}
+.bk-pill i{color:var(--accent);font-size:11px}
+.bk-label{display:block;font-size:10px;letter-spacing:2px;color:var(--text-muted);font-weight:700;text-transform:uppercase;margin:4px 0 8px}
+.time-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
+.time-opt{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:12px 6px;border-radius:12px;font:700 15px var(--font-body);cursor:pointer;transition:.2s}
+.time-opt.active{background:var(--accent);color:#150c22;border-color:var(--accent)}
+.time-opt:disabled{opacity:.25;text-decoration:line-through;cursor:not-allowed}
+.bk-note{font-size:12px;line-height:1.6;color:var(--text-soft);background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:16px}
+.bk-note i{color:var(--accent);margin-right:6px}
+textarea.form-input{resize:vertical;min-height:84px;font-family:var(--font-body)}
+.bk-hp{position:absolute!important;left:-9999px!important;width:1px;height:1px;opacity:0}
+.bk-consent{display:flex;gap:10px;align-items:flex-start;font-size:12px;line-height:1.55;color:var(--text-soft);margin:4px 0 16px;cursor:pointer}
+.bk-consent input{margin-top:3px;accent-color:var(--accent);width:16px;height:16px;flex-shrink:0}
+.bk-consent a{color:var(--accent);text-decoration:underline;cursor:pointer}
+.bk-error{min-height:18px;font-size:12px;color:var(--danger);text-align:center;margin:10px 0 0}
+.btn-form-primary:disabled{opacity:.6;cursor:wait}
+.bk-alt{display:block;text-align:center;margin-top:14px;font-size:12px;color:var(--text-muted);text-decoration:none}
+.bk-alt i{color:var(--wa-green);margin-right:5px}
+.bk-done{text-align:center;padding:10px 4px 6px}
+.bk-done-icon{width:64px;height:64px;border-radius:50%;margin:0 auto 18px;display:flex;align-items:center;justify-content:center;background:var(--accent-glow);border:1px solid var(--border-hover);color:var(--accent);font-size:26px}
+.bk-done h3{font-family:var(--font-display);font-weight:400;font-size:24px;letter-spacing:2px;margin-bottom:10px}
+.bk-done p{font-size:13px;line-height:1.7;color:var(--text-soft);margin-bottom:20px}
 
 /* COOKIE CONSENT */
 .cookie-banner{position:fixed;left:12px;right:12px;bottom:12px;z-index:10010;background:rgba(14,14,16,.97);backdrop-filter:blur(24px);border:1px solid var(--border);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:14px;box-shadow:0 15px 60px rgba(0,0,0,.55);transform:translateY(160%);transition:transform .55s cubic-bezier(.4,0,.2,1);max-width:440px;margin:0 auto}
@@ -623,27 +650,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-he
 /* Ghost, floating above the footer copyright line */
 .hw-footer-ghost{width:52px;height:66px;margin:0 auto 8px;opacity:.9}
 .hw-footer-ghost #hwGhostAnim{width:100%;height:100%}
-
-/* "Trick or Tattoo" — tappable banner + exclusive Halloween designs modal */
-.hw-trickortreat{cursor:pointer;-webkit-user-select:none;user-select:none;transition:transform .2s,filter .3s;-webkit-touch-callout:none}
-.hw-trickortreat:active{transform:scale(.96)}
-.hw-trickortreat:focus-visible{outline:2px solid var(--accent);outline-offset:6px;border-radius:12px}
-.hw-trick-hint{display:inline-flex;align-items:center;justify-content:center;gap:8px;margin:0 auto 16px;padding:7px 16px;border-radius:30px;background:var(--accent-glow);border:1px solid var(--border-hover);color:var(--text-soft);font:700 10px/1 var(--font-body);letter-spacing:2px;text-transform:uppercase;cursor:pointer;animation:hwHintPulse 2.6s ease-in-out infinite;transition:border-color .2s}
-.hw-trick-hint i{color:var(--accent-warm);font-size:11px}
-.hw-trick-hint:active{border-color:var(--accent)}
-@keyframes hwHintPulse{0%,100%{box-shadow:0 0 0 0 rgba(164,121,255,0)}50%{box-shadow:0 0 20px 2px rgba(164,121,255,.35)}}
-#trickModal .modal-content{max-width:100%;width:95%;padding:14px}
-#trickModal .designs-grid{display:grid;grid-template-columns:1fr;gap:14px}
-@media(min-width:768px){
-  #trickModal .modal-content{max-width:760px}
-  #trickModal .designs-grid{grid-template-columns:repeat(2,1fr)}
-}
-@media(min-width:1100px){
-  #trickModal .modal-content{max-width:1000px}
-  #trickModal .designs-grid{grid-template-columns:repeat(3,1fr)}
-}
-#trickModal .design-card img{cursor:pointer}
-.hw-trick-title{font-family:var(--font-gothic);text-align:center;background:linear-gradient(135deg,#fff,var(--accent) 50%,var(--accent-warm));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:4px}
 </style>
 
 </head>
@@ -717,8 +723,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-he
     <img class="hero-logo" src="https://i.ibb.co/tPTrSN8k/image.png" alt="Inkjection Tattoo">
     <div class="hw-dangle-spider"><div id="hwSpiderAnim"></div></div>
   </div>
-  <div class="hw-trickortreat" id="hwTrickBanner" role="button" tabindex="0" onclick="openTrickModal()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openTrickModal()}" aria-label="Trick or Tattoo designs"><div id="hwTrickAnim"></div></div>
-  <div class="hw-trick-hint" id="hwTrickHint" onclick="openTrickModal()"><i class="fas fa-skull"></i><span id="hwTrickHintText">Tik voor Halloween designs</span></div>
+  <div class="hw-trickortreat"><div id="hwTrickAnim"></div></div>
   <h1>INKJECTION</h1>
   <p class="hero-tagline" id="heroLine1">Fine Line, Old School &amp; Realism</p>
   <p class="hero-sub" id="heroLine2">Zandhoven &bull; Antwerpen</p>
@@ -998,10 +1003,47 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-he
         <div class="cal-legend-item"><div class="cal-legend-dot booked"></div><span id="legendBooked">Bezet</span></div>
         <div class="cal-legend-item"><div class="cal-legend-dot today-dot"></div><span id="legendToday">Vandaag</span></div>
       </div>
-      <div class="cal-hint-wa">
-        <i class="fab fa-whatsapp"></i>
+      <div class="cal-hint-wa book">
+        <i class="fas fa-calendar-check"></i>
         <span id="calHintText">Kies een dag &rarr; WhatsApp opent automatisch</span>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- BOOKING REQUEST MODAL -->
+
+<div id="bookModal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal" onclick="closeModal('bookModal')">&times;</span>
+    <div id="bkFormView">
+      <h3 class="modal-title" id="bkTitle" style="text-align:center">AFSPRAAK AANVRAGEN</h3>
+      <div class="bk-summary">
+        <span class="bk-pill"><i class="fas fa-calendar"></i><span id="bkDateLabel"></span></span>
+        <span class="bk-pill"><i class="fas fa-ruler"></i><span id="bkSizeLabel"></span></span>
+      </div>
+      <div id="bkTimeBlock">
+        <span class="bk-label" id="bkTimeLabel">KIES EEN TIJDSTIP</span>
+        <div class="time-grid" id="bkTimes"></div>
+      </div>
+      <div class="bk-note" id="bkNoTimeNote"></div>
+      <span class="bk-label" id="bkYouLabel">JOUW GEGEVENS</span>
+      <input type="text" id="bkName" class="form-input" maxlength="80" autocomplete="name">
+      <input type="tel" id="bkPhone" class="form-input" maxlength="30" autocomplete="tel">
+      <input type="email" id="bkEmail" class="form-input" maxlength="120" autocomplete="email">
+      <input type="text" id="bkPlacement" class="form-input" maxlength="100">
+      <textarea id="bkDesc" class="form-input" maxlength="1000"></textarea>
+      <input type="text" id="bkWebsite" class="bk-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <label class="bk-consent"><input type="checkbox" id="bkConsent"><span id="bkConsentText"></span></label>
+      <button class="btn-form-primary" id="bkSubmit" onclick="submitBooking()">VERSTUUR AANVRAAG</button>
+      <div class="bk-error" id="bkError"></div>
+      <a class="bk-alt" id="bkAlt" onclick="goToWhatsAppWithDate(bookingDate)"><i class="fab fa-whatsapp"></i><span id="bkAltText">Liever via WhatsApp?</span></a>
+    </div>
+    <div id="bkDoneView" class="bk-done" style="display:none">
+      <div class="bk-done-icon"><i class="fas fa-check"></i></div>
+      <h3 id="bkDoneTitle">BEDANKT!</h3>
+      <p id="bkDoneText"></p>
+      <button class="btn-form-primary" onclick="closeModal('bookModal')" id="bkDoneBtn">SLUITEN</button>
     </div>
   </div>
 </div>
@@ -1023,17 +1065,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-he
     <h3 class="modal-title" id="designsModalTitle" style="text-align:center">ONTWERPEN</h3>
     <p id="designsModalSub" style="text-align:center;font-size:11px;color:var(--text-muted);margin-top:-12px;margin-bottom:14px">Kies een ontwerp en bestel via WhatsApp</p>
     <div class="designs-grid" id="designsGrid"></div>
-  </div>
-</div>
-
-<!-- TRICK OR TATTOO DESIGNS MODAL -->
-
-<div id="trickModal" class="modal">
-  <div class="modal-content">
-    <span class="close-modal" onclick="closeModal('trickModal')">&times;</span>
-    <h3 class="modal-title hw-trick-title" id="trickModalTitle">TRICK OR TATTOO</h3>
-    <p id="trickModalSub" style="text-align:center;font-size:11px;color:var(--text-muted);margin-top:-12px;margin-bottom:14px">Exclusieve Halloween-ontwerpen &mdash; boek via WhatsApp</p>
-    <div class="designs-grid" id="trickGrid"></div>
   </div>
 </div>
 
@@ -1087,6 +1118,7 @@ var MY_WA="32476633794",blockedDates=new Set(),lang="nl",userSizeChoice="small",
 var now=new Date();now.setHours(0,0,0,0);
 var viewMonth=now.getMonth(),viewYear=now.getFullYear();
 var portfolioUrls=[],lightboxIndex=0,designsSnap=null;
+var daySlots={},takenSlots={},bookingDate=null,bookingTime="";
 
 // HALLOWEEN MASCOT (dancing skeleton — decorative + doubles as a quick booking shortcut)
 try{
@@ -1191,15 +1223,13 @@ function updateLang(){
   document.getElementById("allDesignsLabel").textContent=n?"ALLE ONTWERPEN":"ALL DESIGNS";
   document.getElementById("designsModalTitle").textContent=n?"ONTWERPEN":"DESIGNS";
   document.getElementById("designsModalSub").textContent=n?"Kies een ontwerp en maak een afspraak via WhatsApp":"Choose a design and book via WhatsApp";
-  var th=document.getElementById("hwTrickHintText");if(th)th.textContent=n?"Tik voor Halloween designs":"Tap for Halloween designs";
-  var tt=document.getElementById("trickModalSub");if(tt)tt.textContent=n?"Exclusieve Halloween-ontwerpen \u2014 boek via WhatsApp":"Exclusive Halloween designs \u2014 book via WhatsApp";
   document.getElementById("aboutTitle").textContent=n?"OVER MIJ":"ABOUT ME";
   document.getElementById("aboutText").innerHTML=n?'Hoi, ik ben <b>Talitha</b>! Welkom bij <b>Inkjection</b>, mijn priv\u00E9studio waar <b>hygi\u00EBne</b> en <b>precisie</b> topprioriteiten zijn. Ik geloof dat een tatoeage meer is dan alleen inkt; het is <b>jouw verhaal</b>. Daarom besteed ik aandacht aan elk detail van je wensen en werk ik creatief samen om je idee\u00EBn naar een hoger niveau te tillen. Mijn doel is om je gelukkiger te maken dan je had verwacht, met een uniek kunstwerk waar je een leven lang trots op zult zijn.':'Hi, I\'m <b>Talitha</b>! Welcome to <b>Inkjection</b>, my private studio where <b>hygiene</b> and <b>precision</b> are top priorities. I believe a tattoo is more than just ink; it\'s <b>your story</b>. That\'s why I pay attention to every single detail of your wishes and collaborate creatively to elevate your ideas. My goal? To make you happier than you expected with a unique piece of art you\'ll be proud of for a lifetime.';
   document.getElementById("reviewTitle").textContent=n?"WAT KLANTEN ZEGGEN":"WHAT CLIENTS SAY";
   document.getElementById("labelBook").textContent=n?"HOE BOEKEN?":"HOW TO BOOK?";
   document.getElementById("labelAftercare").textContent=n?"NAZORG":"AFTERCARE";
   document.getElementById("menuGiftLabel").textContent=n?"CADEAUBON":"GIFT VOUCHER";
-  document.getElementById("contentBook").innerHTML=n?"<b>Stap 1:</b> Kies gewenst formaat.<br><b>Stap 2:</b> Selecteer een beschikbare datum.<br><b>Stap 3:</b> WhatsApp opent automatisch met je gekozen datum.<br><br><i>Zo simpel! We bespreken alles verder via WhatsApp.</i>":"<b>Step 1:</b> Choose preferred size.<br><b>Step 2:</b> Select an available date.<br><b>Step 3:</b> WhatsApp opens automatically with your chosen date.<br><br><i>It's that simple! We'll discuss everything via WhatsApp.</i>";
+  document.getElementById("contentBook").innerHTML=n?"<b>Stap 1:</b> Kies gewenst formaat.<br><b>Stap 2:</b> Selecteer een beschikbare datum (en tijdstip).<br><b>Stap 3:</b> Vul je gegevens in en verstuur je aanvraag.<br><b>Stap 4:</b> Talitha bevestigt je afspraak via WhatsApp of telefoon.<br><br><i>Pas na de bevestiging is je afspraak definitief.</i>":"<b>Step 1:</b> Choose preferred size.<br><b>Step 2:</b> Select an available date (and time).<br><b>Step 3:</b> Fill in your details and send your request.<br><b>Step 4:</b> Talitha confirms your appointment via WhatsApp or phone.<br><br><i>Your appointment is final only after that confirmation.</i>";
   document.getElementById("contentAftercare").innerHTML=n?"<b>Eerste 3-5 dagen:</b> Laat de folie zitten zoals geadviseerd. Was daarna voorzichtig met lauw water en neutrale zeep.<br><br><b>Hydratatie:</b> Breng 2-3x per dag een dun laagje nazorgzalf aan.<br><br><b>Niet doen:</b> Niet krabben, vermijd zwemmen, sauna en direct zonlicht voor minstens 3 weken.":"<b>First 3-5 days:</b> Keep the foil as advised. Then wash gently with lukewarm water and neutral soap.<br><br><b>Hydration:</b> Apply a thin layer of aftercare ointment 2-3x a day.<br><br><b>Don'ts:</b> No scratching, avoid swimming, saunas, and direct sunlight for at least 3 weeks.";
   document.getElementById("selectTitle").textContent=n?"KIES JE FORMAAT":"CHOOSE YOUR SIZE";
   document.getElementById("giftTitle").textContent=n?"CADEAUBON":"GIFT VOUCHER";
@@ -1211,7 +1241,8 @@ function updateLang(){
   document.getElementById("legendAvail").textContent=n?"Beschikbaar":"Available";
   document.getElementById("legendBooked").textContent=n?"Bezet":"Booked";
   document.getElementById("legendToday").textContent=n?"Vandaag":"Today";
-  document.getElementById("calHintText").innerHTML=n?"Kies een dag &rarr; WhatsApp opent automatisch":"Pick a day &rarr; WhatsApp opens automatically";
+  document.getElementById("calHintText").innerHTML=n?"Kies een dag &rarr; vraag je afspraak aan":"Pick a day &rarr; request your appointment";
+  applyBookingLang();
   document.getElementById("calTopLabel").textContent=n?"KIES JE DATUM":"PICK YOUR DATE";
   document.getElementById("cookieText").innerHTML=n?'We gebruiken cookies om je bezoek aan onze site te verbeteren. Lees ons <a onclick="openPrivacyFromBanner()" id="cookieLink">privacybeleid</a>.':'We use cookies to improve your visit to our site. Read our <a onclick="openPrivacyFromBanner()" id="cookieLink">privacy policy</a>.';
   document.getElementById("cookieDeclineBtn").textContent=n?"WEIGEREN":"DECLINE";
@@ -1220,13 +1251,13 @@ function updateLang(){
   document.getElementById("footerPrivacyLink").textContent=n?"Privacybeleid":"Privacy Policy";
   document.getElementById("privacyBody").innerHTML=n?
     '<p style="margin-bottom:12px"><b>Wie zijn wij?</b><br>Inkjection Tattoo, Torenstraat 32, 2243 Zandhoven &mdash; <a href="mailto:Inkjection.tattoo95@gmail.com" style="color:var(--accent)">Inkjection.tattoo95@gmail.com</a></p>'+
-    '<p style="margin-bottom:12px"><b>Welke gegevens verzamelen we?</b><br>Wanneer je een afspraak aanvraagt via WhatsApp of het formulier invult (bv. cadeaubon), delen we enkel de gegevens die jij zelf ingeeft (naam, datum, formaat). We slaan geen betaalgegevens op.</p>'+
+    '<p style="margin-bottom:12px"><b>Welke gegevens verzamelen we?</b><br>Wanneer je via het boekingsformulier een afspraak aanvraagt, bewaren we de gegevens die jij zelf ingeeft (naam, telefoon, optioneel e-mail, datum, formaat, plaats en beschrijving) in een beveiligde database (Firebase, Google) die enkel wij kunnen inzien. We gebruiken ze alleen om je afspraak te regelen en verwijderen ze ten laatste 12 maanden na je afspraak. Via WhatsApp of het cadeaubonformulier delen we enkel wat jij zelf doorstuurt. We slaan geen betaalgegevens op.</p>'+
     '<p style="margin-bottom:12px"><b>Cookies &amp; techniek</b><br>Deze site gebruikt functionele opslag (o.a. je taalkeuze en cookievoorkeur) en Firebase (Google) om onze portfolio, ontwerpen en beschikbare data te tonen. Er worden geen advertentiecookies of trackers van derden gebruikt.</p>'+
     '<p style="margin-bottom:12px"><b>Google Maps</b><br>In het contactmenu tonen we een ingesloten Google Maps kaart. Google kan hierbij technische gegevens verzamelen volgens hun eigen privacybeleid.</p>'+
     '<p><b>Jouw rechten</b><br>Je kan op elk moment inzage, aanpassing of verwijdering van je gegevens vragen via bovenstaand e-mailadres.</p>'
     :
     '<p style="margin-bottom:12px"><b>Who we are</b><br>Inkjection Tattoo, Torenstraat 32, 2243 Zandhoven, Belgium &mdash; <a href="mailto:Inkjection.tattoo95@gmail.com" style="color:var(--accent)">Inkjection.tattoo95@gmail.com</a></p>'+
-    '<p style="margin-bottom:12px"><b>What we collect</b><br>When you request an appointment via WhatsApp or fill in a form (e.g. gift voucher), we only share the details you enter yourself (name, date, size). We do not store payment details.</p>'+
+    '<p style="margin-bottom:12px"><b>What we collect</b><br>When you request an appointment with the booking form, we store the details you enter (name, phone, optional e-mail, date, size, placement and description) in a secured database (Firebase, Google) that only we can access. We use them only to arrange your appointment and delete them at the latest 12 months after your appointment. Via WhatsApp or the gift voucher form we only share what you send yourself. We do not store payment details.</p>'+
     '<p style="margin-bottom:12px"><b>Cookies &amp; technology</b><br>This site uses functional storage (e.g. your language and cookie choice) and Firebase (Google) to display our portfolio, designs and availability. No advertising cookies or third-party trackers are used.</p>'+
     '<p style="margin-bottom:12px"><b>Google Maps</b><br>Our contact menu shows an embedded Google Maps location. Google may collect technical data according to its own privacy policy.</p>'+
     '<p><b>Your rights</b><br>You can request access to, correction of, or deletion of your data at any time via the email address above.</p>';
@@ -1234,10 +1265,20 @@ function updateLang(){
 }
 
 // FIREBASE
+async function fetchSlots(){
+  if(!db)return;
+  try{
+    var r=await Promise.all([db.collection("slots").get(),db.collection("bookedSlots").get()]);
+    daySlots={};r[0].forEach(function(d){daySlots[d.id]=(d.data().times||[]).slice().sort()});
+    takenSlots={};r[1].forEach(function(d){var x=d.data();(takenSlots[x.date]=takenSlots[x.date]||{})[x.time]=true});
+  }catch(e){console.warn('slots not loaded',e)}
+}
+function freeTimes(ds){var t=takenSlots[ds]||{};return (daySlots[ds]||[]).filter(function(x){return !t[x]})}
 async function fetchData(){
   if(!db)return;
   var bs=await db.collection("blockedDays").get();
   blockedDates.clear();bs.forEach(function(d){blockedDates.add(d.id)});
+  await fetchSlots();
   var ps=await db.collection("photos").get();
   var all=[];ps.forEach(function(d){all.push({id:d.id,data:d.data()})});
   all.sort(function(a,b){
@@ -1329,39 +1370,6 @@ async function fetchDesigns(){
 }
 async function openDesignsModal(){await fetchDesigns();document.getElementById('designsModal').style.display='block'}
 
-// TRICK OR TATTOO (Halloween-only designs, stored in the "trickDesigns" Firestore collection)
-async function fetchTrick(){
-  var g=document.getElementById("trickGrid");
-  g.innerHTML='<div class="designs-empty" style="grid-column:1/-1">...</div>';
-  var snap=null;
-  try{
-    if(!db)throw new Error('no db');
-    snap=await db.collection("trickDesigns").orderBy("createdAt","desc").get();
-  }catch(e){
-    console.warn('trickDesigns failed to load',e);
-    g.innerHTML='<div class="designs-empty" style="grid-column:1/-1">'+(lang==="nl"?"Momenteel niet beschikbaar.":"Currently unavailable.")+'</div>';
-    return;
-  }
-  g.innerHTML="";
-  if(snap.empty){g.innerHTML='<div class="designs-empty" style="grid-column:1/-1">'+(lang==="nl"?"Binnenkort nieuwe Halloween-ontwerpen... 🎃":"New Halloween designs coming soon... 🎃")+'</div>';return}
-  snap.forEach(function(doc){
-    var d=doc.data(),sold=d.sold===true,disc=d.discountPrice&&d.discountPrice!=='';
-    var ph='',dp='';
-    if(d.price){if(disc){ph='<span class="design-old-price">€'+d.price+'</span><span class="design-discount-price">€'+d.discountPrice+'</span>';dp='€'+d.discountPrice}else{ph='<div class="design-price">€'+d.price+'</div>';dp='€'+d.price}}
-    var desc=d.description||'',wl=lang==="nl"?"AFSPRAAK VIA WHATSAPP":"BOOK APPOINTMENT",sl2=lang==="nl"?"VERKOCHT":"SOLD OUT";
-    var wm=encodeURIComponent(lang==="nl"?'Hallo! Ik wil graag een afspraak maken voor dit Halloween-ontwerp (Trick or Tattoo): '+d.url+'\nPrijs: '+dp+'\n'+desc:'Hello! I would like to book this Halloween design (Trick or Tattoo): '+d.url+'\nPrice: '+dp+'\n'+desc);
-    var card=document.createElement("div");card.className="design-card";
-    var stamp=lang==="nl"?"VERKOCHT":"SOLD";
-    var iw=sold?'<div class="design-sold-overlay"><img src="'+d.url+'" loading="lazy"><div class="design-sold-stamp">'+stamp+'</div></div>':'<img src="'+d.url+'" loading="lazy">';
-    var btn=sold?'<div style="text-align:center;padding:10px;color:var(--danger);font-weight:800;font-size:12px;letter-spacing:2px">'+sl2+'</div>':'<a href="https://wa.me/'+MY_WA+'?text='+wm+'" target="_blank" class="design-wa-btn"><i class="fab fa-whatsapp"></i> '+wl+'</a>';
-    card.innerHTML=iw+'<div class="design-card-info">'+(ph?'<div style="margin-bottom:4px">'+ph+'</div>':'')+(desc?'<div class="design-desc"></div>':'')+btn+'</div>';
-    var de=card.querySelector('.design-desc');if(de)de.textContent=desc;
-    var im=card.querySelector('img');if(im)im.onclick=function(){openDesignPopup(d)};
-    g.appendChild(card);
-  });
-}
-async function openTrickModal(){document.getElementById('trickModal').style.display='block';await fetchTrick()}
-
 // ===== PREMIUM CALENDAR =====
 function renderCalendar(){
   var daysEl=document.getElementById("calDays");
@@ -1400,7 +1408,7 @@ function renderCalendar(){
     var dObj=new Date(viewYear,viewMonth,d);
     var id=viewYear+'-'+(viewMonth+1).toString().padStart(2,'0')+'-'+d.toString().padStart(2,'0');
     var isPast=(dObj<now);
-    var isB=blockedDates.has(id)||(userSizeChoice==='large'&&dObj.getDay()>=1&&dObj.getDay()<=5);
+    var isB=blockedDates.has(id)||(userSizeChoice==='large'&&dObj.getDay()>=1&&dObj.getDay()<=5)||((daySlots[id]||[]).length>0&&freeTimes(id).length===0);
     var isToday=(id===todayStr);
 
     var el=document.createElement("div");
@@ -1412,7 +1420,7 @@ function renderCalendar(){
     el.textContent=d;
 
     if(!isB&&!isPast){
-      (function(dateId){el.onclick=function(){goToWhatsAppWithDate(dateId)}})(id);
+      (function(dateId){el.onclick=function(){openBooking(dateId)}})(id);
     }
     daysEl.appendChild(el);
   }
@@ -1437,6 +1445,106 @@ function goToWhatsAppWithDate(dateId){
     ?'Hallo! Ik wil graag informatie over een tattoo afspraak.\n\n\uD83D\uDCC5 Datum: '+dateId+'\n\uD83D\uDCCF Formaat: '+sl+'\n\nKunt u mij meer vertellen?'
     :'Hello! I would like information about a tattoo appointment.\n\n\uD83D\uDCC5 Date: '+dateId+'\n\uD83D\uDCCF Size: '+sl+'\n\nCan you tell me more?';
   window.open('https://wa.me/'+MY_WA+'?text='+encodeURIComponent(msg),'_blank');
+}
+
+// BOOKING REQUEST (saved in Firebase, Talitha approves in the admin panel)
+var BK_TXT={
+  nl:{title:'AFSPRAAK AANVRAGEN',time:'KIES EEN TIJDSTIP',you:'JOUW GEGEVENS',name:'Naam *',phone:'Telefoon / WhatsApp *',email:'E-mail (optioneel)',place:'Plaats op het lichaam (bv. onderarm)',desc:'Beschrijf je idee (stijl, grootte, referenties...)',
+      noTime:'<i class="fas fa-circle-info"></i>Voor deze dag stelt Talitha een tijdstip voor wanneer ze je aanvraag bevestigt.',
+      consent:'Ik ga akkoord dat mijn gegevens bewaard worden om mijn afspraak te regelen. <a onclick="openPrivacyFromBanner()">Privacybeleid</a>',
+      send:'VERSTUUR AANVRAAG',sending:'BEZIG...',alt:'Liever via WhatsApp?',
+      eTime:'Kies een tijdstip.',eName:'Vul je naam in.',ePhone:'Vul een geldig telefoonnummer in.',eEmail:'Dit e-mailadres lijkt niet juist.',eConsent:'Vink het akkoord aan om verder te gaan.',
+      eTaken:'Dit tijdstip is net geboekt. Kies een ander tijdstip.',eLimit:'Je hebt vandaag al meerdere aanvragen verstuurd. Stuur ons een bericht via WhatsApp.',eGen:'Er ging iets mis. Probeer opnieuw of stuur een WhatsApp.',
+      doneT:'BEDANKT!',done:'Je aanvraag is verstuurd. Talitha bekijkt ze zo snel mogelijk en bevestigt je afspraak via WhatsApp of telefoon.<br><br>Pas na die bevestiging is je afspraak definitief.',close:'SLUITEN'},
+  en:{title:'REQUEST APPOINTMENT',time:'PICK A TIME',you:'YOUR DETAILS',name:'Name *',phone:'Phone / WhatsApp *',email:'E-mail (optional)',place:'Placement on the body (e.g. forearm)',desc:'Describe your idea (style, size, references...)',
+      noTime:'<i class="fas fa-circle-info"></i>For this day Talitha will propose a time when she confirms your request.',
+      consent:'I agree that my details are stored to arrange my appointment. <a onclick="openPrivacyFromBanner()">Privacy policy</a>',
+      send:'SEND REQUEST',sending:'SENDING...',alt:'Prefer WhatsApp?',
+      eTime:'Please pick a time.',eName:'Please enter your name.',ePhone:'Please enter a valid phone number.',eEmail:'This e-mail address looks wrong.',eConsent:'Please tick the agreement to continue.',
+      eTaken:'This time was just booked. Please pick another time.',eLimit:'You already sent several requests today. Please message us on WhatsApp.',eGen:'Something went wrong. Please try again or send a WhatsApp.',
+      doneT:'THANK YOU!',done:'Your request has been sent. Talitha will check it as soon as possible and confirm your appointment via WhatsApp or phone.<br><br>Your appointment is final only after that confirmation.',close:'CLOSE'}
+};
+function bkT(){return BK_TXT[lang]||BK_TXT.nl}
+function bkDateNice(ds){var p=ds.split('-');var d=new Date(+p[0],+p[1]-1,+p[2]);try{return d.toLocaleDateString(lang==='nl'?'nl-BE':'en-GB',{weekday:'short',day:'numeric',month:'long'})}catch(e){return p[2]+'/'+p[1]+'/'+p[0]}}
+function applyBookingLang(){
+  var t=bkT();
+  document.getElementById('bkTitle').textContent=t.title;
+  document.getElementById('bkTimeLabel').textContent=t.time;
+  document.getElementById('bkYouLabel').textContent=t.you;
+  document.getElementById('bkName').placeholder=t.name;
+  document.getElementById('bkPhone').placeholder=t.phone;
+  document.getElementById('bkEmail').placeholder=t.email;
+  document.getElementById('bkPlacement').placeholder=t.place;
+  document.getElementById('bkDesc').placeholder=t.desc;
+  document.getElementById('bkNoTimeNote').innerHTML=t.noTime;
+  document.getElementById('bkConsentText').innerHTML=t.consent;
+  document.getElementById('bkSubmit').textContent=t.send;
+  document.getElementById('bkAltText').textContent=t.alt;
+  document.getElementById('bkDoneTitle').textContent=t.doneT;
+  document.getElementById('bkDoneText').innerHTML=t.done;
+  document.getElementById('bkDoneBtn').textContent=t.close;
+  if(bookingDate)document.getElementById('bkDateLabel').textContent=bkDateNice(bookingDate);
+}
+function renderBookingTimes(){
+  var all=daySlots[bookingDate]||[],taken=takenSlots[bookingDate]||{};
+  var grid=document.getElementById('bkTimes');grid.innerHTML='';
+  document.getElementById('bkTimeBlock').style.display=all.length?'block':'none';
+  document.getElementById('bkNoTimeNote').style.display=all.length?'none':'block';
+  all.forEach(function(t){
+    var b=document.createElement('button');b.type='button';b.className='time-opt'+(t===bookingTime?' active':'');b.textContent=t;
+    if(taken[t])b.disabled=true;
+    b.onclick=function(){bookingTime=t;renderBookingTimes()};
+    grid.appendChild(b);
+  });
+}
+function openBooking(dateId){
+  closeModal('calModal');
+  bookingDate=dateId;bookingTime='';
+  var free=freeTimes(dateId);if(free.length===1)bookingTime=free[0];
+  applyBookingLang();
+  document.getElementById('bkSizeLabel').textContent=userSizeChoice==='small'?'Small 0-8cm':userSizeChoice==='medium'?'Medium 8-15cm':'Large 15+cm';
+  document.getElementById('bkError').textContent='';
+  document.getElementById('bkFormView').style.display='block';
+  document.getElementById('bkDoneView').style.display='none';
+  renderBookingTimes();
+  document.getElementById('bookModal').style.display='block';
+}
+function bkRecent(){try{var a=JSON.parse(localStorage.getItem('inkjection_bk')||'[]');var c=Date.now()-864e5;return a.filter(function(x){return x>c})}catch(e){return []}}
+async function submitBooking(){
+  var t=bkT(),err=document.getElementById('bkError'),btn=document.getElementById('bkSubmit');
+  var v=function(id){return document.getElementById(id).value.trim()};
+  var name=v('bkName'),phone=v('bkPhone'),email=v('bkEmail'),place=v('bkPlacement'),desc=v('bkDesc');
+  var hasSlots=(daySlots[bookingDate]||[]).length>0;
+  err.textContent='';
+  if(hasSlots&&!bookingTime){err.textContent=t.eTime;return}
+  if(name.length<2){err.textContent=t.eName;return}
+  if(phone.replace(/\D/g,'').length<8){err.textContent=t.ePhone;return}
+  if(email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){err.textContent=t.eEmail;return}
+  if(!document.getElementById('bkConsent').checked){err.textContent=t.eConsent;return}
+  if(v('bkWebsite')){document.getElementById('bkFormView').style.display='none';document.getElementById('bkDoneView').style.display='block';return} // bot trap
+  var recent=bkRecent();if(recent.length>=3){err.textContent=t.eLimit;return}
+  if(!db){err.textContent=t.eGen;return}
+  btn.disabled=true;btn.textContent=t.sending;
+  try{
+    var ref=db.collection('appointments').doc();
+    var data={date:bookingDate,time:hasSlots?bookingTime:'',size:userSizeChoice,name:name,phone:phone,lang:lang,consent:true,status:'pending',createdAt:firebase.firestore.FieldValue.serverTimestamp()};
+    if(email)data.email=email;if(place)data.placement=place;if(desc)data.description=desc;
+    var batch=db.batch();
+    batch.set(ref,data);
+    if(hasSlots)batch.set(db.collection('bookedSlots').doc(bookingDate+'_'+bookingTime),{date:bookingDate,time:bookingTime,appt:ref.id});
+    await batch.commit();
+    recent.push(Date.now());try{localStorage.setItem('inkjection_bk',JSON.stringify(recent))}catch(e){}
+    if(hasSlots){(takenSlots[bookingDate]=takenSlots[bookingDate]||{})[bookingTime]=true}
+    ['bkDesc','bkPlacement'].forEach(function(id){document.getElementById(id).value=''});
+    document.getElementById('bkFormView').style.display='none';
+    document.getElementById('bkDoneView').style.display='block';
+    renderCalendar();
+  }catch(e){
+    console.warn('booking failed',e);
+    if(hasSlots&&e&&e.code==='permission-denied'){await fetchSlots();bookingTime='';renderBookingTimes();renderCalendar();err.textContent=t.eTaken}
+    else err.textContent=t.eGen;
+  }
+  btn.disabled=false;btn.textContent=t.send;
 }
 
 function handleSelection(size){userSizeChoice=size;closeModal('selectionModal');openModalSync('calModal')}
