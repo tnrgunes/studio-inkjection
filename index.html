@@ -316,7 +316,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-he
 .cal-hint-wa.book i { color: var(--accent); }
 
 /* SITE CONTENT (managed from admin) */
-body.no-hw .hw-lockup,body.no-hw .hw-dangle-spider,body.no-hw .hw-trickortreat,body.no-hw .hw-mascot,body.no-hw .hw-pumpkincat,body.no-hw .hw-footer-ghost,body.no-hw .hw-label-icon,body.no-hw .hw-corner-icon{display:none!important}
+body.no-hw .hw-lockup,body.no-hw .hw-dangle-spider,body.no-hw .hw-trickortreat,body.no-hw .hw-trick-hint,body.no-hw .hw-mascot,body.no-hw .hw-pumpkincat,body.no-hw .hw-footer-ghost,body.no-hw .hw-label-icon,body.no-hw .hw-corner-icon{display:none!important}
 .site-announce{display:none;margin:0 auto 18px;max-width:440px;padding:10px 16px;border-radius:14px;background:var(--accent-glow);border:1px solid var(--border-hover);font-size:12.5px;line-height:1.55;color:var(--text);text-align:center}
 .site-announce.show{display:block}
 .site-announce i{color:var(--accent-warm);margin-right:6px}
@@ -662,6 +662,30 @@ textarea.form-input{resize:vertical;min-height:84px;font-family:var(--font-body)
 /* Ghost, floating above the footer copyright line */
 .hw-footer-ghost{width:52px;height:66px;margin:0 auto 8px;opacity:.9}
 .hw-footer-ghost #hwGhostAnim{width:100%;height:100%}
+
+/* "Trick or Tattoo" — tappable banner + exclusive Halloween designs modal */
+.hw-trickortreat{cursor:pointer;-webkit-user-select:none;user-select:none;transition:transform .2s,filter .3s;-webkit-touch-callout:none}
+.hw-trickortreat:active{transform:scale(.96)}
+.hw-trickortreat:focus-visible{outline:2px solid var(--accent);outline-offset:6px;border-radius:12px}
+.hw-trick-hint{display:inline-flex;align-items:center;justify-content:center;gap:8px;margin:0 auto 16px;padding:7px 16px;border-radius:30px;background:var(--accent-glow);border:1px solid var(--border-hover);color:var(--text-soft);font:700 10px/1 var(--font-body);letter-spacing:2px;text-transform:uppercase;cursor:pointer;animation:hwHintPulse 2.6s ease-in-out infinite;transition:border-color .2s}
+.hw-trick-hint i{color:var(--accent-warm);font-size:11px}
+.hw-trick-hint:active{border-color:var(--accent)}
+@keyframes hwHintPulse{0%,100%{box-shadow:0 0 0 0 rgba(164,121,255,0)}50%{box-shadow:0 0 20px 2px rgba(164,121,255,.35)}}
+#trickModal .modal-content{max-width:100%;width:95%;padding:14px}
+#trickModal .designs-grid{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:768px){
+  #trickModal .modal-content{max-width:760px}
+  #trickModal .designs-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(min-width:1100px){
+  #trickModal .modal-content{max-width:1000px}
+  #trickModal .designs-grid{grid-template-columns:repeat(3,1fr)}
+}
+#trickModal .design-card img{cursor:pointer}
+.hw-trick-title{font-family:var(--font-gothic);text-align:center;background:linear-gradient(135deg,#fff,var(--accent) 50%,var(--accent-warm));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:4px}
+</style>
+
+</head>
 </style>
 
 </head>
@@ -736,7 +760,8 @@ textarea.form-input{resize:vertical;min-height:84px;font-family:var(--font-body)
     <img class="hero-logo" src="https://i.ibb.co/tPTrSN8k/image.png" alt="Inkjection Tattoo">
     <div class="hw-dangle-spider"><div id="hwSpiderAnim"></div></div>
   </div>
-  <div class="hw-trickortreat"><div id="hwTrickAnim"></div></div>
+  <div class="hw-trickortreat" id="hwTrickBanner" role="button" tabindex="0" onclick="openTrickModal()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openTrickModal()}" aria-label="Trick or Tattoo designs"><div id="hwTrickAnim"></div></div>
+  <div class="hw-trick-hint" id="hwTrickHint" onclick="openTrickModal()"><i class="fas fa-skull"></i><span id="hwTrickHintText">Tik voor Halloween designs</span></div>
   <h1>INKJECTION</h1>
   <p class="hero-tagline" id="heroLine1">Fine Line, Old School &amp; Realism</p>
   <p class="hero-sub" id="heroLine2">Zandhoven &bull; Antwerpen</p>
@@ -1084,6 +1109,16 @@ textarea.form-input{resize:vertical;min-height:84px;font-family:var(--font-body)
   </div>
 </div>
 
+<!-- TRICK OR TATTOO DESIGNS MODAL -->
+
+<div id="trickModal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal" onclick="closeModal('trickModal')">&times;</span>
+    <h3 class="modal-title hw-trick-title" id="trickModalTitle">TRICK OR TATTOO</h3>
+    <p id="trickModalSub" style="text-align:center;font-size:11px;color:var(--text-muted);margin-top:-12px;margin-bottom:14px">Exclusieve Halloween-ontwerpen &mdash; boek via WhatsApp</p>
+    <div class="designs-grid" id="trickGrid"></div>
+  </div>
+</div>
 <!-- PRIVACY MODAL -->
 
 <div id="privacyModal" class="modal">
@@ -1222,6 +1257,8 @@ function updateLang(){
   document.getElementById("heroCtaLabel").textContent=n?"PLAN JE SESSIE":"BOOK YOUR SESSION";
   document.getElementById("heroWaLabel").textContent=n?"STUUR EEN BERICHT":"SEND A MESSAGE";
   document.getElementById("trustText").innerHTML=n?'5.0 &mdash; Geliefde studio in de Kempen':'5.0 &mdash; Beloved studio in the Kempen';
+  var th=document.getElementById("hwTrickHintText");if(th)th.textContent=n?"Tik voor Halloween designs":"Tap for Halloween designs";
+  var tt=document.getElementById("trickModalSub");if(tt)tt.textContent=n?"Exclusieve Halloween-ontwerpen \u2014 boek via WhatsApp":"Exclusive Halloween designs \u2014 book via WhatsApp";
   var hwE=document.getElementById("hwEyebrow");if(hwE)hwE.textContent=n?"Alleen in Oktober":"October Only";
   document.getElementById("stickyWaLabel").textContent=n?"STUUR EEN BERICHT":"SEND A MESSAGE";
   document.getElementById("portfolioLabel").textContent="PORTFOLIO";
@@ -1388,6 +1425,39 @@ async function fetchDesigns(){
 }
 async function openDesignsModal(){await fetchDesigns();document.getElementById('designsModal').style.display='block'}
 
+// TRICK OR TATTOO (Halloween-only designs, stored in the "trickDesigns" Firestore collection)
+async function fetchTrick(){
+  var g=document.getElementById("trickGrid");
+  g.innerHTML='<div class="designs-empty" style="grid-column:1/-1">...</div>';
+  var snap=null;
+  try{
+    if(!db)throw new Error('no db');
+    snap=await db.collection("trickDesigns").orderBy("createdAt","desc").get();
+  }catch(e){
+    console.warn('trickDesigns failed to load',e);
+    g.innerHTML='<div class="designs-empty" style="grid-column:1/-1">'+(lang==="nl"?"Momenteel niet beschikbaar.":"Currently unavailable.")+'</div>';
+    return;
+  }
+  g.innerHTML="";
+  if(snap.empty){g.innerHTML='<div class="designs-empty" style="grid-column:1/-1">'+(lang==="nl"?"Binnenkort nieuwe Halloween-ontwerpen... 🎃":"New Halloween designs coming soon... 🎃")+'</div>';return}
+  snap.forEach(function(doc){
+    var d=doc.data(),sold=d.sold===true,disc=d.discountPrice&&d.discountPrice!=='';
+    var ph='',dp='';
+    if(d.price){if(disc){ph='<span class="design-old-price">€'+d.price+'</span><span class="design-discount-price">€'+d.discountPrice+'</span>';dp='€'+d.discountPrice}else{ph='<div class="design-price">€'+d.price+'</div>';dp='€'+d.price}}
+    var desc=d.description||'',wl=lang==="nl"?"AFSPRAAK VIA WHATSAPP":"BOOK APPOINTMENT",sl2=lang==="nl"?"VERKOCHT":"SOLD OUT";
+    var wm=encodeURIComponent(lang==="nl"?'Hallo! Ik wil graag een afspraak maken voor dit Halloween-ontwerp (Trick or Tattoo): '+d.url+'\nPrijs: '+dp+'\n'+desc:'Hello! I would like to book this Halloween design (Trick or Tattoo): '+d.url+'\nPrice: '+dp+'\n'+desc);
+    var card=document.createElement("div");card.className="design-card";
+    var stamp=lang==="nl"?"VERKOCHT":"SOLD";
+    var iw=sold?'<div class="design-sold-overlay"><img src="'+d.url+'" loading="lazy"><div class="design-sold-stamp">'+stamp+'</div></div>':'<img src="'+d.url+'" loading="lazy">';
+    var btn=sold?'<div style="text-align:center;padding:10px;color:var(--danger);font-weight:800;font-size:12px;letter-spacing:2px">'+sl2+'</div>':'<a href="https://wa.me/'+MY_WA+'?text='+wm+'" target="_blank" class="design-wa-btn"><i class="fab fa-whatsapp"></i> '+wl+'</a>';
+    card.innerHTML=iw+'<div class="design-card-info">'+(ph?'<div style="margin-bottom:4px">'+ph+'</div>':'')+(desc?'<div class="design-desc"></div>':'')+btn+'</div>';
+    var de=card.querySelector('.design-desc');if(de)de.textContent=desc;
+    var im=card.querySelector('img');if(im)im.onclick=function(){openDesignPopup(d)};
+    g.appendChild(card);
+  });
+}
+async function openTrickModal(){document.getElementById('trickModal').style.display='block';await fetchTrick()}
+
 // ===== PREMIUM CALENDAR =====
 function renderCalendar(){
   var daysEl=document.getElementById("calDays");
@@ -1412,7 +1482,7 @@ function renderCalendar(){
   daysEl.innerHTML="";
   var currentTotalMonths=now.getFullYear()*12+now.getMonth();
   var viewTotalMonths=viewYear*12+viewMonth;
-  var maxForwardMonths=monthsAhead()+((now.getDate()>=20)?1:0);
+  var maxForwardMonths=maxForward();
   document.getElementById("prevBtn").style.visibility=(viewTotalMonths<=currentTotalMonths)?"hidden":"visible";
   document.getElementById("nextBtn").style.visibility=(viewTotalMonths>=currentTotalMonths+maxForwardMonths)?"hidden":"visible";
 
@@ -1447,7 +1517,7 @@ function renderCalendar(){
 function changeMonth(s){
   var ct=now.getFullYear()*12+now.getMonth();
   var nt=viewYear*12+viewMonth+s;
-  var mx=monthsAhead()+((now.getDate()>=20)?1:0);
+  var mx=maxForward();
   if(nt>=ct&&nt<=ct+mx){
     viewMonth+=s;
     if(viewMonth>11){viewMonth=0;viewYear++}else if(viewMonth<0){viewMonth=11;viewYear--}
@@ -1588,6 +1658,12 @@ function renderBookingPhotos(){
 var SITE_DEFAULTS={"contact": {"address": "Torenstraat 32, 2243 Zandhoven"}};
 function sv(path){var o=SITE;path.split('.').forEach(function(k){o=(o&&o[k]!==undefined)?o[k]:undefined});return o}
 function monthsAhead(){var m=+sv('booking.monthsAhead');return m>=1&&m<=12?m:2}
+// How many months customers can browse (set in the admin panel). Without a setting: the old rule.
+function maxForward(){
+  var v=+sv('booking.monthsVisible');
+  if(v>=1&&v<=12)return (v-1)+((sv('booking.extraAfter20')===true&&now.getDate()>=20)?1:0);
+  return monthsAhead()+((now.getDate()>=20)?1:0);
+}
 function largeWeekendOnly(){return sv('booking.largeWeekendOnly')!==false}
 function escH(t){return String(t==null?'':t).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 function richText(t){return escH(t).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/\n/g,'<br>')}
