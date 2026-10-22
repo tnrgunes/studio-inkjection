@@ -1790,5 +1790,81 @@ function closeModal(id){document.getElementById(id).style.display="none"}
 async function openModalSync(id){await fetchData();document.getElementById(id).style.display="block"}
 </script>
 
+<script>
+/* ---------- VISITOR STATISTICS (anonymous) ----------
+   One document per visit in Firestore "visits": date, hour, where the visitor came from,
+   phone/computer, seconds spent per part of the page and whether they opened the booking form.
+   No name, no IP, no cookie, nothing that identifies a person. Only admins can read it. */
+(function(){
+  try{
+    if(navigator.webdriver||/bot|crawl|spider|preview|lighthouse|headless/i.test(navigator.userAgent))return;
+    if(/[?&]nostats/.test(location.search)){try{localStorage.setItem('inkjection_nostats','1')}catch(e){}}
+    try{if(localStorage.getItem('inkjection_nostats'))return}catch(e){} // Taner & Talitha's own devices
+  }catch(e){return}
+  var ua=navigator.userAgent,ref='';try{ref=document.referrer?new URL(document.referrer).hostname:''}catch(e){}
+  if(ref===location.hostname)ref='';
+  var q='';try{q=(new URLSearchParams(location.search).get('utm_source')||'').toLowerCase()}catch(e){}
+  function source(){
+    var s=q+' '+ref;
+    if(/Instagram/.test(ua)||/instagram|^ig\b/.test(s))return'instagram';
+    if(/FBAN|FBAV|FB_IAB/.test(ua)||/facebook|fb\.|^fb\b/.test(s))return'facebook';
+    if(/musical_ly|Bytedance|TikTok/i.test(ua)||/tiktok/.test(s))return'tiktok';
+    if(/google\./.test(s)||q==='google')return'google';
+    if(/bing\.|duckduckgo|yahoo|ecosia|qwant/.test(s))return'search';
+    if(/whatsapp|wa\.me/.test(s))return'whatsapp';
+    if(ref||q)return'other';
+    return'direct';
+  }
+  var dev=/iPad|Tablet/i.test(ua)||(/Android/.test(ua)&&!/Mobile/.test(ua))?'tablet':(/Mobi|iPhone|Android/.test(ua)?'phone':'computer');
+  var now=new Date(),day=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');
+  var ret=false;try{ret=localStorage.getItem('inkjection_cookie_consent')==='accepted'&&!!localStorage.getItem('inkjection_seen');if(localStorage.getItem('inkjection_cookie_consent')==='accepted')localStorage.setItem('inkjection_seen','1')}catch(e){}
+  var V={d:day,h:now.getHours(),src:source(),dev:dev,lang:(typeof lang!=='undefined'?lang:'nl'),ret:ret,dur:0,s:{},ev:{}};
+  var ref_=null,dirty=false,lastSent=0,sending=false;
+
+  // which part of the page is in the middle of the screen
+  var ANCH=[['hero','.hero'],['portfolio','#portfolioTitle'],['prices','#pricingTitle'],['about','#aboutTitle'],['designs','#designsTitle'],['reviews','#reviewTitle'],['contact','.footer']];
+  var MODAL={workModal:'allwork',designsModal:'alldesigns',selectionModal:'booking',calModal:'booking',bookModal:'booking',giftModal:'gift',trickModal:'trick',privacyModal:'other',designPopup:'alldesigns'};
+  function shown(id){var e=document.getElementById(id);return !!(e&&e.getClientRects().length&&getComputedStyle(e).display!=='none')}
+  function where(){
+    for(var id in MODAL){if(shown(id))return MODAL[id]}
+    var mid=innerHeight*.6,cur='hero';
+    for(var i=0;i<ANCH.length;i++){var el=document.querySelector(ANCH[i][1]);if(!el||!el.getClientRects().length)continue;
+      var top=el.getBoundingClientRect().top;if(top<=mid)cur=ANCH[i][0]}
+    return cur;
+  }
+  function tick(){
+    if(document.visibilityState!=='visible')return;
+    V.dur++;var w=where();V.s[w]=(V.s[w]||0)+1;
+    if(shown('selectionModal')||shown('calModal'))V.ev.book=1;
+    if(shown('bookModal'))V.ev.form=1;
+    if(shown('bkDoneView'))V.ev.sent=1;
+    if(shown('giftModal'))V.ev.gift=1;
+    dirty=true;
+    var due=V.dur===3||V.dur===15||V.dur===45||(V.dur>45&&V.dur-lastSent>=60);
+    if(due)send();
+  }
+  document.addEventListener('click',function(e){
+    var a=e.target.closest&&e.target.closest('a[href]');if(!a)return;var h=a.getAttribute('href')||'';
+    if(/wa\.me|whatsapp/.test(h))V.ev.wa=1;
+    else if(/instagram|tiktok|facebook/.test(h))V.ev.social=1;
+    else return;
+    dirty=true;send();
+  },true);
+  function send(){
+    if(typeof db==='undefined'||!db||sending||!dirty)return;
+    if(V.dur<3&&!ref_)return; // a 1-second bounce is not worth a write
+    if(V.dur>14400)return;
+    sending=true;dirty=false;lastSent=V.dur;
+    var p;
+    if(!ref_){ref_=db.collection('visits').doc();
+      p=ref_.set({d:V.d,h:V.h,src:V.src,dev:V.dev,lang:V.lang,ret:V.ret,dur:V.dur,s:V.s,ev:V.ev,t:firebase.firestore.FieldValue.serverTimestamp()});}
+    else p=ref_.update({dur:V.dur,s:V.s,ev:V.ev});
+    p.catch(function(){}).then(function(){sending=false});
+  }
+  setInterval(tick,1000);
+  document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden')send()});
+  addEventListener('pagehide',send);
+})();
+</script>
 </body>
 </html>
