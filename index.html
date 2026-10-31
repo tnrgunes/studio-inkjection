@@ -1374,13 +1374,13 @@ function updateLang(){
   document.getElementById("privacyBody").innerHTML=n?
     '<p style="margin-bottom:12px"><b>Wie zijn wij?</b><br>Inkjection Tattoo, Torenstraat 32, 2243 Zandhoven &mdash; <a href="mailto:info@inkjection.be" style="color:var(--accent)">info@inkjection.be</a></p>'+
     '<p style="margin-bottom:12px"><b>Welke gegevens verzamelen we?</b><br>Wanneer je via het boekingsformulier een afspraak aanvraagt, bewaren we de gegevens die jij zelf ingeeft (naam, telefoon, optioneel e-mail, datum, formaat, plaats en beschrijving) in een beveiligde database (Firebase, Google) die enkel wij kunnen inzien. We gebruiken ze alleen om je afspraak te regelen en verwijderen ze ten laatste 12 maanden na je afspraak. Via WhatsApp of het cadeaubonformulier delen we enkel wat jij zelf doorstuurt. We slaan geen betaalgegevens op.</p>'+
-    '<p style="margin-bottom:12px"><b>Cookies &amp; techniek</b><br>Deze site gebruikt functionele opslag (o.a. je taalkeuze en cookievoorkeur) en Firebase (Google) om onze portfolio, ontwerpen en beschikbare data te tonen. Er worden geen advertentiecookies of trackers van derden gebruikt.</p>'+
+    '<p style="margin-bottom:12px"><b>Cookies &amp; techniek</b><br>Deze site gebruikt functionele opslag (o.a. je taalkeuze en cookievoorkeur) en Firebase (Google) om onze portfolio, ontwerpen en beschikbare data te tonen. Er worden geen advertentiecookies of trackers van derden gebruikt. Voor anonieme bezoekersstatistieken (hoeveel mensen de site bekijken en via welke weg) gebruiken we een willekeurig bezoekersnummer, zonder naam of IP-adres. Alleen als je cookies accepteert, wordt dat nummer op je toestel bewaard.</p>'+
     '<p style="margin-bottom:12px"><b>Google Maps</b><br>In het contactmenu tonen we een ingesloten Google Maps kaart. Google kan hierbij technische gegevens verzamelen volgens hun eigen privacybeleid.</p>'+
     '<p><b>Jouw rechten</b><br>Je kan op elk moment inzage, aanpassing of verwijdering van je gegevens vragen via bovenstaand e-mailadres.</p>'
     :
     '<p style="margin-bottom:12px"><b>Who we are</b><br>Inkjection Tattoo, Torenstraat 32, 2243 Zandhoven, Belgium &mdash; <a href="mailto:info@inkjection.be" style="color:var(--accent)">info@inkjection.be</a></p>'+
     '<p style="margin-bottom:12px"><b>What we collect</b><br>When you request an appointment with the booking form, we store the details you enter (name, phone, optional e-mail, date, size, placement and description) in a secured database (Firebase, Google) that only we can access. We use them only to arrange your appointment and delete them at the latest 12 months after your appointment. Via WhatsApp or the gift voucher form we only share what you send yourself. We do not store payment details.</p>'+
-    '<p style="margin-bottom:12px"><b>Cookies &amp; technology</b><br>This site uses functional storage (e.g. your language and cookie choice) and Firebase (Google) to display our portfolio, designs and availability. No advertising cookies or third-party trackers are used.</p>'+
+    '<p style="margin-bottom:12px"><b>Cookies &amp; technology</b><br>This site uses functional storage (e.g. your language and cookie choice) and Firebase (Google) to display our portfolio, designs and availability. No advertising cookies or third-party trackers are used. For anonymous visitor statistics (how many people view the site and how they found it) we use a random visitor number, without name or IP address. Only if you accept cookies is that number kept on your device.</p>'+
     '<p style="margin-bottom:12px"><b>Google Maps</b><br>Our contact menu shows an embedded Google Maps location. Google may collect technical data according to its own privacy policy.</p>'+
     '<p><b>Your rights</b><br>You can request access to, correction of, or deletion of your data at any time via the email address above.</p>';
   applySiteContent();
@@ -1825,34 +1825,63 @@ async function openModalSync(id){await fetchData();document.getElementById(id).s
 
 <script>
 /* ---------- VISITOR STATISTICS (anonymous) ----------
-   One document per visit in Firestore "visits": date, hour, where the visitor came from,
+   One document per page visit in Firestore "visits": date, hour, where the visitor came from,
    phone/computer, seconds spent per part of the page and whether they opened the booking form.
-   No name, no IP, no cookie, nothing that identifies a person. Only admins can read it. */
+   A random visitor number (no name, no IP, nothing personal) lets the panel count people instead of page loads:
+   kept on this device only after "accept" in the cookie bar, otherwise only for this browser tab.
+   Only admins can read it. */
 (function(){
+  var ua=navigator.userAgent||'';
   try{
-    if(navigator.webdriver||/bot|crawl|spider|preview|lighthouse|headless/i.test(navigator.userAgent))return;
+    if(navigator.webdriver||/bot|crawl|spider|slurp|preview|lighthouse|headless|phantom|pingdom|uptime|monitor|facebookexternalhit|whatsapp\/|telegram|python|curl|wget|java\//i.test(ua))return;
+    if(!navigator.languages||!navigator.languages.length||!screen.width)return;
     if(/[?&]nostats/.test(location.search)){try{localStorage.setItem('inkjection_nostats','1')}catch(e){}}
     try{if(localStorage.getItem('inkjection_nostats'))return}catch(e){} // Taner & Talitha's own devices
   }catch(e){return}
-  var ua=navigator.userAgent,ref='';try{ref=document.referrer?new URL(document.referrer).hostname:''}catch(e){}
-  if(ref===location.hostname)ref='';
-  var q='';try{q=(new URLSearchParams(location.search).get('utm_source')||'').toLowerCase()}catch(e){}
+  var ref='';try{ref=document.referrer?new URL(document.referrer).hostname.replace(/^www\./,''):''}catch(e){}
+  if(ref===location.hostname.replace(/^www\./,''))ref='';
+  var P={};try{P=new URLSearchParams(location.search)}catch(e){P={get:function(){return null}}}
+  var q=((P.get&&P.get('utm_source'))||'').toLowerCase();
+  // our own tracking links: inkjection.be/?src=ig-bio, ?src=ig-story, ?src=gbp (Google profile), ?src=qr ...
+  var CMP=['ig-bio','ig-story','ig-post','fb','tt','gbp','qr','mail','wa'];
+  var cmp=((P.get&&P.get('src'))||'').toLowerCase();if(CMP.indexOf(cmp)<0)cmp='';
+  if(cmp||/[?&](src|utm_[a-z]+|fbclid|igshid)=/.test(location.search)){ // keep shared links clean
+    try{var u=new URL(location.href);['src','utm_source','utm_medium','utm_campaign','fbclid','igshid'].forEach(function(k){u.searchParams.delete(k)});history.replaceState(history.state,'',u.pathname+u.search+u.hash)}catch(e){}
+  }
   function source(){
+    if(cmp){if(cmp.indexOf('ig')===0)return'instagram';return{fb:'facebook',tt:'tiktok',gbp:'maps',qr:'qr',mail:'email',wa:'whatsapp'}[cmp]}
     var s=q+' '+ref;
-    if(/Instagram/.test(ua)||/instagram|^ig\b/.test(s))return'instagram';
-    if(/FBAN|FBAV|FB_IAB/.test(ua)||/facebook|fb\.|^fb\b/.test(s))return'facebook';
-    if(/musical_ly|Bytedance|TikTok/i.test(ua)||/tiktok/.test(s))return'tiktok';
-    if(/google\./.test(s)||q==='google')return'google';
-    if(/bing\.|duckduckgo|yahoo|ecosia|qwant/.test(s))return'search';
+    if(/Instagram/.test(ua)||/instagram|^ig\b|l\.instagram/.test(s))return'instagram';
+    if(/FBAN|FBAV|FB_IAB|FBIOS|Messenger/.test(ua)||/facebook|^fb\b|fb\.me|m\.me/.test(s))return'facebook';
+    if(/musical_ly|Bytedance|TikTok|trill_/i.test(ua)||/tiktok/.test(s))return'tiktok';
+    if(/maps\.google|google\.[a-z.]+\/maps|maps\.app\.goo\.gl|g\.page/.test(s))return'maps';
+    if(/(^|\.)google\./.test(ref)||q==='google'||/googlequicksearch|GSA\//.test(ua))return'google';
+    if(/bing\.|duckduckgo|yahoo|ecosia|qwant|startpage|brave|yandex/.test(s))return'search';
     if(/whatsapp|wa\.me/.test(s))return'whatsapp';
+    if(/mail|outlook|gmail/.test(s))return'email';
     if(ref||q)return'other';
     return'direct';
   }
-  var dev=/iPad|Tablet/i.test(ua)||(/Android/.test(ua)&&!/Mobile/.test(ua))?'tablet':(/Mobi|iPhone|Android/.test(ua)?'phone':'computer');
+  var src=source();
+  var dev=/iPad|Tablet/i.test(ua)||(/Android/.test(ua)&&!/Mobile/.test(ua))||(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1)?'tablet':(/Mobi|iPhone|Android/.test(ua)?'phone':'computer');
   var now=new Date(),day=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');
-  var ret=false;try{ret=localStorage.getItem('inkjection_cookie_consent')==='accepted'&&!!localStorage.getItem('inkjection_seen');if(localStorage.getItem('inkjection_cookie_consent')==='accepted')localStorage.setItem('inkjection_seen','1')}catch(e){}
-  var V={d:day,h:now.getHours(),src:source(),dev:dev,lang:(typeof lang!=='undefined'?lang:'nl'),ret:ret,dur:0,s:{},ev:{}};
+  function rid(){var s='';for(var i=0;i<14;i++)s+='abcdefghijklmnopqrstuvwxyz0123456789'.charAt(Math.floor(Math.random()*36));return s}
+  var ret=false,vid='';
+  try{
+    var ok=localStorage.getItem('inkjection_cookie_consent')==='accepted';
+    if(ok){ret=!!localStorage.getItem('inkjection_seen');localStorage.setItem('inkjection_seen','1');
+      vid=localStorage.getItem('inkjection_vid')||'';if(!/^[a-z0-9]{8,20}$/.test(vid)){vid=rid();localStorage.setItem('inkjection_vid',vid)}}
+    else{vid=sessionStorage.getItem('inkjection_sid')||'';if(!/^[a-z0-9]{8,20}$/.test(vid)){vid=rid();sessionStorage.setItem('inkjection_sid',vid)}}
+  }catch(e){vid=rid()}
+  var V={d:day,h:now.getHours(),src:src,dev:dev,lang:(typeof lang!=='undefined'?lang:'nl'),ret:ret,vid:vid,hum:false,dur:0,s:{},ev:{}};
+  if(cmp)V.cmp=cmp;
+  if(ref&&(src==='other'||src==='search'||src==='email'))V.rh=ref.slice(0,60);
   var ref_=null,dirty=false,lastSent=0,sending=false;
+
+  // a real person touches, scrolls or moves the mouse; bots and accidental taps don't
+  function human(){if(V.hum)return;V.hum=true;dirty=true;if(ref_)send()}
+  ['pointerdown','touchstart','keydown','wheel'].forEach(function(t){addEventListener(t,human,{passive:true,once:true})});
+  var sy=scrollY;addEventListener('scroll',function(){if(Math.abs(scrollY-sy)>40)human()},{passive:true});
 
   // which part of the page is in the middle of the screen
   var ANCH=[['hero','.hero'],['portfolio','#portfolioTitle'],['prices','#pricingTitle'],['about','#aboutTitle'],['designs','#designsTitle'],['reviews','#reviewTitle'],['contact','.footer']];
@@ -1865,8 +1894,10 @@ async function openModalSync(id){await fetchData();document.getElementById(id).s
       var top=el.getBoundingClientRect().top;if(top<=mid)cur=ANCH[i][0]}
     return cur;
   }
+  var idle=0;['pointermove','pointerdown','keydown','scroll','touchstart'].forEach(function(t){addEventListener(t,function(){idle=0},{passive:true})});
   function tick(){
-    if(document.visibilityState!=='visible')return;
+    if(document.visibilityState!=='visible'||document.prerendering)return;
+    if(++idle>300)return; // phone left open on the page: stop counting after 5 minutes without any movement
     V.dur++;var w=where();V.s[w]=(V.s[w]||0)+1;
     if(shown('selectionModal')||shown('calModal'))V.ev.book=1;
     if(shown('bookModal'))V.ev.form=1;
@@ -1879,9 +1910,11 @@ async function openModalSync(id){await fetchData();document.getElementById(id).s
   document.addEventListener('click',function(e){
     var a=e.target.closest&&e.target.closest('a[href]');if(!a)return;var h=a.getAttribute('href')||'';
     if(/wa\.me|whatsapp/.test(h))V.ev.wa=1;
+    else if(/^tel:/.test(h))V.ev.call=1;
+    else if(/maps|goo\.gl\/maps|google\.[a-z.]+\/maps/.test(h))V.ev.route=1;
     else if(/instagram|tiktok|facebook/.test(h))V.ev.social=1;
     else return;
-    dirty=true;send();
+    human();dirty=true;send();
   },true);
   function send(){
     if(typeof db==='undefined'||!db||sending||!dirty)return;
@@ -1890,14 +1923,24 @@ async function openModalSync(id){await fetchData();document.getElementById(id).s
     sending=true;dirty=false;lastSent=V.dur;
     var p;
     if(!ref_){ref_=db.collection('visits').doc();
-      p=ref_.set({d:V.d,h:V.h,src:V.src,dev:V.dev,lang:V.lang,ret:V.ret,dur:V.dur,s:V.s,ev:V.ev,t:firebase.firestore.FieldValue.serverTimestamp()});}
-    else p=ref_.update({dur:V.dur,s:V.s,ev:V.ev});
+      var D={d:V.d,h:V.h,src:V.src,dev:V.dev,lang:V.lang,ret:V.ret,vid:V.vid,hum:V.hum,dur:V.dur,s:V.s,ev:V.ev,t:firebase.firestore.FieldValue.serverTimestamp()};
+      if(V.cmp)D.cmp=V.cmp;if(V.rh)D.rh=V.rh;
+      p=ref_.set(D);}
+    else p=ref_.update({dur:V.dur,s:V.s,ev:V.ev,hum:V.hum});
     p.catch(function(){}).then(function(){sending=false});
   }
   setInterval(tick,1000);
   document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden')send()});
   addEventListener('pagehide',send);
 })();
+</script>
+<script>
+/* Second, independent visitor counter: Cloudflare Web Analytics (free, no cookies, filters bots).
+   Paste the token from dash.cloudflare.com > Analytics & Logs > Web Analytics between the quotes. Empty = off. */
+var CF_BEACON_TOKEN='';
+(function(){try{if(!CF_BEACON_TOKEN||localStorage.getItem('inkjection_nostats'))return}catch(e){}
+  var s=document.createElement('script');s.defer=true;s.src='https://static.cloudflareinsights.com/beacon.min.js';
+  s.setAttribute('data-cf-beacon',JSON.stringify({token:CF_BEACON_TOKEN}));document.body.appendChild(s)})();
 </script>
 </body>
 </html>
