@@ -702,6 +702,49 @@ button.xm-chip:hover,button.xm-chip:focus-visible{border-color:var(--xm-red-soft
   .xm-chip{font-size:10px;letter-spacing:1px;padding:7px 12px}
 }
 @media(max-width:360px){.xm-script{font-size:31px}.xm-sub{letter-spacing:1.4px;font-size:9px}}
+/* GIFT CARD (online payment) */
+.gc-wrap{max-width:440px}
+.gc-eyebrow{font-size:10px;letter-spacing:4px;color:var(--accent);font-weight:700;text-align:center;margin:4px 0 4px}
+.gc-card{position:relative;aspect-ratio:1.62;border-radius:18px;padding:18px 20px;margin:6px 0 18px;overflow:hidden;color:#fff;
+  background:radial-gradient(120% 90% at 85% 15%,rgba(226,194,125,.22),transparent 55%),linear-gradient(145deg,#1c1813 0%,#0d0b09 60%,#17130e 100%);
+  border:1px solid rgba(226,194,125,.45);box-shadow:0 20px 50px rgba(0,0,0,.55),inset 0 0 0 4px rgba(0,0,0,.35),inset 0 0 0 5px rgba(226,194,125,.18);display:flex;flex-direction:column}
+.gc-shine{position:absolute;inset:-40%;background:linear-gradient(115deg,transparent 42%,rgba(255,240,200,.13) 50%,transparent 58%);animation:gcShine 5s ease-in-out infinite;pointer-events:none}
+@keyframes gcShine{0%,15%{transform:translateX(-45%)}60%,100%{transform:translateX(45%)}}
+.gc-top{display:flex;align-items:center;gap:9px}
+.gc-logo{width:30px;height:30px;border-radius:50%;object-fit:cover;border:1px solid rgba(226,194,125,.6)}
+.gc-brand{font-family:var(--font-display);letter-spacing:4px;font-size:13px;font-weight:600}
+.gc-kind{margin-left:auto;font-size:8.5px;letter-spacing:3px;color:#e2c27d;font-weight:700}
+.gc-amount{margin:auto 0 0;text-align:right;font-family:var(--font-display);font-weight:600;font-size:clamp(40px,13vw,58px);line-height:1;
+  background:linear-gradient(110deg,#a8853c,#f6e4b4 35%,#e2c27d 55%,#fff6dc 70%,#c79d4f);-webkit-background-clip:text;background-clip:text;color:transparent}
+.gc-names{display:flex;gap:16px;margin-top:8px}
+.gc-names div{min-width:0;flex:1}
+.gc-names small{display:block;font-size:8px;letter-spacing:2.5px;color:rgba(255,255,255,.5)}
+.gc-names b{display:block;font-family:var(--font-display);font-weight:500;font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gc-msg{font-family:var(--font-display);font-style:italic;font-size:13px;color:rgba(255,240,215,.75);margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-height:0}
+.gc-msg:empty{display:none}
+#giftModal .amt-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px}
+#giftModal .amt-opt{padding:12px 0;border-radius:12px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-weight:700;font-size:14px;cursor:pointer;transition:all .2s}
+#giftModal .amt-opt.active{border-color:var(--accent);background:rgba(226,194,125,.14);color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.gc-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.gc-ta{min-height:64px!important}
+.gc-perks{list-style:none;margin:4px 0 12px;padding:0;display:grid;gap:7px}
+.gc-perks li{display:flex;gap:10px;align-items:flex-start;font-size:12px;color:var(--text-soft,rgba(255,255,255,.7));line-height:1.45}
+.gc-perks i{color:var(--accent);width:14px;text-align:center;margin-top:2px}
+.gc-err{color:#ff6b7d;font-size:12.5px;text-align:center;min-height:0;margin-bottom:8px}
+.gc-err:empty{display:none}
+.gc-pay i{margin-right:6px}
+.gc-mollie{text-align:center;font-size:10.5px;color:var(--text-muted,rgba(255,255,255,.4));margin-top:9px;letter-spacing:.3px}
+.gc-result{text-align:center;padding:24px 6px 10px}
+.gc-state .ic{width:72px;height:72px;border-radius:50%;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:30px;border:1px solid rgba(226,194,125,.5);color:var(--accent);background:rgba(226,194,125,.08)}
+.gc-state .ic.ok{animation:gcPop .5s cubic-bezier(.2,1.4,.4,1)}
+@keyframes gcPop{from{transform:scale(.4);opacity:0}}
+.gc-state h4{font-family:var(--font-display);font-weight:400;font-size:26px;letter-spacing:1px;margin-bottom:8px}
+.gc-state p{font-size:13.5px;color:var(--text-soft,rgba(255,255,255,.7));line-height:1.6;margin-bottom:6px}
+.gc-state .code{display:inline-block;margin:12px 0 18px;padding:10px 18px;border-radius:12px;border:1px dashed rgba(226,194,125,.6);color:var(--accent);font-weight:800;letter-spacing:3px;font-size:16px}
+.gc-state .btn-form-primary{margin-top:6px}
+.gc-state .gc-link{display:inline-block;margin-top:14px;font-size:12px;color:var(--text-muted,rgba(255,255,255,.5));text-decoration:underline;cursor:pointer}
+@media(max-width:380px){.gc-card{padding:15px 16px}.gc-names b{font-size:15px}#giftModal .amt-opt{font-size:13px}}
+.gc-state a.btn-form-primary{text-decoration:none;text-align:center}
 </style>
 
 </head>
@@ -1150,26 +1193,42 @@ button.xm-chip:hover,button.xm-chip:focus-visible{border-color:var(--xm-red-soft
 <!-- GIFT MODAL -->
 
 <div id="giftModal" class="modal">
-  <div class="modal-content">
+  <div class="modal-content gc-wrap">
     <span class="close-modal" onclick="closeModal('giftModal')">&times;</span>
-    <h3 class="modal-title" id="giftTitle">CADEAUBON</h3>
-    <div class="ticket">
-      <div class="ticket-title" id="cardTitle">CADEAUBON</div>
-      <div style="font-size:10px;color:#555;margin-bottom:4px">FOR: <span class="ticket-val" id="dispTo">...</span></div>
-      <div style="font-size:10px;color:#555">FROM: <span class="ticket-val" id="dispFrom">...</span></div>
-      <div class="scratch-circle"><span id="dispAmt">?&euro;</span></div>
+    <div id="gcForm">
+      <p class="gc-eyebrow" id="gcEyebrow">GEEF IETS BLIJVENDS</p>
+      <h3 class="modal-title" id="giftTitle">CADEAUBON</h3>
+      <div class="gc-card" id="gcCard">
+        <div class="gc-shine"></div>
+        <div class="gc-top"><img class="gc-logo" alt="" src="https://firebasestorage.googleapis.com/v0/b/inkjection-admin.firebasestorage.app/o/site%2Flogo.png?alt=media" onerror="this.onerror=null;this.src='https://i.ibb.co/tPTrSN8k/image.png'"><span class="gc-brand">INKJECTION</span><span class="gc-kind" id="cardTitle">CADEAUBON</span></div>
+        <div class="gc-amount" id="dispAmt">€ —</div>
+        <div class="gc-names"><div><small id="gcForL">VOOR</small><b id="dispTo">…</b></div><div><small id="gcFromL">VAN</small><b id="dispFrom">…</b></div></div>
+        <div class="gc-msg" id="dispMsg"></div>
+      </div>
+      <div class="amt-grid" id="giftAmtGrid">
+        <button class="amt-opt" onclick="setGiftAmt(50)">50€</button>
+        <button class="amt-opt" onclick="setGiftAmt(100)">100€</button>
+        <button class="amt-opt" onclick="setGiftAmt(150)">150€</button>
+        <button class="amt-opt" onclick="setGiftAmt(250)">250€</button>
+      </div>
+      <input type="number" inputmode="numeric" min="20" max="1000" id="inpGiftAmt" class="form-input" placeholder="Ander bedrag (€)" oninput="setGiftAmt(this.value,true)">
+      <div class="gc-row">
+        <input type="text" id="inpGiftTo" class="form-input" maxlength="40" placeholder="Voor (naam)" oninput="gcPreview()">
+        <input type="text" id="inpGiftFrom" class="form-input" maxlength="40" placeholder="Van (naam)" oninput="gcPreview()">
+      </div>
+      <textarea id="inpGiftMsg" class="form-input gc-ta" maxlength="160" placeholder="Persoonlijke boodschap (optioneel)" oninput="gcPreview()"></textarea>
+      <input type="email" id="inpGiftEmail" class="form-input" maxlength="120" placeholder="Jouw e-mail (hier sturen we de PDF naartoe)">
+      <ul class="gc-perks" id="gcPerks"><li><i class="fas fa-file-pdf"></i><span>Meteen als mooie PDF, om af te drukken of door te sturen</span></li><li><i class="fas fa-calendar-check"></i><span>1 jaar geldig, voor elke tattoo bij Inkjection</span></li><li><i class="fas fa-lock"></i><span>Veilig betalen met Bancontact</span></li></ul>
+      <div class="gc-err" id="gcErr"></div>
+      <button class="btn-form-primary gc-pay" onclick="giftCheckout()" id="btnGiftOrder"><i class="fas fa-lock"></i> <span id="gcPayTxt">KIES EEN BEDRAG</span></button>
+      <p class="gc-mollie" id="gcMollie">Betaling via Mollie · je wordt even doorgestuurd</p>
     </div>
-    <div class="amt-grid" id="giftAmtGrid">
-      <button class="amt-opt" onclick="setGiftAmt(50)">50&euro;</button>
-      <button class="amt-opt" onclick="setGiftAmt(100)">100&euro;</button>
-      <button class="amt-opt" onclick="setGiftAmt(250)">250&euro;</button>
+    <div id="gcResult" class="gc-result" style="display:none">
+      <div class="gc-state" id="gcState"></div>
     </div>
-    <input type="number" id="inpGiftAmt" class="form-input" placeholder="Ander Bedrag (&euro;)" oninput="setGiftAmt(this.value)">
-    <input type="text" id="inpGiftFrom" class="form-input" placeholder="Van (Naam)" oninput="document.getElementById('dispFrom').textContent=this.value||'...'">
-    <input type="text" id="inpGiftTo" class="form-input" placeholder="Voor (Naam)" oninput="document.getElementById('dispTo').textContent=this.value||'...'">
-    <button class="btn-form-primary" onclick="sendGiftWA()" id="btnGiftOrder">BESTEL BON</button>
   </div>
 </div>
+
 
 <!-- SIZE MODAL -->
 
@@ -1389,12 +1448,7 @@ function updateLang(){
   document.getElementById("contentBook").innerHTML=n?"<b>Stap 1:</b> Kies gewenst formaat.<br><b>Stap 2:</b> Selecteer een beschikbare datum (en tijdstip).<br><b>Stap 3:</b> Vul je gegevens in en verstuur je aanvraag.<br><b>Stap 4:</b> Talitha bevestigt je afspraak via WhatsApp of telefoon.<br><br><i>Pas na de bevestiging is je afspraak definitief.</i>":"<b>Step 1:</b> Choose preferred size.<br><b>Step 2:</b> Select an available date (and time).<br><b>Step 3:</b> Fill in your details and send your request.<br><b>Step 4:</b> Talitha confirms your appointment via WhatsApp or phone.<br><br><i>Your appointment is final only after that confirmation.</i>";
   document.getElementById("contentAftercare").innerHTML=n?"<b>Eerste 3-5 dagen:</b> Laat de folie zitten zoals geadviseerd. Was daarna voorzichtig met lauw water en neutrale zeep.<br><br><b>Hydratatie:</b> Breng 2-3x per dag een dun laagje nazorgzalf aan.<br><br><b>Niet doen:</b> Niet krabben, vermijd zwemmen, sauna en direct zonlicht voor minstens 3 weken.":"<b>First 3-5 days:</b> Keep the foil as advised. Then wash gently with lukewarm water and neutral soap.<br><br><b>Hydration:</b> Apply a thin layer of aftercare ointment 2-3x a day.<br><br><b>Don'ts:</b> No scratching, avoid swimming, saunas, and direct sunlight for at least 3 weeks.";
   document.getElementById("selectTitle").textContent=n?"KIES JE FORMAAT":"CHOOSE YOUR SIZE";
-  document.getElementById("giftTitle").textContent=n?"CADEAUBON":"GIFT VOUCHER";
-  document.getElementById("cardTitle").textContent=n?"CADEAUBON":"TATTOO VOUCHER";
-  document.getElementById("inpGiftAmt").placeholder=n?"Ander Bedrag (\u20AC)":"Custom Amount (\u20AC)";
-  document.getElementById("inpGiftFrom").placeholder=n?"Van (Naam)":"From (Name)";
-  document.getElementById("inpGiftTo").placeholder=n?"Voor (Naam)":"To (Name)";
-  document.getElementById("btnGiftOrder").textContent=n?"BESTEL BON":"ORDER VOUCHER";
+  if(typeof gcLang==="function")gcLang();
   document.getElementById("legendAvail").textContent=n?"Beschikbaar":"Available";
   document.getElementById("legendBooked").textContent=n?"Bezet":"Booked";
   document.getElementById("legendToday").textContent=n?"Vandaag":"Today";
@@ -1459,6 +1513,88 @@ function slideRight(){var c=document.getElementById('sliderContainer'),w=c.query
 
 function tatAlt(n){return (lang==='nl'?'Tattoo door Inkjection Tattoo, Zandhoven':'Tattoo by Inkjection Tattoo, Zandhoven')+(n?' - '+n:'')}
 function dsAlt(d){var x=(d&&d.description)?String(d.description).slice(0,90):'';return (lang==='nl'?'Tattoo ontwerp':'Tattoo design')+(x?': '+x:'')+' - Inkjection Tattoo'}
+// ---------- GIFT CARD: online payment (Mollie) + automatic PDF ----------
+var GIFT_API='https://europe-west1-inkjection-admin.cloudfunctions.net';
+function gcT(){var n=lang==='nl';return{
+  eyebrow:n?'GEEF IETS BLIJVENDS':'GIVE SOMETHING LASTING',title:n?'CADEAUBON':'GIFT CARD',card:n?'CADEAUBON':'GIFT CARD',forL:n?'VOOR':'FOR',fromL:n?'VAN':'FROM',
+  other:n?'Ander bedrag (€)':'Other amount (€)',to:n?'Voor (naam)':'For (name)',from:n?'Van (naam)':'From (name)',msg:n?'Persoonlijke boodschap (optioneel)':'Personal message (optional)',
+  email:n?'Jouw e-mail (hier sturen we de PDF naartoe)':'Your e-mail (we send the PDF here)',
+  perks:n?['Meteen als mooie PDF, om af te drukken of door te sturen','1 jaar geldig, voor elke tattoo bij Inkjection','Veilig betalen met Bancontact']:['Instantly as a beautiful PDF, to print or forward','Valid for 1 year, for any tattoo at Inkjection','Pay securely with Bancontact'],
+  choose:n?'KIES EEN BEDRAG':'CHOOSE AN AMOUNT',pay:n?'BETAAL':'PAY',wait:n?'EVEN GEDULD…':'ONE MOMENT…',mollie:n?'Betaling via Mollie · je wordt even doorgestuurd':'Payment via Mollie · you will be redirected briefly',
+  eAmt:n?'Kies een bedrag tussen 20 en 1000 €.':'Choose an amount between 20 and 1000 €.',eNames:n?'Vul de naam in van wie de bon krijgt en van wie hij komt.':'Fill in who the card is for and who it is from.',
+  eEmail:n?'Vul een geldig e-mailadres in.':'Please enter a valid e-mail address.',eGen:n?'Er ging iets mis. Probeer het opnieuw of stuur ons een WhatsApp.':'Something went wrong. Please try again or send us a WhatsApp.',
+  checking:n?'Betaling controleren…':'Checking your payment…',checkingP:n?'Dit duurt maar een paar seconden.':'This only takes a few seconds.',
+  okH:n?'Bedankt!':'Thank you!',okP:n?'Je cadeaubon is klaar en wordt nu gedownload. We stuurden hem ook naar ':'Your gift card is ready and is downloading now. We also sent it to ',
+  dl:n?'DOWNLOAD PDF':'DOWNLOAD PDF',view:n?'Bekijk de bon':'View the card',
+  failH:n?'Betaling niet gelukt':'Payment not completed',failP:n?'Er werd niets aangerekend. Je kan het gewoon opnieuw proberen.':'Nothing was charged. You can simply try again.',retry:n?'OPNIEUW PROBEREN':'TRY AGAIN',
+  slowH:n?'Nog even geduld':'Almost there',slowP:n?'Je betaling wordt nog verwerkt. Zodra ze binnen is, krijg je de cadeaubon per e-mail.':'Your payment is still being processed. As soon as it is confirmed, you will receive the gift card by e-mail.'
+}}
+function gcSetText(id,v){var e=document.getElementById(id);if(e)e.textContent=v}
+function gcLang(){
+  var t=gcT();gcSetText('gcEyebrow',t.eyebrow);gcSetText('giftTitle',t.title);gcSetText('cardTitle',t.card);gcSetText('gcForL',t.forL);gcSetText('gcFromL',t.fromL);gcSetText('gcMollie',t.mollie);
+  var ph={inpGiftAmt:t.other,inpGiftTo:t.to,inpGiftFrom:t.from,inpGiftMsg:t.msg,inpGiftEmail:t.email};for(var k in ph){var e=document.getElementById(k);if(e)e.placeholder=ph[k]}
+  var pk=document.querySelectorAll('#gcPerks span');for(var i=0;i<pk.length;i++)pk[i].textContent=t.perks[i]||'';
+  gcPayLabel();
+}
+function gcPayLabel(){var t=gcT(),a=+selectedGiftAmt;gcSetText('gcPayTxt',a>=20?t.pay+' € '+a:t.choose)}
+function gcPreview(){
+  var v=function(id){var e=document.getElementById(id);return e?e.value.trim():''};
+  gcSetText('dispTo',v('inpGiftTo')||'…');gcSetText('dispFrom',v('inpGiftFrom')||'…');
+  var m=v('inpGiftMsg');gcSetText('dispMsg',m?'“'+m+'”':'');
+}
+function setGiftAmt(a,typed){
+  a=Math.round(+a)||0;selectedGiftAmt=a;
+  gcSetText('dispAmt',a?'€ '+a:'€ —');
+  var inp=document.getElementById('inpGiftAmt');if(!typed&&inp)inp.value='';
+  document.querySelectorAll('#giftAmtGrid .amt-opt').forEach(function(b){b.classList.toggle('active',!typed&&parseInt(b.textContent,10)===a)});
+  gcPayLabel();
+}
+function sendGiftWA(){giftCheckout()}
+async function giftCheckout(){
+  var t=gcT(),err=document.getElementById('gcErr'),btn=document.getElementById('btnGiftOrder');
+  var v=function(id){return document.getElementById(id).value.trim()};
+  var a=+selectedGiftAmt;err.textContent='';
+  if(!(a>=20&&a<=1000)){err.textContent=t.eAmt;return}
+  if(v('inpGiftTo').length<2||v('inpGiftFrom').length<2){err.textContent=t.eNames;return}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v('inpGiftEmail'))){err.textContent=t.eEmail;return}
+  btn.disabled=true;gcSetText('gcPayTxt',t.wait);
+  try{
+    var r=await fetch(GIFT_API+'/giftCheckout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:a,to:v('inpGiftTo'),from:v('inpGiftFrom'),message:v('inpGiftMsg'),email:v('inpGiftEmail'),lang:lang})});
+    var j=await r.json();if(!r.ok||!j.url)throw new Error(j.error||'error');
+    location.href=j.url;
+  }catch(e){err.textContent=t.eGen;btn.disabled=false;gcPayLabel()}
+}
+function gcShow(html){document.getElementById('gcForm').style.display='none';var r=document.getElementById('gcResult');r.style.display='block';document.getElementById('gcState').innerHTML=html}
+function gcBackToForm(){document.getElementById('gcResult').style.display='none';document.getElementById('gcForm').style.display='block';var b=document.getElementById('btnGiftOrder');if(b)b.disabled=false;gcPayLabel()}
+function gcDownload(url){try{var fr=document.createElement('iframe');fr.style.display='none';fr.src=url;document.body.appendChild(fr);setTimeout(function(){fr.remove()},60000)}catch(e){}}
+async function giftReturn(id,tok){
+  var t=gcT(),url=GIFT_API+'/giftPdf?id='+encodeURIComponent(id)+'&t='+encodeURIComponent(tok);
+  document.getElementById('giftModal').style.display='block';
+  gcShow('<div class="ic"><i class="fas fa-spinner fa-spin"></i></div><h4>'+t.checking+'</h4><p>'+t.checkingP+'</p>');
+  for(var i=0;i<20;i++){
+    try{
+      var r=await fetch(GIFT_API+'/giftStatus?id='+encodeURIComponent(id)+'&t='+encodeURIComponent(tok));var j=await r.json();
+      if(j.status==='paid'){
+        gcShow('<div class="ic ok"><i class="fas fa-check"></i></div><h4>'+t.okH+'</h4><p>'+t.okP+'<b>'+escH(j.email||'')+'</b>.</p><div class="code">'+escH(j.code)+'</div>'+
+          '<a class="btn-form-primary" href="'+url+'" rel="noopener"><i class="fas fa-download"></i> '+t.dl+'</a><a class="gc-link" href="'+url+'&view=1" target="_blank" rel="noopener">'+t.view+'</a>');
+        setTimeout(function(){gcDownload(url)},700);return;
+      }
+      if(j.status==='canceled'||j.status==='expired'||j.status==='failed'||j.status==='unknown'){
+        gcShow('<div class="ic"><i class="fas fa-xmark"></i></div><h4>'+t.failH+'</h4><p>'+t.failP+'</p><button class="btn-form-primary" onclick="gcBackToForm()">'+t.retry+'</button>');return;
+      }
+    }catch(e){}
+    await new Promise(function(res){setTimeout(res,2000)});
+  }
+  gcShow('<div class="ic"><i class="fas fa-hourglass-half"></i></div><h4>'+t.slowH+'</h4><p>'+t.slowP+'</p>');
+}
+(function(){ // back from Mollie: inkjection.be/?gift=ID&t=TOKEN
+  try{var P=new URLSearchParams(location.search),id=P.get('gift'),tok=P.get('t');if(!id||!tok)return;
+    var u=new URL(location.href);u.searchParams.delete('gift');u.searchParams.delete('t');history.replaceState(history.state,'',u.pathname+u.search+u.hash);
+    var go=function(){setTimeout(function(){giftReturn(id,tok)},400)};
+    if(document.readyState==='complete')go();else addEventListener('load',go);
+  }catch(e){}
+})();
+
 // LIGHTBOX
 var activeGallery=portfolioUrls;
 function openLightbox(i,gallery){activeGallery=gallery||portfolioUrls;lightboxIndex=i;document.getElementById('lightboxImg').src=activeGallery[i];document.getElementById('lightbox').classList.toggle('single-photo',activeGallery.length<2);document.getElementById('lightbox').classList.add('active')}
@@ -1853,13 +1989,7 @@ async function submitBooking(){
 function handleSelection(size){userSizeChoice=size;closeModal('selectionModal');openModalSync('calModal')}
 
 // GIFT
-function setGiftAmt(a){selectedGiftAmt=a;document.getElementById('dispAmt').textContent=a+'\u20AC';document.getElementById('inpGiftAmt').value=a;document.querySelectorAll('.amt-opt').forEach(function(b){b.classList.remove('active')})}
-function sendGiftWA(){
-  var f=document.getElementById('inpGiftFrom').value||'...',t=document.getElementById('inpGiftTo').value||'...';
-  if(!selectedGiftAmt){alert("Select amount");return}
-  window.open('https://wa.me/'+MY_WA+'?text='+encodeURIComponent('Cadeaubon Order:\nAmount: '+selectedGiftAmt+'\u20AC\nFrom: '+f+'\nTo: '+t));
-}
-function openGiftModal(){document.getElementById('giftModal').style.display='block'}
+function openGiftModal(){gcLang();gcPreview();gcBackToForm();document.getElementById('giftModal').style.display='block'}
 
 // COOKIE CONSENT
 function initCookieConsent(){
