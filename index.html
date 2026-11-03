@@ -2,6 +2,14 @@
 
 <html lang="nl">
 <head>
+<script>
+(function(){try{var q=location.search,h=location.hash;
+ if(/[?&]gift=/.test(q)){location.replace('/cadeaubon/'+q);return}
+ if(/[?&]booking=/.test(q)){location.replace('/afspraak/'+q);return}
+ if(h==='#boek'||h==='#afspraak'){location.replace('/afspraak/'+q);return}
+ if(h==='#cadeaubon'){location.replace('/cadeaubon/'+q)}
+}catch(e){}})();
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
 <title>Inkjection Tattoo | Fine Line Tattoo Studio Antwerpen - Zandhoven</title>
@@ -787,6 +795,27 @@ button.xm-chip:hover,button.xm-chip:focus-visible{border-color:var(--xm-red-soft
 
 <body>
 
+<style>
+/* ===== separate pages (cadeaubon / afspraak) ===== */
+body.pg #splash{display:none!important}
+body.pg .hero,body.pg .hero-bg,body.pg .scroll-hint{display:none!important}
+body.pg .content-wrap>*:not(.footer){display:none!important}
+body.pg .content-wrap{padding-top:0}
+body.pg-gift .xm-santa{display:none!important}
+body.pg .nav{background:rgba(10,10,10,.85);backdrop-filter:blur(12px)}
+body.pg .pg-main{position:relative;z-index:2;padding:86px 0 10px;min-height:calc(100vh - 160px)}
+body.pg .pg-main>.modal{display:block!important;position:relative;z-index:2;inset:auto;width:auto;height:auto;background:none;backdrop-filter:none}
+body.pg .pg-main>.modal>.modal-content{margin:0 auto;max-height:none;overflow:visible}
+body.pg .pg-main>.modal>.modal-content>.close-modal{display:none}
+.pg-back{display:flex;align-items:center;gap:8px;width:92%;max-width:400px;margin:0 auto 12px;font-size:12px;letter-spacing:2px;color:var(--text-muted);text-decoration:none}
+.pg-back:hover{color:var(--accent)}
+@media(min-width:768px){.pg-back{max-width:450px}}
+</style>
+<script>
+var PAGE='home';
+function pgLangQ(){try{return (typeof lang!=='undefined'&&lang==='en')?'?lang=en':''}catch(e){return ''}}
+document.body.classList.add('pg-'+PAGE);if(PAGE!=='home')document.body.classList.add('pg');
+</script>
 <div id="splash"><img src="https://firebasestorage.googleapis.com/v0/b/inkjection-admin.firebasestorage.app/o/site%2Flogo.png?alt=media" onerror="this.onerror=null;this.src='https://i.ibb.co/tPTrSN8k/image.png'" alt="Inkjection"><div class="splash-name">INKJECTION</div></div>
 <div class="hero-bg"></div>
 <canvas id="xmSnow" aria-hidden="true"></canvas>
@@ -2252,6 +2281,27 @@ var CF_BEACON_TOKEN='';
 (function(){try{if(!CF_BEACON_TOKEN||localStorage.getItem('inkjection_nostats'))return}catch(e){}
   var s=document.createElement('script');s.defer=true;s.src='https://static.cloudflareinsights.com/beacon.min.js';
   s.setAttribute('data-cf-beacon',JSON.stringify({token:CF_BEACON_TOKEN}));document.body.appendChild(s)})();
+</script>
+<script>
+(function(){
+ var P=PAGE;
+ if(P!=='gift'){window.openGiftModal=function(){location.href='/cadeaubon/'+pgLangQ()}}
+ if(P!=='book'){var _o=window.openModalSync;window.openModalSync=function(id){if(id==='selectionModal'){location.href='/afspraak/'+pgLangQ();return}return _o.apply(this,arguments)}}
+ if(P==='home')return;
+ // move the page's form out of the overlay layer into the page itself
+ var id=P==='gift'?'giftModal':'selectionModal',m=document.getElementById(id),wrap=document.querySelector('.content-wrap');
+ var main=document.createElement('main');main.className='pg-main';
+ var back=document.createElement('a');back.className='pg-back';back.href='/';back.innerHTML='<i class="fas fa-arrow-left"></i><span id="pgBackTxt">HOME</span>';
+ main.appendChild(back);main.appendChild(m);wrap.parentNode.insertBefore(main,wrap);
+ var lg=document.querySelector('.nav-logo');if(lg)lg.setAttribute('href','/');
+ try{if(/[?&]lang=en/.test(location.search))setLang('en')}catch(e){}
+ var ol=window.onload;window.onload=function(){
+  try{ol&&ol.apply(this,arguments)}catch(e){console.error(e)}
+  try{var s=document.getElementById('splash');if(s)s.style.display='none'}catch(e){}
+  if(P==='gift'){if(!/[?&]gift=/.test(location.search))openGiftModal()}
+  else{if(!/[?&]booking=/.test(location.search))openModalSync('selectionModal')}
+ };
+})();
 </script>
 </body>
 </html>
