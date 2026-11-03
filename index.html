@@ -763,6 +763,11 @@ button.xm-chip:hover,button.xm-chip:focus-visible{border-color:var(--xm-red-soft
 .ask-btn{flex:0 0 52px;border-radius:50%;border:1px solid rgba(37,211,102,.5);background:rgba(37,211,102,.12);color:#25d366;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;aspect-ratio:1}
 .ask-btn:active{transform:scale(.95)}
 #bkAlt{margin-top:12px}
+
+.gc-promo{margin:-4px 0 12px;padding:10px 14px;border-radius:12px;background:linear-gradient(90deg,rgba(226,194,125,.22),rgba(226,194,125,.06));border:1px solid rgba(226,194,125,.5);color:#fff;font-size:12.5px;text-align:center}
+.gc-promo i{color:var(--accent);margin-right:6px}
+#giftModal .amt-opt small{display:block;font-size:10px;font-weight:700;color:var(--accent);margin-top:2px}
+#giftModal .amt-opt.promo{border-color:rgba(226,194,125,.55)}
 </style>
 
 </head>
@@ -1223,6 +1228,7 @@ button.xm-chip:hover,button.xm-chip:focus-visible{border-color:var(--xm-red-soft
         <div class="gc-names"><div><small id="gcForL">VOOR</small><b id="dispTo">…</b></div><div><small id="gcFromL">VAN</small><b id="dispFrom">…</b></div></div>
         <div class="gc-msg" id="dispMsg"></div>
       </div>
+      <div class="gc-promo" id="gcPromo" style="display:none"></div>
       <div class="amt-grid" id="giftAmtGrid">
         <button class="amt-opt" onclick="setGiftAmt(50)">50€</button>
         <button class="amt-opt" onclick="setGiftAmt(100)">100€</button>
@@ -1570,11 +1576,20 @@ function gcPreview(){
   gcSetText('dispTo',v('inpGiftTo')||'…');gcSetText('dispFrom',v('inpGiftFrom')||'…');
   var m=v('inpGiftMsg');gcSetText('dispMsg',m?'“'+m+'”':'');
 }
+function gcBonus(){var g=(typeof sv==='function'&&sv('gift'))||{},m={};if(g.bonusOn===true&&Array.isArray(g.bonus))g.bonus.forEach(function(x){var r=String(x).match(/^(\d+)=(\d+)$/);if(r&&+r[2]>+r[1])m[+r[1]]=+r[2]});return m}
+function gcValue(a){var m=gcBonus();return m[a]||a}
+function gcBuildAmounts(am){
+  var g=document.getElementById('giftAmtGrid');if(!g)return;var m=gcBonus(),list=(am&&am.length?am.slice(0,6):[50,100,150,250]).map(Number);
+  Object.keys(m).forEach(function(k){if(list.indexOf(+k)<0)list.push(+k)});list=list.filter(function(v){return v>0}).sort(function(a,b){return a-b}).slice(0,8);
+  g.innerHTML='';list.forEach(function(v){var b=document.createElement('button');b.className='amt-opt'+(m[v]?' promo':'');b.dataset.v=v;b.innerHTML=v+'€'+(m[v]?'<small>→ '+m[v]+'€</small>':'');b.onclick=function(){setGiftAmt(v)};g.appendChild(b)});
+  var p=document.getElementById('gcPromo'),keys=Object.keys(m);
+  if(p){if(keys.length){var k=keys[0];p.innerHTML='<i class="fas fa-tag"></i> '+(lang==='nl'?'Promo: betaal <b>€'+k+'</b> en geef een bon van <b>€'+m[k]+'</b>':'Promo: pay <b>€'+k+'</b> and give a card worth <b>€'+m[k]+'</b>');p.style.display='block'}else p.style.display='none'}
+}
 function setGiftAmt(a,typed){
   a=Math.round(+a)||0;selectedGiftAmt=a;
-  gcSetText('dispAmt',a?'€ '+a:'€ —');
+  gcSetText('dispAmt',a?'€ '+gcValue(a):'€ —');
   var inp=document.getElementById('inpGiftAmt');if(!typed&&inp)inp.value='';
-  document.querySelectorAll('#giftAmtGrid .amt-opt').forEach(function(b){b.classList.toggle('active',!typed&&parseInt(b.textContent,10)===a)});
+  document.querySelectorAll('#giftAmtGrid .amt-opt').forEach(function(b){b.classList.toggle('active',!typed&&+(b.dataset.v||parseInt(b.textContent,10))===a)});
   gcPayLabel();
 }
 function sendGiftWA(){giftCheckout()}
@@ -1950,7 +1965,7 @@ function applySiteContent(){
     var mp=document.getElementById('ctMap');if(mp&&c.address!==SITE_DEFAULTS.contact.address){var u='https://www.google.com/maps?q='+encodeURIComponent(c.address)+'&output=embed';if(mp.src!==u)mp.src=u}}
   [['soIg','instagram'],['soTt','tiktok'],['soFb','facebook']].forEach(function(x){var a=document.getElementById(x[0]);if(!a)return;var u=c[x[1]];if(u===''){a.style.display='none'}else if(u){a.href=u;a.style.display=''}});
   var am=sv('gift.amounts');
-  if(am&&am.length){var g=document.getElementById('giftAmtGrid');if(g){g.innerHTML='';am.slice(0,6).forEach(function(v){var b=document.createElement('button');b.className='amt-opt';b.textContent=v+'€';b.onclick=function(){setGiftAmt(v)};g.appendChild(b)})}}
+  gcBuildAmounts(am);
 }
 async function fetchSiteContent(){
   if(!db)return;
@@ -2069,7 +2084,7 @@ function askQuestion(kind){
 function handleSelection(size){try{setTimeout(bkDepositUI,0)}catch(e){};userSizeChoice=size;closeModal('selectionModal');openModalSync('calModal')}
 
 // GIFT
-function openGiftModal(){gcLang();gcPreview();gcBackToForm();document.getElementById('giftModal').style.display='block'}
+function openGiftModal(){gcBuildAmounts(typeof sv==='function'?sv('gift.amounts'):null);gcLang();gcPreview();gcBackToForm();document.getElementById('giftModal').style.display='block'}
 
 // COOKIE CONSENT
 function initCookieConsent(){
