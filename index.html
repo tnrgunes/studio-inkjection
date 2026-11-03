@@ -745,6 +745,24 @@ button.xm-chip:hover,button.xm-chip:focus-visible{border-color:var(--xm-red-soft
 .gc-state .gc-link{display:inline-block;margin-top:14px;font-size:12px;color:var(--text-muted,rgba(255,255,255,.5));text-decoration:underline;cursor:pointer}
 @media(max-width:380px){.gc-card{padding:15px 16px}.gc-names b{font-size:15px}#giftModal .amt-opt{font-size:13px}}
 .gc-state a.btn-form-primary{text-decoration:none;text-align:center}
+
+/* deposit + WhatsApp question button */
+.bk-deposit{border:1px solid var(--border-hover);background:linear-gradient(145deg,rgba(201,169,110,.10),rgba(255,255,255,.02));border-radius:14px;padding:14px 16px;margin:6px 0 14px}
+.bk-dep-top{display:flex;align-items:center;gap:9px;margin-bottom:10px}
+.bk-dep-top i{color:var(--accent)}
+.bk-dep-top span{font-size:11px;letter-spacing:3px;font-weight:800;color:var(--accent)}
+.bk-dep-top b{margin-left:auto;font-family:var(--font-display);font-size:24px;font-weight:600;color:#fff}
+.bk-steps{list-style:none;counter-reset:st;margin:0;padding:0;display:grid;gap:8px}
+.bk-steps li{counter-increment:st;display:flex;gap:10px;align-items:flex-start;font-size:12.5px;line-height:1.5;color:var(--text-soft,rgba(255,255,255,.75))}
+.bk-steps li::before{content:counter(st);flex:0 0 20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#111;background:var(--accent)}
+.bk-steps li b{color:#fff}
+.gc-how{font-size:10px;letter-spacing:3px;font-weight:800;color:var(--accent);margin:4px 0 8px}
+.gc-steps{margin-bottom:14px}
+.pay-row{display:flex;gap:10px;align-items:stretch}
+.pay-row .btn-form-primary{flex:1;margin:0}
+.ask-btn{flex:0 0 52px;border-radius:50%;border:1px solid rgba(37,211,102,.5);background:rgba(37,211,102,.12);color:#25d366;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;aspect-ratio:1}
+.ask-btn:active{transform:scale(.95)}
+#bkAlt{margin-top:12px}
 </style>
 
 </head>
@@ -849,7 +867,7 @@ button.xm-chip:hover,button.xm-chip:focus-visible{border-color:var(--xm-red-soft
     // Santa says hi now and then
     var bu=document.getElementById('xmBubble');
     var sa=document.getElementById('xmSanta');
-    function place(){if(sa)sa.classList.toggle('away',innerWidth<1024&&scrollY<innerHeight*.75)}
+    function place(){if(sa)sa.classList.remove('away')}
     place();addEventListener('scroll',place,{passive:true});addEventListener('resize',place);
     function hi(){if(!bu||(sa&&sa.classList.contains('away')))return;bu.classList.add('show');setTimeout(function(){bu.classList.remove('show')},5000)}
     setTimeout(hi,4000);setInterval(hi,30000);
@@ -1218,9 +1236,12 @@ button.xm-chip:hover,button.xm-chip:focus-visible{border-color:var(--xm-red-soft
       </div>
       <textarea id="inpGiftMsg" class="form-input gc-ta" maxlength="160" placeholder="Persoonlijke boodschap (optioneel)" oninput="gcPreview()"></textarea>
       <input type="email" id="inpGiftEmail" class="form-input" maxlength="120" placeholder="Jouw e-mail (hier sturen we de PDF naartoe)">
-      <ul class="gc-perks" id="gcPerks"><li><i class="fas fa-file-pdf"></i><span>Meteen als mooie PDF, om af te drukken of door te sturen</span></li><li><i class="fas fa-calendar-check"></i><span>1 jaar geldig, voor elke tattoo bij Inkjection</span></li><li><i class="fas fa-lock"></i><span>Veilig betalen met Bancontact</span></li></ul>
+      <p class="gc-how" id="gcHow">ZO WERKT HET</p><ol class="bk-steps gc-steps" id="gcPerks"><li><span></span></li><li><span></span></li><li><span></span></li></ol>
       <div class="gc-err" id="gcErr"></div>
-      <button class="btn-form-primary gc-pay" onclick="giftCheckout()" id="btnGiftOrder"><i class="fas fa-lock"></i> <span id="gcPayTxt">KIES EEN BEDRAG</span></button>
+      <div class="pay-row">
+        <button class="btn-form-primary gc-pay" onclick="giftCheckout()" id="btnGiftOrder"><i class="fas fa-lock"></i> <span id="gcPayTxt">KIES EEN BEDRAG</span></button>
+        <button type="button" class="ask-btn" onclick="askQuestion('gift')" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></button>
+      </div>
       <p class="gc-mollie" id="gcMollie">Betaling via Mollie · je wordt even doorgestuurd</p>
     </div>
     <div id="gcResult" class="gc-result" style="display:none">
@@ -1310,10 +1331,17 @@ button.xm-chip:hover,button.xm-chip:focus-visible{border-color:var(--xm-red-soft
       <div class="bk-photos" id="bkPhotos"></div>
       <input type="file" id="bkPhotoInput" accept="image/*" multiple style="display:none" onchange="addBookingPhotos(this.files);this.value=''">
       <input type="text" id="bkWebsite" class="bk-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <div class="bk-deposit" id="bkDeposit">
+        <div class="bk-dep-top"><i class="fas fa-shield-halved"></i><span id="bkDepTitle">VOORSCHOT</span><b id="bkDepAmt">€ 20</b></div>
+        <ol class="bk-steps" id="bkDepSteps"><li></li><li></li><li></li></ol>
+      </div>
       <label class="bk-consent"><input type="checkbox" id="bkConsent"><span id="bkConsentText"></span></label>
-      <button class="btn-form-primary" id="bkSubmit" onclick="submitBooking()">VERSTUUR AANVRAAG</button>
       <div class="bk-error" id="bkError"></div>
-      <a class="bk-alt" id="bkAlt" onclick="goToWhatsAppWithDate(bookingDate)"><i class="fab fa-whatsapp"></i><span id="bkAltText">Liever via WhatsApp?</span></a>
+      <div class="pay-row">
+        <button class="btn-form-primary" id="bkSubmit" onclick="submitBooking()">BETAAL VOORSCHOT</button>
+        <button type="button" class="ask-btn" onclick="askQuestion('booking')" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></button>
+      </div>
+      <a class="bk-alt" id="bkAlt" onclick="askQuestion('booking')"><i class="fab fa-whatsapp"></i><span id="bkAltText">Een vraag of probleem? Stuur ons een WhatsApp</span></a>
     </div>
     <div id="bkDoneView" class="bk-done" style="display:none">
       <div class="bk-done-icon"><i class="fas fa-check"></i></div>
@@ -1519,7 +1547,7 @@ function gcT(){var n=lang==='nl';return{
   eyebrow:n?'GEEF IETS BLIJVENDS':'GIVE SOMETHING LASTING',title:n?'CADEAUBON':'GIFT CARD',card:n?'CADEAUBON':'GIFT CARD',forL:n?'VOOR':'FOR',fromL:n?'VAN':'FROM',
   other:n?'Ander bedrag (€)':'Other amount (€)',to:n?'Voor (naam)':'For (name)',from:n?'Van (naam)':'From (name)',msg:n?'Persoonlijke boodschap (optioneel)':'Personal message (optional)',
   email:n?'Jouw e-mail (hier sturen we de PDF naartoe)':'Your e-mail (we send the PDF here)',
-  perks:n?['Meteen als mooie PDF, om af te drukken of door te sturen','1 jaar geldig, voor elke tattoo bij Inkjection','Veilig betalen met Bancontact']:['Instantly as a beautiful PDF, to print or forward','Valid for 1 year, for any tattoo at Inkjection','Pay securely with Bancontact'],
+  perks:n?['Kies een bedrag en vul in voor wie de bon is.','Betaal veilig met Bancontact.','Je krijgt de cadeaubon meteen als PDF en per e-mail. Hij is 1 jaar geldig voor elke tattoo bij Inkjection.']:['Choose an amount and who the card is for.','Pay securely with Bancontact.','You get the gift card right away as a PDF and by e-mail. It is valid for 1 year for any tattoo at Inkjection.'],how:n?'ZO WERKT HET':'HOW IT WORKS',
   choose:n?'KIES EEN BEDRAG':'CHOOSE AN AMOUNT',pay:n?'BETAAL':'PAY',wait:n?'EVEN GEDULD…':'ONE MOMENT…',mollie:n?'Betaling via Mollie · je wordt even doorgestuurd':'Payment via Mollie · you will be redirected briefly',
   eAmt:n?'Kies een bedrag tussen 20 en 1000 €.':'Choose an amount between 20 and 1000 €.',eNames:n?'Vul de naam in van wie de bon krijgt en van wie hij komt.':'Fill in who the card is for and who it is from.',
   eEmail:n?'Vul een geldig e-mailadres in.':'Please enter a valid e-mail address.',eGen:n?'Er ging iets mis. Probeer het opnieuw of stuur ons een WhatsApp.':'Something went wrong. Please try again or send us a WhatsApp.',
@@ -1531,7 +1559,7 @@ function gcT(){var n=lang==='nl';return{
 }}
 function gcSetText(id,v){var e=document.getElementById(id);if(e)e.textContent=v}
 function gcLang(){
-  var t=gcT();gcSetText('gcEyebrow',t.eyebrow);gcSetText('giftTitle',t.title);gcSetText('cardTitle',t.card);gcSetText('gcForL',t.forL);gcSetText('gcFromL',t.fromL);gcSetText('gcMollie',t.mollie);
+  var t=gcT();gcSetText('gcEyebrow',t.eyebrow);gcSetText('giftTitle',t.title);gcSetText('cardTitle',t.card);gcSetText('gcForL',t.forL);gcSetText('gcFromL',t.fromL);gcSetText('gcMollie',t.mollie);gcSetText('gcHow',t.how);
   var ph={inpGiftAmt:t.other,inpGiftTo:t.to,inpGiftFrom:t.from,inpGiftMsg:t.msg,inpGiftEmail:t.email};for(var k in ph){var e=document.getElementById(k);if(e)e.placeholder=ph[k]}
   var pk=document.querySelectorAll('#gcPerks span');for(var i=0;i<pk.length;i++)pk[i].textContent=t.perks[i]||'';
   gcPayLabel();
@@ -1747,17 +1775,17 @@ var BK_TXT={
   nl:{title:'AFSPRAAK AANVRAGEN',time:'KIES EEN TIJDSTIP',you:'JOUW GEGEVENS',name:'Naam *',phone:'Telefoon / WhatsApp *',email:'E-mail *',place:'Plaats op het lichaam (bv. onderarm)',desc:'Beschrijf je idee (stijl, grootte, referenties...)',
       noTime:'<i class="fas fa-circle-info"></i>Voor deze dag stelt Talitha een tijdstip voor wanneer ze je aanvraag bevestigt.',
       consent:'Ik ga akkoord dat mijn gegevens bewaard worden om mijn afspraak te regelen. <a onclick="openPrivacyFromBanner()">Privacybeleid</a>',
-      send:'VERSTUUR AANVRAAG',sending:'BEZIG...',alt:'Liever via WhatsApp?',
+      send:'BETAAL VOORSCHOT',sending:'EVEN GEDULD...',alt:'Een vraag of probleem? Stuur ons een WhatsApp',depT:'VOORSCHOT',dep:['Vul je gegevens in en tik op <b>Betaal voorschot</b>.','Betaal het voorschot veilig met Bancontact. Pas daarna wordt je aanvraag verstuurd.','Talitha bevestigt je afspraak. Het voorschot gaat af van de prijs van je tattoo.'],checking:'Betaling controleren…',failT:'BETALING NIET GELUKT',fail:'Er werd niets aangerekend en er is geen afspraak aangemaakt. Je kan het gewoon opnieuw proberen.',retry:'OPNIEUW PROBEREN',slowT:'NOG EVEN GEDULD',slow:'Je betaling wordt nog verwerkt. Zodra ze binnen is, krijg je een bevestiging per e-mail.',timeMoved:'<br><br>Je gekozen tijdstip werd intussen geboekt; Talitha stelt je een ander uur voor.',
       eTime:'Kies een tijdstip of "Geen voorkeur".',anyTime:'Geen voorkeur / ander tijdstip',eName:'Vul je naam in.',ePhone:'Vul een geldig telefoonnummer in.',eEmail:'Vul een geldig e-mailadres in.',photo:'FOTO\'S (OPTIONEEL, MAX 2)',addPhoto:'FOTO',ePhoto:'Deze foto kon niet geladen worden.',eConsent:'Vink het akkoord aan om verder te gaan.',
       eTaken:'Dit tijdstip is net geboekt. Kies een ander tijdstip.',eLimit:'Je hebt vandaag al meerdere aanvragen verstuurd. Stuur ons een bericht via WhatsApp.',eGen:'Er ging iets mis. Probeer opnieuw of stuur een WhatsApp.',
-      doneT:'BEDANKT!',done:'Je aanvraag is verstuurd. Talitha bekijkt ze zo snel mogelijk en bevestigt je afspraak via WhatsApp of telefoon.<br><br>Pas na die bevestiging is je afspraak definitief.',close:'SLUITEN'},
+      doneT:'BEDANKT!',done:'Je voorschot is betaald en je aanvraag is verstuurd. Talitha bevestigt je afspraak zo snel mogelijk via WhatsApp of telefoon. Je krijgt ook een bevestiging per e-mail.',close:'SLUITEN'},
   en:{title:'REQUEST APPOINTMENT',time:'PICK A TIME',you:'YOUR DETAILS',name:'Name *',phone:'Phone / WhatsApp *',email:'E-mail *',place:'Placement on the body (e.g. forearm)',desc:'Describe your idea (style, size, references...)',
       noTime:'<i class="fas fa-circle-info"></i>For this day Talitha will propose a time when she confirms your request.',
       consent:'I agree that my details are stored to arrange my appointment. <a onclick="openPrivacyFromBanner()">Privacy policy</a>',
-      send:'SEND REQUEST',sending:'SENDING...',alt:'Prefer WhatsApp?',
+      send:'PAY DEPOSIT',sending:'ONE MOMENT...',alt:'A question or a problem? Send us a WhatsApp',depT:'DEPOSIT',dep:['Fill in your details and tap <b>Pay deposit</b>.','Pay the deposit securely with Bancontact. Only then is your request sent.','Talitha confirms your appointment. The deposit is deducted from the price of your tattoo.'],checking:'Checking your payment…',failT:'PAYMENT NOT COMPLETED',fail:'Nothing was charged and no appointment was created. You can simply try again.',retry:'TRY AGAIN',slowT:'ALMOST THERE',slow:'Your payment is still being processed. As soon as it is confirmed, you will receive an e-mail.',timeMoved:'<br><br>Your chosen time was booked in the meantime; Talitha will propose another time.',
       eTime:'Please pick a time or "No preference".',anyTime:'No preference / other time',eName:'Please enter your name.',ePhone:'Please enter a valid phone number.',eEmail:'Please enter a valid e-mail address.',photo:'PHOTOS (OPTIONAL, MAX 2)',addPhoto:'PHOTO',ePhoto:'This photo could not be loaded.',eConsent:'Please tick the agreement to continue.',
       eTaken:'This time was just booked. Please pick another time.',eLimit:'You already sent several requests today. Please message us on WhatsApp.',eGen:'Something went wrong. Please try again or send a WhatsApp.',
-      doneT:'THANK YOU!',done:'Your request has been sent. Talitha will check it as soon as possible and confirm your appointment via WhatsApp or phone.<br><br>Your appointment is final only after that confirmation.',close:'CLOSE'}
+      doneT:'THANK YOU!',done:'Your deposit is paid and your request has been sent. Talitha will confirm your appointment as soon as possible via WhatsApp or phone. You will also receive a confirmation by e-mail.',close:'CLOSE'}
 };
 function bkT(){return BK_TXT[lang]||BK_TXT.nl}
 function bkDateNice(ds){var p=ds.split('-');var d=new Date(+p[0],+p[1]-1,+p[2]);try{return d.toLocaleDateString(lang==='nl'?'nl-BE':'en-GB',{weekday:'short',day:'numeric',month:'long'})}catch(e){return p[2]+'/'+p[1]+'/'+p[0]}}
@@ -1773,7 +1801,7 @@ function applyBookingLang(){
   document.getElementById('bkDesc').placeholder=t.desc;
   document.getElementById('bkNoTimeNote').innerHTML=t.noTime;
   document.getElementById('bkConsentText').innerHTML=t.consent;
-  document.getElementById('bkSubmit').textContent=t.send;
+  bkDepositUI();
   document.getElementById('bkAltText').textContent=t.alt;
   document.getElementById('bkDoneTitle').textContent=t.doneT;
   document.getElementById('bkDoneText').innerHTML=t.done;
@@ -1866,7 +1894,7 @@ function renderBookingPhotos(){
 var FAQ_BASE=[
   {k:'book',q:{nl:'Hoe maak ik een afspraak?',en:'How do I book an appointment?'},a:{nl:'Tik op **Plan je sessie**, kies het formaat, een datum en (als die er zijn) een tijdstip, en verstuur je aanvraag. Talitha bevestigt je afspraak daarna via WhatsApp of telefoon. Pas na die bevestiging is je afspraak definitief.',en:'Tap **Plan your session**, choose the size, a date and (if available) a time, and send your request. Talitha then confirms your appointment via WhatsApp or phone. Only after that confirmation is your appointment final.'}},
   {k:'price',q:{nl:'Wat kost een tattoo?',en:'How much does a tattoo cost?'},a:{nl:'Dat hangt af van de grootte, het detail en de plaats op je lichaam. Small (0-8 cm) start vanaf €80, medium (8-15 cm) vanaf €120, large (15+ cm) gaat op afspraak. Voor een prijs op maat stuur je gewoon een bericht met je idee.',en:'It depends on the size, the detail and the placement. Small (0-8 cm) starts from €80, medium (8-15 cm) from €120, large (15+ cm) by appointment. For a price on your idea, just send a message.'}},
-  {k:'deposit',q:{nl:'Moet ik een voorschot betalen? Wat als ik moet annuleren?',en:'Do I pay a deposit? What if I need to cancel?'}},
+  {k:'deposit',q:{nl:'Moet ik een voorschot betalen?',en:'Do I pay a deposit?'},a:{nl:'Ja. Bij het aanvragen van je afspraak betaal je online een voorschot met Bancontact: **€20** voor small, **€50** voor medium en **€80** voor large. Zonder voorschot wordt er geen afspraak aangemaakt. Het voorschot gaat af van de prijs van je tattoo.',en:'Yes. When you request your appointment you pay a deposit online with Bancontact: **€20** for small, **€50** for medium and **€80** for large. Without a deposit no appointment is created. The deposit is deducted from the price of your tattoo.'}},
   {k:'payment',q:{nl:'Hoe kan ik betalen?',en:'How can I pay?'}},
   {k:'age',q:{nl:'Vanaf welke leeftijd kan ik een tattoo laten zetten?',en:'What is the minimum age for a tattoo?'}},
   {k:'prep',q:{nl:'Hoe bereid ik me voor op mijn sessie?',en:'How do I prepare for my session?'},a:{nl:'Eet goed op voorhand, drink genoeg water en drink de dag ervoor geen alcohol. Kom uitgerust en draag kleding waarmee de plek van je tattoo makkelijk bereikbaar is.',en:'Eat well beforehand, drink enough water and skip alcohol the day before. Come well rested and wear clothes that give easy access to the tattoo spot.'}},
@@ -1945,6 +1973,16 @@ async function fetchSiteContent(){
 }
 
 function bkRecent(){try{var a=JSON.parse(localStorage.getItem('inkjection_bk')||'[]');var c=Date.now()-864e5;return a.filter(function(x){return x>c})}catch(e){return []}}
+var BOOK_API='https://europe-west1-inkjection-admin.cloudfunctions.net';
+var DEPOSIT={small:20,medium:50,large:80};
+function depAmt(size){var d=(typeof sv==='function'&&sv('deposit'))||{};var v=+d[size];return v>=0&&v<=500&&d[size]!==undefined&&d[size]!==''?Math.round(v):DEPOSIT[size]||DEPOSIT.small}
+function bkDepositUI(){
+  var t=bkT(),a=depAmt(userSizeChoice);
+  var e=document.getElementById('bkDepAmt');if(e)e.textContent='€ '+a;
+  e=document.getElementById('bkDepTitle');if(e)e.textContent=t.depT;
+  var li=document.querySelectorAll('#bkDepSteps li');for(var i=0;i<li.length;i++)li[i].innerHTML='<span>'+(t.dep[i]||'')+'</span>';
+  var btn=document.getElementById('bkSubmit');if(btn&&!btn.disabled)btn.textContent=t.send+' € '+a;
+}
 async function submitBooking(){
   var t=bkT(),err=document.getElementById('bkError'),btn=document.getElementById('bkSubmit');
   var v=function(id){return document.getElementById(id).value.trim()};
@@ -1957,36 +1995,78 @@ async function submitBooking(){
   if(phone.replace(/\D/g,'').length<8){err.textContent=t.ePhone;return}
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){err.textContent=t.eEmail;return}
   if(!document.getElementById('bkConsent').checked){err.textContent=t.eConsent;return}
-  if(v('bkWebsite')){document.getElementById('bkFormView').style.display='none';document.getElementById('bkDoneView').style.display='block';return} // bot trap
-  var recent=bkRecent();if(recent.length>=3){err.textContent=t.eLimit;return}
-  if(!db){err.textContent=t.eGen;return}
+  if(v('bkWebsite')){return} // bot trap
+  var recent=bkRecent();if(recent.length>=5){err.textContent=t.eLimit;return}
   btn.disabled=true;btn.textContent=t.sending;
   try{
-    var ref=db.collection('appointments').doc();
-    var data={date:bookingDate,time:claim?bookingTime:'',size:userSizeChoice,name:name,phone:phone,lang:lang,consent:true,status:'pending',createdAt:firebase.firestore.FieldValue.serverTimestamp()};
-    data.email=email;if(place)data.placement=place;if(desc)data.description=desc;
-    if(bookingPhotos.length)data.hasPhotos=true;
-    var batch=db.batch();
-    batch.set(ref,data);
-    if(bookingPhotos.length)batch.set(db.collection('appointmentPhotos').doc(ref.id),{photos:bookingPhotos.slice(0,2)});
-    if(claim)batch.set(db.collection('bookedSlots').doc(bookingDate+'_'+bookingTime),{date:bookingDate,time:bookingTime,appt:ref.id});
-    await batch.commit();
+    var r=await fetch(BOOK_API+'/bookingCheckout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+      date:bookingDate,time:claim?bookingTime:'',size:userSizeChoice,name:name,phone:phone,email:email,placement:place,description:desc,lang:lang,consent:true,photos:bookingPhotos.slice(0,2)})});
+    var j={};try{j=await r.json()}catch(e){}
+    if(r.status===409&&j.error==='taken'){if(typeof fetchSlots==='function')await fetchSlots();bookingTime='';renderBookingTimes();renderCalendar();err.textContent=t.eTaken;btn.disabled=false;bkDepositUI();return}
+    if(!r.ok||!j.url)throw new Error(j.error||'error');
     recent.push(Date.now());try{localStorage.setItem('inkjection_bk',JSON.stringify(recent))}catch(e){}
-    if(claim){(takenSlots[bookingDate]=takenSlots[bookingDate]||{})[bookingTime]=true}
-    ['bkDesc','bkPlacement'].forEach(function(id){document.getElementById(id).value=''});
-    bookingPhotos=[];renderBookingPhotos();
-    document.getElementById('bkFormView').style.display='none';
-    document.getElementById('bkDoneView').style.display='block';
-    renderCalendar();
+    location.href=j.url;
   }catch(e){
-    console.warn('booking failed',e);
-    if(claim&&e&&e.code==='permission-denied'){await fetchSlots();bookingTime='';renderBookingTimes();renderCalendar();err.textContent=t.eTaken}
-    else err.textContent=t.eGen;
+    console.warn('booking failed',e);err.textContent=t.eGen;btn.disabled=false;bkDepositUI();
   }
-  btn.disabled=false;btn.textContent=t.send;
+}
+function bkShowDone(icon,title,html,btnText,btnAction){
+  document.getElementById('bkFormView').style.display='none';
+  var d=document.getElementById('bkDoneView');d.style.display='block';
+  d.querySelector('.bk-done-icon').innerHTML='<i class="fas '+icon+'"></i>';
+  document.getElementById('bkDoneTitle').textContent=title;
+  document.getElementById('bkDoneText').innerHTML=html;
+  var b=document.getElementById('bkDoneBtn');b.textContent=btnText;b.onclick=btnAction||function(){closeModal('bookModal')};
+}
+async function bookingReturn(id,tok){
+  var t=bkT();
+  document.getElementById('bookModal').style.display='block';
+  bkShowDone('fa-spinner fa-spin',t.checking,'',t.close);
+  for(var i=0;i<20;i++){
+    try{
+      var r=await fetch(BOOK_API+'/bookingStatus?id='+encodeURIComponent(id)+'&t='+encodeURIComponent(tok));var j=await r.json();
+      if(j.status==='paid'){
+        bkShowDone('fa-check',t.doneT,t.done+(j.timeChanged?t.timeMoved:''),t.close);
+        try{if(typeof fetchSlots==='function'){await fetchSlots();renderCalendar()}}catch(e){}
+        return;
+      }
+      if(j.status==='canceled'||j.status==='expired'||j.status==='failed'||j.status==='unknown'){
+        bkShowDone('fa-xmark',t.failT,t.fail,t.retry,function(){closeModal('bookModal');openModalSync('selectionModal')});return;
+      }
+    }catch(e){}
+    await new Promise(function(res){setTimeout(res,2000)});
+  }
+  bkShowDone('fa-hourglass-half',t.slowT,t.slow,t.close);
+}
+(function(){ // back from Mollie: inkjection.be/?booking=ID&t=TOKEN
+  try{var P=new URLSearchParams(location.search),id=P.get('booking'),tok=P.get('t');if(!id||!tok)return;
+    var u=new URL(location.href);u.searchParams.delete('booking');u.searchParams.delete('t');history.replaceState(history.state,'',u.pathname+u.search+u.hash);
+    var go=function(){setTimeout(function(){bookingReturn(id,tok)},400)};
+    if(document.readyState==='complete')go();else addEventListener('load',go);
+  }catch(e){}
+})();
+// WhatsApp: "I have a question" with everything they already filled in
+function askQuestion(kind){
+  var n=lang==='nl',L=[],val=function(id){var e=document.getElementById(id);return e&&e.value?e.value.trim():''};
+  if(kind==='gift'){
+    L.push(n?'Hallo! Ik heb een vraag over een cadeaubon.':'Hello! I have a question about a gift card.');
+    if(+selectedGiftAmt)L.push((n?'💶 Bedrag: € ':'💶 Amount: € ')+selectedGiftAmt);
+    if(val('inpGiftTo'))L.push((n?'🎁 Voor: ':'🎁 For: ')+val('inpGiftTo'));
+    if(val('inpGiftFrom'))L.push((n?'✍️ Van: ':'✍️ From: ')+val('inpGiftFrom'));
+  }else{
+    var sl=userSizeChoice==='small'?'Small (0-8cm)':userSizeChoice==='medium'?'Medium (8-15cm)':'Large (15+cm)';
+    L.push(n?'Hallo! Ik heb een vraag over mijn afspraak.':'Hello! I have a question about my appointment.');
+    if(bookingDate)L.push((n?'📅 Datum: ':'📅 Date: ')+bkDateNice(bookingDate)+(bookingTime&&bookingTime!=='any'?' · '+bookingTime:''));
+    L.push((n?'📏 Formaat: ':'📏 Size: ')+sl);
+    if(val('bkName'))L.push((n?'👤 Naam: ':'👤 Name: ')+val('bkName'));
+    if(val('bkPlacement'))L.push((n?'📍 Plaats: ':'📍 Placement: ')+val('bkPlacement'));
+    if(val('bkDesc'))L.push((n?'💬 Idee: ':'💬 Idea: ')+val('bkDesc'));
+  }
+  L.push('');L.push(n?'Mijn vraag: ':'My question: ');
+  window.open('https://wa.me/'+MY_WA+'?text='+encodeURIComponent(L.join('\n')),'_blank');
 }
 
-function handleSelection(size){userSizeChoice=size;closeModal('selectionModal');openModalSync('calModal')}
+function handleSelection(size){try{setTimeout(bkDepositUI,0)}catch(e){};userSizeChoice=size;closeModal('selectionModal');openModalSync('calModal')}
 
 // GIFT
 function openGiftModal(){gcLang();gcPreview();gcBackToForm();document.getElementById('giftModal').style.display='block'}
