@@ -1,1 +1,2299 @@
+<!DOCTYPE html>
 
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+<title>Afspraak maken | Inkjection Tattoo Zandhoven</title>
+<meta name="description" content="Plan je tattoo-afspraak bij Inkjection Tattoo in Zandhoven. Kies je formaat, je dag en je uur.">
+<meta name="keywords" content="Tattoo Antwerpen, Tattoo Zandhoven, Fine Line Tattoo Belgium, Tattoo Shop Antwerpen, Inkjection Tattoo, Tattoo Artist Kempen">
+<link rel="canonical" href="https://www.inkjection.be/afspraak/" />
+<meta property="og:title" content="Afspraak maken | Inkjection Tattoo Zandhoven">
+<meta property="og:description" content="Plan je tattoo-afspraak bij Inkjection Tattoo in Zandhoven. Kies je formaat, je dag en je uur.">
+<meta property="og:image" content="https://i.ibb.co/tPTrSN8k/image.png">
+<meta name="theme-color" content="#0a0a0a">
+<link rel="icon" type="image/png" href="https://i.ibb.co/tPTrSN8k/image.png">
+<link rel="shortcut icon" type="image/png" href="https://i.ibb.co/tPTrSN8k/image.png">
+<link rel="apple-touch-icon" href="https://i.ibb.co/tPTrSN8k/image.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TattooParlor",
+  "name": "Inkjection Tattoo",
+  "image": "https://i.ibb.co/tPTrSN8k/image.png",
+  "url": "https://www.inkjection.be/",
+  "telephone": "+32476633794",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Torenstraat 32",
+    "addressLocality": "Zandhoven",
+    "addressRegion": "Antwerpen",
+    "postalCode": "2243",
+    "addressCountry": "BE"
+  },
+  "priceRange": "€€",
+  "vatID": "BE1013735914",
+  "sameAs": ["https://www.instagram.com/inkj.ection/","https://www.tiktok.com/@inkjection.tattoo","https://www.facebook.com/share/1XPw4Fx861/"]
+}
+</script>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #0a0a0a; --surface: #111; --surface2: #1a1a1a;
+  --border: rgba(255,255,255,0.08); --border-hover: rgba(255,255,255,0.2);
+  --text: #fff; --text-muted: rgba(255,255,255,0.45); --text-soft: rgba(255,255,255,0.7);
+  --accent: #c9a96e; --accent-glow: rgba(201,169,110,0.12);
+  --wa-green: #25D366; --wa-dark: rgba(37,211,102,0.12);
+  --danger: #ff3b3b;
+  --radius: 16px; --radius-lg: 24px;
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'Manrope', -apple-system, sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{overflow-x:hidden;width:100%;max-width:100%;scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-height:1.6;-webkit-font-smoothing:antialiased;position:relative}
+
+/* SPLASH */
+#splash{position:fixed;top:0;left:0;width:100%;height:100%;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999999;transition:opacity .6s}
+#splash.hide{opacity:0;pointer-events:none}
+#splash img{width:130px;border-radius:50%;filter:blur(20px);opacity:0;transform:scale(1.2) rotate(-40deg);animation:splashLogo 1.7s cubic-bezier(.19,1,.22,1) forwards}
+#splash .splash-name{margin-top:20px;font-family:var(--font-display);font-size:15px;font-weight:600;letter-spacing:7px;color:#fff;opacity:0;transform:translateY(18px);animation:splashName 1s ease forwards;animation-delay:1s}
+@keyframes splashLogo{
+  0%{filter:blur(20px);opacity:0;transform:scale(1.2) rotate(-40deg)}
+  55%{filter:blur(3px);opacity:1;transform:scale(1.04) rotate(10deg)}
+  100%{filter:blur(0);opacity:1;transform:scale(1) rotate(0deg)}
+}
+@keyframes splashName{to{opacity:1;transform:translateY(0)}}
+
+/* HERO BG */
+.hero-bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;background-image:linear-gradient(to bottom,rgba(0,0,0,.5),rgba(0,0,0,.7) 50%,#0a0a0a);background-size:cover;background-position:center}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:10001;display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:linear-gradient(to bottom,rgba(0,0,0,.8),transparent);transition:background .3s}
+.nav.solid{background:rgba(10,10,10,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-logo{display:flex;align-items:center;gap:8px;text-decoration:none}
+.nav-logo img{width:32px;height:32px;border-radius:50%}
+.nav-logo span{font-family:var(--font-display);font-size:15px;font-weight:600;color:var(--text);letter-spacing:2px}
+.nav-right{display:flex;align-items:center;gap:8px}
+.lang-toggle{display:flex;background:rgba(255,255,255,.06);border-radius:8px;overflow:hidden;border:1px solid var(--border)}
+.lang-toggle button{background:none;border:none;color:var(--text-muted);font:700 11px/1 var(--font-body);padding:6px 10px;cursor:pointer;letter-spacing:1px;transition:.2s}
+.lang-toggle button.active{color:var(--text);background:rgba(255,255,255,.12)}
+.menu-btn{width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text);font-size:15px;cursor:pointer}
+
+/* SIDE MENU */
+#sideMenu{position:fixed;top:0;right:0;width:290px;height:100%;background:rgba(10,10,10,.98);backdrop-filter:blur(25px);z-index:10002;transition:transform .4s cubic-bezier(.4,0,.2,1);padding:65px 22px 40px;overflow-y:auto;-webkit-overflow-scrolling:touch;transform:translateX(100%)}
+#sideMenu.active{transform:translateX(0)}
+.close-menu{position:absolute;top:16px;right:16px;font-size:26px;color:var(--text);cursor:pointer;background:none;border:none}
+.menu-item{display:flex;align-items:center;justify-content:space-between;padding:15px 0;border-bottom:1px solid var(--border);color:var(--text);font-size:13px;font-weight:600;letter-spacing:1.5px;cursor:pointer;text-decoration:none}
+.menu-item i{color:var(--text-muted);font-size:12px;transition:transform .3s}
+.menu-expand{overflow:hidden;max-height:0;transition:max-height .4s ease}
+.menu-expand.open{max-height:500px}
+.menu-expand-content{padding:10px 0 6px;font-size:13px;line-height:1.7;color:var(--text-soft)}
+.menu-contact-row{display:flex;align-items:center;gap:10px;padding:8px 0;color:var(--text-soft);text-decoration:none;font-size:13px}
+.menu-contact-row i{width:18px;color:var(--accent)}
+.mini-map{width:100%;height:150px;border-radius:12px;overflow:hidden;margin-top:8px;border:1px solid var(--border)}
+.mini-map iframe{width:100%;height:100%;border:0}
+
+/* HERO */
+.hero{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:70px 20px 40px;text-align:center;position:relative}
+.hero-logo{width:120px;height:120px;border-radius:50%;object-fit:cover;margin-bottom:20px;box-shadow:0 0 50px rgba(201,169,110,.2),0 0 15px rgba(255,255,255,.1);border:2px solid rgba(201,169,110,.25)}
+.hero h1{font-family:var(--font-display);font-size:clamp(32px,8vw,46px);font-weight:300;letter-spacing:clamp(4px,2vw,8px);text-transform:uppercase;margin-bottom:6px;background:linear-gradient(135deg,#fff,#c9a96e 50%,#fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-tagline{font-family:var(--font-display);font-size:clamp(16px,4vw,20px);font-weight:300;color:var(--text-soft);font-style:italic;letter-spacing:2px;margin-bottom:4px}
+.hero-sub{font-size:11px;color:var(--text-muted);letter-spacing:3px;text-transform:uppercase;font-weight:500;margin-bottom:24px}
+.trust-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.05);border:1px solid var(--border);padding:7px 16px;border-radius:30px;margin-bottom:24px;font-size:12px;color:var(--text-soft);font-weight:500}
+.trust-stars{color:var(--accent);font-size:13px;letter-spacing:1px}
+.hero-ctas{display:flex;flex-direction:column;gap:10px;width:100%;max-width:300px}
+.cta-primary{display:flex;align-items:center;justify-content:center;gap:10px;padding:16px 20px;border-radius:60px;background:linear-gradient(135deg,var(--accent),#b8923f);color:#000;font-weight:800;font-size:13px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;border:none;cursor:pointer;transition:.2s;box-shadow:0 4px 25px rgba(201,169,110,.3);font-family:var(--font-body)}
+.cta-primary:active{transform:scale(.97)}
+.cta-secondary{display:flex;align-items:center;justify-content:center;gap:10px;padding:14px 20px;border-radius:60px;background:var(--wa-dark);border:1px solid rgba(37,211,102,.35);color:var(--wa-green);font-weight:700;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;cursor:pointer;transition:.2s}
+.cta-secondary:active{transform:scale(.97)}
+.hero-socials{display:flex;gap:22px;margin-top:20px}
+.hero-socials a{color:var(--text-muted);font-size:20px;text-decoration:none;transition:.2s}
+.scroll-hint{position:absolute;bottom:20px;display:flex;flex-direction:column;align-items:center;gap:4px;animation:sb 2s infinite}
+.scroll-hint span{font-size:9px;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase}
+@keyframes sb{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+
+/* CONTENT */
+.content-wrap{position:relative;z-index:1;background:var(--bg);overflow-x:hidden}
+.section-block{padding:45px 20px;max-width:480px;margin:0 auto}
+.section-label{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:6px}
+.section-title{font-family:var(--font-display);font-size:clamp(24px,6vw,30px);font-weight:300;letter-spacing:4px;text-transform:uppercase;margin-bottom:18px}
+
+/* PRICING */
+.pricing-cards{display:flex;flex-direction:column;gap:10px}
+.price-card{display:flex;align-items:center;justify-content:space-between;padding:18px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);cursor:pointer;transition:.2s;-webkit-user-select:none;user-select:none}
+.price-card:active{border-color:var(--accent);background:var(--accent-glow)}
+.price-card-left b{font-size:15px;display:block;letter-spacing:1px}
+.price-card-left span{font-size:11px;color:var(--text-muted)}
+.price-card-right{font-family:var(--font-display);font-size:13px;color:var(--accent);font-weight:600;white-space:nowrap}
+.price-card i{color:var(--text-muted);margin-left:8px;font-size:11px}
+
+/* SLIDER */
+.slider-section{position:relative;overflow:hidden;width:100%}
+.slider-container{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:10px;padding:0 20px}
+.slider-container::-webkit-scrollbar{display:none}
+.slider-item{flex:0 0 72%;scroll-snap-align:center;aspect-ratio:1/1;border-radius:var(--radius);overflow:hidden;cursor:pointer}
+.slider-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
+.slider-item:active img{transform:scale(.97)}
+.slider-arrows{position:absolute;top:50%;left:0;right:0;display:flex;justify-content:space-between;padding:0 6px;transform:translateY(-50%);pointer-events:none;z-index:5}
+.slider-arrow{width:36px;height:36px;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text);font-size:12px;pointer-events:all;cursor:pointer}
+
+/* LIGHTBOX */
+.lightbox{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.97);z-index:20000;align-items:center;justify-content:center;flex-direction:column}
+.lightbox.active{display:flex}
+.lightbox img{max-width:95%;max-height:85vh;object-fit:contain;border-radius:8px}
+.lightbox-close{position:absolute;top:16px;right:16px;font-size:22px;color:#fff;cursor:pointer;z-index:20001;width:42px;height:42px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.1);border-radius:50%}
+.lightbox-nav{position:absolute;top:50%;transform:translateY(-50%);font-size:18px;color:#fff;cursor:pointer;width:42px;height:42px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.1);border-radius:50%}
+.lightbox-prev{left:10px}
+.lightbox-next{right:10px}
+.lightbox.single-photo .lightbox-nav{display:none}
+
+/* ABOUT */
+.about-card{position:relative;border-radius:var(--radius-lg);overflow:hidden;min-height:360px;display:flex;flex-direction:column;justify-content:flex-end;border:1px solid var(--border)}
+.about-card-bg{position:absolute;top:0;left:0;width:100%;height:100%;background-image:linear-gradient(to top,rgba(10,10,10,.98) 20%,rgba(0,0,0,.4) 60%,rgba(0,0,0,.15) 100%),url('https://i.postimg.cc/fbKBqJ0v/27a1fd95-3d33-4bee-a4c4-3e2bd9f85785.jpg');background-size:cover;background-position:center}
+.about-card-content{position:relative;z-index:2;padding:28px 22px}
+.about-card-content h2{font-family:var(--font-display);font-size:22px;font-weight:300;letter-spacing:5px;margin-bottom:14px;text-transform:uppercase;border-bottom:1px solid rgba(201,169,110,.25);padding-bottom:6px;display:inline-block}
+.about-card-content p{font-size:13px;line-height:1.8;color:var(--text-soft)}
+.about-card-content b{color:var(--accent);font-weight:600}
+
+/* REVIEWS - 2 COLUMN MASONRY */
+.reviews-masonry{column-count:2;column-gap:8px;margin-top:5px}
+.review-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:8px;break-inside:avoid;display:inline-block;width:100%}
+.review-header{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.review-avatar{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;background:linear-gradient(135deg,var(--accent),#8a6d3b);color:#000;flex-shrink:0}
+.review-name{font-weight:600;font-size:12px}
+.review-stars{color:var(--accent);font-size:10px;letter-spacing:1px;margin-top:1px}
+.review-body{font-size:12px;line-height:1.65;color:var(--text-soft);font-style:italic}
+.review-photos{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.review-photo{width:64px;height:64px;border-radius:10px;object-fit:cover;cursor:pointer;border:1px solid var(--border);transition:.2s}
+.review-photo:active{transform:scale(.92);border-color:var(--accent)}
+
+/* BTN OUTLINE */
+.btn-outline{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;width:100%;border-radius:60px;background:transparent;border:1px solid var(--border);color:var(--text);font-weight:600;font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:.2s;font-family:var(--font-body);text-decoration:none;margin-bottom:10px}
+.btn-outline:active{background:rgba(255,255,255,.04);border-color:var(--border-hover)}
+
+/* DESIGNS SLIDER */
+.designs-slider-section{position:relative;overflow:hidden;width:100%}
+.designs-slider-container{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:10px;padding:0 20px}
+.designs-slider-container::-webkit-scrollbar{display:none}
+.designs-slider-item{flex:0 0 68%;scroll-snap-align:center;border-radius:var(--radius);overflow:hidden;background:var(--surface);border:1px solid var(--border);cursor:pointer}
+.designs-slider-item img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block}
+.ds-info{padding:12px 14px}
+.ds-price{font-size:17px;font-weight:800}
+.ds-old-price{text-decoration:line-through;color:var(--text-muted);font-size:12px;margin-right:6px;font-weight:400}
+.ds-discount{font-size:17px;font-weight:800;color:var(--danger)}
+.ds-desc{font-size:11px;color:var(--text-muted);margin-top:3px}
+.ds-sold{text-align:center;padding:6px;color:var(--danger);font-weight:800;font-size:10px;letter-spacing:2px}
+.ds-sold-img{opacity:.35}
+.designs-slider-arrows{position:absolute;top:40%;left:0;right:0;display:flex;justify-content:space-between;padding:0 6px;transform:translateY(-50%);pointer-events:none;z-index:5}
+
+/* ===== ELEGANT CALENDAR ===== */
+.cal-modal .modal-content {
+  background: rgba(18,18,22,0.97);
+  backdrop-filter: blur(40px);
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 30px 100px rgba(0,0,0,0.8);
+  padding: 28px 20px 30px;
+  overflow: hidden;
+}
+.cal-top-decor {
+  text-align: center; margin-bottom: 6px;
+  font-size: 11px; letter-spacing: 4px; color: var(--text-muted);
+  text-transform: uppercase;
+}
+.cal-size-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 16px; border-radius: 20px;
+  background: linear-gradient(135deg, rgba(201,169,110,0.1), rgba(201,169,110,0.04));
+  border: 1px solid rgba(201,169,110,0.18);
+  font-size: 11px; letter-spacing: 2px; color: var(--accent); font-weight: 600;
+  text-transform: uppercase; margin-bottom: 22px;
+}
+.cal-size-pill i { font-size: 10px; }
+.cal-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 24px; padding: 0 4px;
+}
+.cal-nav-btn {
+  width: 44px; height: 44px; border-radius: 14px;
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+  color: var(--text-soft); font-size: 14px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .2s ease;
+}
+.cal-nav-btn:active { background: rgba(255,255,255,0.1); transform: scale(.9); }
+.cal-month-title {
+  font-family: var(--font-display); font-size: 24px; font-weight: 400;
+  letter-spacing: 3px; color: #fff; text-align: center;
+}
+.cal-month-year {
+  font-family: var(--font-body); font-size: 12px; color: var(--text-muted);
+  letter-spacing: 4px; text-align: center; margin-top: 2px;
+}
+.cal-weekdays {
+  display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px;
+  margin-bottom: 8px;
+}
+.cal-weekday {
+  font-size: 11px; color: var(--text-muted); text-align: center;
+  padding: 8px 0; font-weight: 600; letter-spacing: 1px;
+}
+.cal-days {
+  display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px;
+}
+.cal-day {
+  aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center;
+  border-radius: 14px; font-size: 14px; font-weight: 500;
+  cursor: pointer; transition: all .2s ease; position: relative;
+  background: transparent; color: var(--text-soft);
+  -webkit-user-select: none; user-select: none;
+}
+.cal-day.empty { pointer-events: none; }
+.cal-day.available {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.cal-day.available:active {
+  background: linear-gradient(135deg, rgba(201,169,110,0.25), rgba(201,169,110,0.1));
+  border-color: var(--accent);
+  color: #fff; transform: scale(0.88);
+  box-shadow: 0 0 20px rgba(201,169,110,0.15);
+}
+.cal-day.today {
+  background: linear-gradient(135deg, rgba(201,169,110,0.15), rgba(201,169,110,0.05));
+  border: 1.5px solid rgba(201,169,110,0.4);
+  color: var(--accent); font-weight: 700;
+}
+.cal-day.today::after {
+  content: ''; position: absolute; bottom: 5px; left: 50%; transform: translateX(-50%);
+  width: 4px; height: 4px; background: var(--accent); border-radius: 50%;
+}
+.cal-day.booked-x {
+  color: rgba(255,255,255,0.08);
+}
+.cal-day.booked-x::after {
+  content: ''; position: absolute; width: 60%; height: 1px;
+  background: rgba(255,255,255,0.12); border-radius: 2px;
+}
+.cal-day.past { opacity: 0.08; pointer-events: none; }
+.cal-bottom {
+  margin-top: 22px; padding-top: 18px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+.cal-legend {
+  display: flex; align-items: center; justify-content: center; gap: 20px;
+  margin-bottom: 14px;
+}
+.cal-legend-item {
+  display: flex; align-items: center; gap: 6px; font-size: 10px;
+  color: var(--text-muted); letter-spacing: 0.5px;
+}
+.cal-legend-dot {
+  width: 8px; height: 8px; border-radius: 4px;
+}
+.cal-legend-dot.avail { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); }
+.cal-legend-dot.booked { background: rgba(255,255,255,0.06); }
+.cal-legend-dot.today-dot { background: rgba(201,169,110,0.25); border: 1px solid rgba(201,169,110,0.5); }
+.cal-hint-wa {
+  text-align: center; font-size: 12px; color: var(--text-muted);
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 10px 16px; border-radius: 12px;
+  background: rgba(37,211,102,0.06); border: 1px solid rgba(37,211,102,0.1);
+}
+.cal-hint-wa i { color: var(--wa-green); font-size: 14px; }
+.cal-hint-wa.book { background: var(--accent-glow); border-color: var(--border-hover); }
+.cal-hint-wa.book i { color: var(--accent); }
+
+/* SITE CONTENT (managed from admin) */
+.site-announce{display:none;margin:0 auto 18px;max-width:440px;padding:10px 16px;border-radius:14px;background:var(--accent-glow);border:1px solid var(--border-hover);font-size:12.5px;line-height:1.55;color:var(--text);text-align:center}
+.site-announce.show{display:block}
+.site-announce i{color:var(--accent);margin-right:6px}
+
+/* BOOKING FORM */
+.bk-summary{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:-4px 0 18px}
+.bk-pill{display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border-radius:20px;background:var(--accent-glow);border:1px solid var(--border-hover);font-size:11px;letter-spacing:1.5px;color:var(--text);font-weight:700;text-transform:uppercase}
+.bk-pill i{color:var(--accent);font-size:11px}
+.bk-label{display:block;font-size:10px;letter-spacing:2px;color:var(--text-muted);font-weight:700;text-transform:uppercase;margin:4px 0 8px}
+.time-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
+.time-opt{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:12px 6px;border-radius:12px;font:700 15px var(--font-body);cursor:pointer;transition:.2s}
+.time-opt.active{background:var(--accent);color:#150c22;border-color:var(--accent)}
+.time-opt:disabled{opacity:.25;text-decoration:line-through;cursor:not-allowed}
+.bk-note{font-size:12px;line-height:1.6;color:var(--text-soft);background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:16px}
+.bk-note i{color:var(--accent);margin-right:6px}
+textarea.form-input{resize:vertical;min-height:84px;font-family:var(--font-body)}
+.bk-photos{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.bk-photo{position:relative;width:72px;height:72px;border-radius:12px;overflow:hidden;border:1px solid var(--border)}
+.bk-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.bk-photo button{position:absolute;top:3px;right:3px;width:22px;height:22px;border-radius:50%;border:none;background:rgba(0,0,0,.65);color:#fff;font-size:13px;line-height:1;cursor:pointer}
+.bk-photo-add{width:72px;height:72px;border-radius:12px;border:1px dashed var(--border-hover);background:var(--surface2);color:var(--text-muted);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:10px;letter-spacing:1px;cursor:pointer;text-align:center}
+.bk-photo-add i{font-size:18px;color:var(--accent)}
+.bk-hp{position:absolute!important;left:-9999px!important;width:1px;height:1px;opacity:0}
+.bk-consent{display:flex;gap:10px;align-items:flex-start;font-size:12px;line-height:1.55;color:var(--text-soft);margin:4px 0 16px;cursor:pointer}
+.bk-consent input{margin-top:3px;accent-color:var(--accent);width:16px;height:16px;flex-shrink:0}
+.bk-consent a{color:var(--accent);text-decoration:underline;cursor:pointer}
+.bk-error{min-height:18px;font-size:12px;color:var(--danger);text-align:center;margin:10px 0 0}
+.btn-form-primary:disabled{opacity:.6;cursor:wait}
+.bk-alt{display:block;text-align:center;margin-top:14px;font-size:12px;color:var(--text-muted);text-decoration:none}
+.bk-alt i{color:var(--wa-green);margin-right:5px}
+.bk-done{text-align:center;padding:10px 4px 6px}
+.bk-done-icon{width:64px;height:64px;border-radius:50%;margin:0 auto 18px;display:flex;align-items:center;justify-content:center;background:var(--accent-glow);border:1px solid var(--border-hover);color:var(--accent);font-size:26px}
+.bk-done h3{font-family:var(--font-display);font-weight:400;font-size:24px;letter-spacing:2px;margin-bottom:10px}
+.bk-done p{font-size:13px;line-height:1.7;color:var(--text-soft);margin-bottom:20px}
+
+/* COOKIE CONSENT */
+.cookie-banner{position:fixed;left:12px;right:12px;bottom:12px;z-index:10010;background:rgba(14,14,16,.97);backdrop-filter:blur(24px);border:1px solid var(--border);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:14px;box-shadow:0 15px 60px rgba(0,0,0,.55);transform:translateY(160%);transition:transform .55s cubic-bezier(.4,0,.2,1);max-width:440px;margin:0 auto}
+.cookie-banner.visible{transform:translateY(0)}
+.cookie-icon{width:34px;height:34px;border-radius:10px;background:var(--accent-glow);border:1px solid rgba(201,169,110,.25);display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:14px;margin-bottom:2px}
+.cookie-text{font-size:12px;line-height:1.65;color:var(--text-soft)}
+.cookie-text a{color:var(--accent);text-decoration:underline;cursor:pointer}
+.cookie-actions{display:flex;gap:10px}
+.cookie-btn{flex:1;padding:13px;border-radius:30px;font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;border:1px solid var(--border);transition:.2s;font-family:var(--font-body)}
+.cookie-decline{background:transparent;color:var(--text-soft)}
+.cookie-decline:active{background:rgba(255,255,255,.06)}
+.cookie-accept{background:linear-gradient(135deg,var(--accent),#b8923f);color:#000;border:none}
+.cookie-accept:active{transform:scale(.97)}
+@media(min-width:768px){
+  .cookie-banner{left:auto;right:24px;bottom:24px;max-width:380px}
+  .cookie-decline:hover{background:rgba(255,255,255,.08);border-color:var(--border-hover)}
+  .cookie-accept:hover{box-shadow:0 6px 30px rgba(201,169,110,.35)}
+}
+
+/* STICKY WA */
+.sticky-wa{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:9999;width:calc(100% - 36px);max-width:380px;display:flex;align-items:center;justify-content:center;gap:10px;padding:15px 20px;border-radius:60px;background:var(--wa-green);color:#fff;font-weight:800;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;box-shadow:0 4px 30px rgba(37,211,102,.35);transition:transform .2s,opacity .3s;font-family:var(--font-body);opacity:0;pointer-events:none}
+.sticky-wa.visible{opacity:1;pointer-events:all}
+.sticky-wa:active{transform:translateX(-50%) scale(.97)}
+.sticky-wa i{font-size:18px}
+
+/* MODALS */
+.modal{display:none;position:fixed;z-index:10005;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,.92);backdrop-filter:blur(12px)}
+.modal-content{background:var(--surface);margin:45px auto;padding:24px 20px;border-radius:var(--radius-lg);width:92%;max-width:400px;position:relative;border:1px solid var(--border);max-height:90vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.modal-content::-webkit-scrollbar{width:0}
+.close-modal{position:sticky;top:0;float:right;color:var(--text);font-size:26px;z-index:10006;background:var(--surface2);border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid var(--border)}
+.modal-title{font-family:var(--font-display);font-size:20px;font-weight:400;letter-spacing:3px;margin-bottom:18px;text-transform:uppercase}
+
+/* SIZE OPTIONS */
+.size-box{display:flex;flex-direction:column;gap:10px}
+.size-option{padding:18px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);color:#fff;transition:.2s;display:flex;justify-content:space-between;align-items:center;cursor:pointer;-webkit-user-select:none;user-select:none}
+.size-option:active{border-color:var(--accent);background:var(--accent-glow)}
+.size-option b{font-size:14px;display:block;letter-spacing:1px}
+.size-option span{font-size:11px;color:var(--text-muted)}
+.size-price{font-family:var(--font-display);font-size:13px;color:var(--accent);font-weight:600;margin-right:8px}
+
+/* FORM (gift) */
+.form-input{width:100%;margin-bottom:10px;padding:13px 14px;background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:12px;font:14px var(--font-body);outline:none;transition:border-color .2s}
+.form-input:focus{border-color:var(--accent)}
+.form-input::placeholder{color:var(--text-muted)}
+.btn-form-primary{display:block;width:100%;padding:15px;border-radius:60px;background:linear-gradient(135deg,var(--accent),#b8923f);color:#000;font-weight:800;font-size:13px;letter-spacing:2px;text-transform:uppercase;border:none;cursor:pointer;font-family:var(--font-body);transition:.2s;margin-top:8px}
+.btn-form-primary:active{transform:scale(.98)}
+
+/* GIFT */
+.ticket{background:var(--surface);border:1px solid rgba(201,169,110,.15);border-radius:14px;position:relative;padding:20px;margin-bottom:18px;overflow:hidden}
+.ticket::before{content:'';position:absolute;top:0;left:-100%;width:50%;height:100%;background:linear-gradient(90deg,transparent,rgba(201,169,110,.06),transparent);animation:shine 3s infinite}
+@keyframes shine{100%{left:200%}}
+.ticket-title{font-family:var(--font-display);font-size:15px;color:var(--accent);letter-spacing:3px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px dashed rgba(255,255,255,.08)}
+.ticket-val{color:#fff;font-weight:700;font-size:12px}
+.scratch-circle{position:absolute;right:14px;bottom:14px;width:60px;height:60px;background:linear-gradient(135deg,var(--accent),#8a6d3b);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#000;font-weight:800;font-size:15px}
+.amt-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.amt-opt{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:11px;border-radius:10px;font:700 13px var(--font-body);cursor:pointer;transition:.2s}
+.amt-opt.active{background:var(--accent);color:#000;border-color:var(--accent)}
+
+/* PORTFOLIO GRID MODAL */
+#workModal .modal-content{max-width:100%;width:95%;padding:12px}
+.portfolio-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-top:8px}
+.portfolio-grid img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:10px;cursor:pointer}
+
+/* DESIGNS MODAL */
+#designsModal .modal-content{max-width:100%;width:95%;padding:14px}
+.designs-grid{display:flex;flex-direction:column;gap:14px;margin-top:14px}
+.design-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+.design-card img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block}
+.design-card-info{padding:14px 16px}
+.design-price{font-size:18px;font-weight:800;letter-spacing:1px;margin-bottom:4px}
+.design-desc{font-size:12px;color:var(--text-soft);line-height:1.5;margin-bottom:12px}
+.design-wa-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px;border-radius:30px;background:var(--wa-dark);border:1px solid rgba(37,211,102,.35);color:var(--wa-green);font-weight:700;font-size:11px;letter-spacing:1.5px;text-decoration:none;text-transform:uppercase;cursor:pointer}
+.designs-empty{text-align:center;padding:35px;color:var(--text-muted);font-size:13px}
+.design-sold-overlay{position:relative}
+.design-sold-overlay img{opacity:.35}
+.design-sold-stamp{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-15deg);background:rgba(255,59,59,.9);color:#fff;font-size:22px;font-weight:900;letter-spacing:5px;padding:6px 24px;border-radius:6px}
+.design-old-price{text-decoration:line-through;color:var(--text-muted);font-size:13px;margin-right:6px;font-weight:400}
+.design-discount-price{font-size:18px;font-weight:800;color:var(--danger)}
+.design-popup{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.95);backdrop-filter:blur(10px);z-index:20000;overflow-y:auto}
+.design-popup.active{display:block}
+.design-popup-inner{max-width:400px;width:92%;margin:45px auto;padding-bottom:40px}
+.design-popup-close{position:fixed;top:14px;right:14px;font-size:22px;color:#fff;cursor:pointer;z-index:20001;width:42px;height:42px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.1);border-radius:50%}
+.design-popup img{width:100%;border-radius:14px;display:block;margin-bottom:14px}
+.dp-price{font-size:20px;font-weight:800;margin-bottom:4px}
+.dp-old-price{text-decoration:line-through;color:var(--text-muted);font-size:14px;margin-right:8px}
+.dp-discount{font-size:20px;font-weight:800;color:var(--danger)}
+.dp-desc{font-size:13px;color:var(--text-soft);line-height:1.6;margin-bottom:16px}
+.dp-sold{text-align:center;padding:12px;color:var(--danger);font-weight:800;font-size:13px;letter-spacing:3px}
+.popup-wa-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:15px;border-radius:30px;background:var(--wa-dark);border:1px solid rgba(37,211,102,.4);color:#fff;font-weight:700;font-size:12px;letter-spacing:1.5px;text-decoration:none;text-transform:uppercase;cursor:pointer}
+
+/* FOOTER */
+.footer{padding:35px 20px 90px;text-align:center;border-top:1px solid var(--border)}
+.footer p{font-size:11px;color:var(--text-muted)}
+
+/* DESKTOP ROW */
+.desktop-row{display:block}
+
+/* RESPONSIVE */
+
+@media(min-width:480px){
+  .slider-item{flex:0 0 55%}
+  .designs-slider-item{flex:0 0 50%}
+  .cal-days{gap:6px}
+  .cal-day{font-size:15px}
+  .review-card{padding:16px}
+  .review-body{font-size:12.5px}
+}
+
+@media(min-width:768px){
+  .hero{padding:100px 40px 60px}
+  .hero-logo{width:150px;height:150px}
+  .hero-ctas{flex-direction:row;max-width:520px}
+  .cta-primary,.cta-secondary{flex:1}
+  .section-block{max-width:720px;padding:50px 30px;margin-left:auto;margin-right:auto}
+  .slider-section{max-width:750px;margin:0 auto}
+  .slider-item{flex:0 0 40%}
+  .slider-container{padding:0 30px}
+  .designs-slider-section{max-width:750px;margin:0 auto}
+  .designs-slider-container{padding:0 30px}
+  .designs-slider-item{flex:0 0 38%}
+  .portfolio-grid{grid-template-columns:repeat(3,1fr)}
+  .reviews-masonry{column-count:2;column-gap:12px}
+  .review-card{padding:18px}.review-name{font-size:13px}.review-body{font-size:13px}
+  .about-card{min-height:400px}
+  .modal-content{margin:60px auto;max-width:450px}
+  .footer{padding:50px 30px 100px}
+  .nav{padding:14px 28px}
+}
+
+@media(min-width:1024px){
+  .hero{min-height:100vh}
+  .hero-logo{width:160px;height:160px;box-shadow:0 0 80px rgba(201,169,110,.25)}
+  .hero h1{font-size:52px;letter-spacing:12px}
+  .hero-tagline{font-size:22px;letter-spacing:3px}
+  .hero-sub{font-size:12px;letter-spacing:4px;margin-bottom:30px}
+  .trust-badge{font-size:13px;padding:9px 22px;margin-bottom:32px}
+  .hero-ctas{max-width:540px;gap:14px}
+  .cta-primary{padding:18px 28px;font-size:14px}
+  .cta-secondary{padding:16px 28px;font-size:13px}
+  .hero-socials{gap:30px;margin-top:30px}
+  .hero-socials a{font-size:24px;transition:color .2s}
+  .hero-socials a:hover{color:var(--accent)}
+  .section-block{max-width:960px;padding:60px 40px}
+  .section-title{font-size:30px;letter-spacing:5px}
+  .section-label{font-size:11px;letter-spacing:5px}
+  .slider-section{max-width:960px;margin:0 auto}
+  .slider-item{flex:0 0 30%;border-radius:20px}
+  .slider-container{padding:0 40px;gap:14px}
+  .slider-arrow{width:42px;height:42px}
+  .designs-slider-section{max-width:960px;margin:0 auto}
+  .designs-slider-container{padding:0 40px;gap:14px}
+  .designs-slider-item{flex:0 0 28%;border-radius:20px}
+  .desktop-row{display:flex;gap:20px;max-width:960px;margin:0 auto;padding:40px 40px;align-items:stretch}
+  .desktop-col{flex:1}
+  .desktop-col.section-block{padding:0;margin:0}
+  .desktop-col .about-card{min-height:100%;border-radius:var(--radius-lg)}
+  .price-card{border-radius:14px;padding:22px}
+  .price-card:hover{border-color:var(--accent);background:var(--accent-glow)}
+  .price-card-left b{font-size:16px}
+  .reviews-masonry{column-count:2;column-gap:14px}
+  .review-card{padding:20px;border-radius:16px}
+  .review-avatar{width:34px;height:34px;font-size:12px}
+  .review-name{font-size:14px}
+  .review-body{font-size:13px;line-height:1.7}
+  .review-photo{width:76px;height:76px}
+  .review-photo:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .about-card-content{padding:36px 30px}
+  .about-card-content h2{font-size:26px;letter-spacing:6px}
+  .about-card-content p{font-size:14px;line-height:1.8}
+  .btn-outline{padding:16px;font-size:13px;max-width:320px;margin-left:auto;margin-right:auto}
+  .btn-outline:hover{background:rgba(255,255,255,.06);border-color:var(--accent);color:var(--accent)}
+  .nav{padding:16px 40px}
+  .nav-logo img{width:38px;height:38px}
+  .nav-logo span{font-size:17px;letter-spacing:3px}
+  .sticky-wa{max-width:420px;padding:16px 28px;font-size:14px;bottom:24px;border-radius:16px}
+  .sticky-wa:hover{box-shadow:0 6px 40px rgba(37,211,102,.45)}
+  .cta-primary:hover{box-shadow:0 6px 35px rgba(201,169,110,.4);transform:translateY(-2px)}
+  .cta-secondary:hover{background:rgba(37,211,102,.15);border-color:rgba(37,211,102,.5)}
+  .size-option:hover{border-color:var(--accent);background:var(--accent-glow)}
+  .cal-nav-btn:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.15)}
+  .cal-day.available:hover{background:linear-gradient(135deg,rgba(201,169,110,.2),rgba(201,169,110,.08));border-color:var(--accent);color:#fff}
+  .slider-arrow:hover{background:rgba(0,0,0,.8);border-color:rgba(255,255,255,.2)}
+  .menu-btn:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.15)}
+  .footer a:hover{color:var(--accent)}
+}
+
+@media(min-width:1280px){
+  .hero h1{font-size:58px;letter-spacing:14px}
+  .hero-tagline{font-size:24px}
+  .section-block{max-width:1100px;padding:70px 50px}
+  .slider-section{max-width:1100px}
+  .slider-item{flex:0 0 24%}
+  .slider-container{gap:16px}
+  .designs-slider-section{max-width:1100px}
+  .designs-slider-item{flex:0 0 23%}
+  .desktop-row{max-width:1100px;gap:24px;padding:50px 50px}
+  .reviews-masonry{column-count:3;column-gap:16px}
+  .review-card{padding:22px}
+  .review-body{font-size:13.5px}
+  .about-card-content{padding:40px 36px}
+  .about-card-content p{font-size:15px}
+  .price-card{padding:24px}
+  .price-card-left b{font-size:17px}
+  .nav{padding:18px 50px}
+  .footer{max-width:1100px;margin:0 auto}
+}
+
+@media(min-width:1600px){
+  .hero h1{font-size:66px;letter-spacing:16px}
+  .hero-tagline{font-size:26px}
+  .hero-logo{width:180px;height:180px}
+  .section-block{max-width:1200px;padding:80px 60px}
+  .slider-section{max-width:1200px}
+  .designs-slider-section{max-width:1200px}
+  .desktop-row{max-width:1200px;gap:28px;padding:60px 60px}
+  .reviews-masonry{column-count:3;column-gap:20px}
+  .review-card{padding:24px;border-radius:18px}
+  .review-body{font-size:14px}
+  .nav{padding:20px 60px}
+  .footer{max-width:1200px}
+}
+/* =====================================================
+   CHRISTMAS & NEW YEAR THEME  ("Kerst in Zandhoven")
+   Everything seasonal lives in this block, the XM markup
+   (class xm-*) and the XM script at the top of <body>.
+   ===================================================== */
+:root{
+  --bg:#06100c;--surface:#0c1913;--surface2:#12231b;
+  --border:rgba(226,194,125,.13);--border-hover:rgba(226,194,125,.34);
+  --text:#fbf7ee;--text-muted:rgba(238,232,215,.48);--text-soft:rgba(238,232,215,.76);
+  --accent:#e2c27d;--accent-glow:rgba(226,194,125,.15);
+  --xm-red:#c8102e;--xm-red-soft:#e0384f;--xm-green:#1f6b45;--xm-snow:#f4f8ff;
+}
+body{background:var(--bg)}
+.hero-bg{background-image:radial-gradient(ellipse at 78% 8%,rgba(255,244,214,.10),transparent 38%),radial-gradient(ellipse at 50% 0%,rgba(31,107,69,.35),transparent 60%),linear-gradient(to bottom,rgba(6,16,12,.55),rgba(6,16,12,.82) 50%,#06100c)}
+#xmSnow{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
+.hero{overflow:hidden}
+.hero > *{position:relative;z-index:2}
+.hero h1{background:linear-gradient(135deg,#fff,#e2c27d 45%,#fff 70%,#e2c27d);-webkit-background-clip:text;background-clip:text}
+.section-title,.hero h1{text-shadow:0 0 26px rgba(226,194,125,.14)}
+
+/* --- string of lights across the top of the hero --- */
+.xm-lights{position:absolute !important;top:58px;left:0;right:0;height:46px;z-index:1 !important;pointer-events:none}
+.xm-lights svg{width:100%;height:100%;overflow:visible}
+.xm-bulb{animation:xmTwinkle 1.6s ease-in-out infinite}
+@keyframes xmTwinkle{0%,100%{opacity:1}50%{opacity:.35}}
+
+/* --- moon + flying sleigh --- */
+.xm-moon{position:absolute !important;top:96px;right:7%;width:62px;height:62px;border-radius:50%;z-index:0 !important;
+  background:radial-gradient(circle at 38% 38%,#fffaf0,#f1e3bf 55%,#d9c48f);box-shadow:0 0 40px rgba(255,244,214,.35),0 0 120px rgba(255,244,214,.15);opacity:.9}
+.xm-sleigh{position:absolute !important;top:62px;left:0;width:150px;z-index:1 !important;pointer-events:none;opacity:0}
+.xm-sleigh.fly{animation:xmFly 11s linear forwards}
+@keyframes xmFly{
+  0%{transform:translate(-180px,14px) rotate(-5deg);opacity:0}
+  6%{opacity:1}
+  50%{transform:translate(calc(50vw - 75px),0) rotate(-2deg)}
+  94%{opacity:1}
+  100%{transform:translate(calc(100vw + 30px),-22px) rotate(-6deg);opacity:0}}
+.xm-sleigh .deer{animation:xmGallop .5s ease-in-out infinite alternate}
+.xm-sleigh .deer:nth-child(2){animation-delay:.15s}.xm-sleigh .deer:nth-child(3){animation-delay:.3s}
+@keyframes xmGallop{to{transform:translateY(-2.5px)}}
+.xm-nose{animation:xmNose 1s ease-in-out infinite alternate}
+@keyframes xmNose{from{opacity:.55}to{opacity:1}}
+
+/* --- lockup --- */
+.xm-lockup{text-align:center;margin-bottom:4px}
+.xm-script{display:block;font-family:var(--font-display);font-style:italic;font-weight:600;font-size:clamp(34px,10.5vw,54px);line-height:1.05;letter-spacing:1px;
+  background:linear-gradient(110deg,#a8853c 0%,#f6e4b4 22%,#e2c27d 38%,#fffaf0 50%,#e2c27d 62%,#f6e4b4 80%,#a8853c 100%);background-size:250% 100%;
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:xmShine 6s linear infinite;filter:drop-shadow(0 0 16px rgba(226,194,125,.22))}
+@keyframes xmShine{to{background-position:-250% 0}}
+.xm-sub{display:block;margin-top:4px;font-size:10.5px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--text-soft)}
+.xm-sub i{color:var(--xm-red-soft);margin:0 6px;font-size:9px}
+
+/* --- wreath around the logo --- */
+.xm-logo-wrap{position:relative;display:inline-block;margin:16px 0 22px}
+.xm-logo-wrap .hero-logo{margin:0;display:block;border-color:rgba(226,194,125,.4);box-shadow:0 0 50px rgba(226,194,125,.18)}
+.xm-wreath{position:absolute;inset:-22%;width:144%;height:144%;pointer-events:none;overflow:visible}
+.xm-berry{animation:xmTwinkle 2.4s ease-in-out infinite}
+
+/* --- countdown + gift chips --- */
+.xm-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:14px auto 4px;max-width:440px}
+.xm-chip{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:40px;font-size:11px;font-weight:700;letter-spacing:1.3px;text-transform:uppercase;
+  background:rgba(12,25,19,.75);border:1px solid var(--border-hover);color:var(--text-soft);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.xm-chip i{color:var(--accent)}
+.xm-chip b{color:var(--accent);font-variant-numeric:tabular-nums;font-weight:800}
+button.xm-chip{cursor:pointer;font-family:inherit;border-color:rgba(224,56,79,.55);transition:box-shadow .2s,border-color .2s}
+button.xm-chip i{color:var(--xm-red-soft)}
+button.xm-chip:hover,button.xm-chip:focus-visible{border-color:var(--xm-red-soft);box-shadow:0 0 18px rgba(224,56,79,.3);outline:none}
+
+/* --- snowy village at the bottom of the hero --- */
+.xm-ground{position:absolute !important;left:0;right:0;bottom:0;height:150px;z-index:0 !important;pointer-events:none}
+.xm-ground svg{width:100%;height:100%;display:block}
+.xm-star{animation:xmStar 2.2s ease-in-out infinite;transform-origin:center;transform-box:fill-box}
+@keyframes xmStar{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.25);opacity:.75}}
+.xm-orn{animation:xmTwinkle 1.8s ease-in-out infinite}
+.xm-win{animation:xmWin 4s ease-in-out infinite}
+@keyframes xmWin{0%,100%{opacity:.95}45%{opacity:.7}}
+.scroll-hint{position:absolute !important;z-index:3 !important}
+
+/* --- snow caps on the boxes --- */
+.price-card,.review-card,.design-card{position:relative}
+.price-card::before,.review-card::before{content:'';position:absolute;left:10px;right:10px;top:-7px;height:13px;pointer-events:none;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 13' preserveAspectRatio='none'%3E%3Cpath d='M0 9 Q4 1 12 4 Q18 0 26 4 Q33 -1 41 5 Q47 1 55 4 Q63 0 70 5 Q78 1 86 4 Q93 0 101 5 Q108 1 114 4 Q119 3 120 9 L120 13 L0 13Z' fill='%23f4f8ff'/%3E%3C/svg%3E") no-repeat center/100% 100%;
+  filter:drop-shadow(0 1px 1px rgba(0,0,0,.25));opacity:.92}
+.review-stars{color:var(--accent)}
+
+/* --- Santa mascot (bottom-left) --- */
+.xm-santa{position:fixed;left:12px;bottom:92px;z-index:9998;width:64px;height:64px;border-radius:50%;cursor:pointer;border:none;padding:0;
+  background:radial-gradient(circle at 35% 30%,#1f6b45,#0b2016 72%);box-shadow:0 0 0 2px rgba(226,194,125,.55),0 0 24px rgba(31,107,69,.55),0 6px 18px rgba(0,0,0,.5);
+  animation:xmBob 3s ease-in-out infinite;-webkit-tap-highlight-color:transparent;transition:left .5s cubic-bezier(.5,-0.3,.4,1.4)}
+.xm-santa.away{left:-100px}
+.xm-santa.away .xm-bubble{opacity:0}
+.xm-santa svg{width:100%;height:100%;display:block;overflow:visible}
+.xm-santa:active{transform:scale(.94)}
+@keyframes xmBob{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-7px) rotate(3deg)}}
+.xm-santa .pom{animation:xmPom 1.6s ease-in-out infinite alternate;transform-origin:62px 14px;transform-box:view-box}
+@keyframes xmPom{from{transform:rotate(-8deg)}to{transform:rotate(10deg)}}
+.xm-santa .lid{animation:xmBlink 5s infinite;transform-origin:center;transform-box:fill-box}
+@keyframes xmBlink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+.xm-bubble{position:absolute;left:70px;bottom:40px;white-space:nowrap;padding:8px 12px;border-radius:14px 14px 14px 4px;background:#fffaf0;color:#3a0b12;
+  font-size:12px;font-weight:800;letter-spacing:.3px;box-shadow:0 6px 20px rgba(0,0,0,.35);opacity:0;transform:translateY(6px) scale(.9);transform-origin:left bottom;
+  transition:opacity .35s,transform .35s;pointer-events:none}
+.xm-bubble.show{opacity:1;transform:none}
+.xm-bubble small{display:block;font-weight:600;font-size:10.5px;color:#7a3a44;margin-top:1px}
+@media(min-width:1024px){.xm-sleigh{width:190px;top:70px}.xm-santa{width:86px;height:86px;left:22px;bottom:30px}.xm-bubble{left:92px;bottom:54px}.xm-ground{height:190px}.xm-moon{width:80px;height:80px}}
+
+@media(prefers-reduced-motion:reduce){
+  .xm-script,.xm-santa,.xm-santa .pom,.xm-bulb,.xm-berry,.xm-orn,.xm-star,.xm-win,.xm-sleigh .deer{animation:none}
+  .xm-sleigh{display:none}
+}
+
+/* FAQ */
+.faq-list{display:flex;flex-direction:column;gap:10px}
+.faq-item{border:1px solid var(--border);border-radius:16px;background:rgba(255,255,255,.025);overflow:hidden}
+.faq-item summary{list-style:none;cursor:pointer;padding:16px 46px 16px 18px;position:relative;font-weight:600;font-size:14px;line-height:1.45}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary::after{content:'+';position:absolute;right:18px;top:50%;transform:translateY(-50%);font-size:20px;color:var(--accent);transition:transform .25s}
+.faq-item[open] summary::after{transform:translateY(-50%) rotate(45deg)}
+.faq-item .faq-a{padding:0 18px 16px;font-size:13.5px;line-height:1.7;color:var(--text-soft)}
+.google-rev-btn{display:flex;align-items:center;justify-content:center;gap:10px;margin:22px auto 0;max-width:340px;padding:14px 18px;border-radius:40px;border:1px solid var(--border-hover);color:var(--text);text-decoration:none;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;background:rgba(255,255,255,.03)}
+.google-rev-btn i{color:var(--accent)}
+
+/* phone fixes: nothing on top of the text or buttons */
+@media(max-width:600px){
+  .xm-moon{display:none}
+  .xm-sub{letter-spacing:2.2px;font-size:9.5px;line-height:1.6}
+  .xm-sub i{margin:0 4px}
+  .hero{padding-top:108px;padding-bottom:118px;justify-content:flex-start}
+  .xm-ground{height:104px}
+  .xm-sleigh{top:56px;width:120px}
+  .xm-chips{gap:6px}
+  .xm-chip{font-size:10px;letter-spacing:1px;padding:7px 12px}
+}
+@media(max-width:360px){.xm-script{font-size:31px}.xm-sub{letter-spacing:1.4px;font-size:9px}}
+/* GIFT CARD (online payment) */
+.gc-wrap{max-width:440px}
+.gc-eyebrow{font-size:10px;letter-spacing:4px;color:var(--accent);font-weight:700;text-align:center;margin:4px 0 4px}
+.gc-card{position:relative;aspect-ratio:1.62;border-radius:18px;padding:18px 20px;margin:6px 0 18px;overflow:hidden;color:#fff;
+  background:radial-gradient(120% 90% at 85% 15%,rgba(226,194,125,.22),transparent 55%),linear-gradient(145deg,#1c1813 0%,#0d0b09 60%,#17130e 100%);
+  border:1px solid rgba(226,194,125,.45);box-shadow:0 20px 50px rgba(0,0,0,.55),inset 0 0 0 4px rgba(0,0,0,.35),inset 0 0 0 5px rgba(226,194,125,.18);display:flex;flex-direction:column}
+.gc-shine{position:absolute;inset:-40%;background:linear-gradient(115deg,transparent 42%,rgba(255,240,200,.13) 50%,transparent 58%);animation:gcShine 5s ease-in-out infinite;pointer-events:none}
+@keyframes gcShine{0%,15%{transform:translateX(-45%)}60%,100%{transform:translateX(45%)}}
+.gc-top{display:flex;align-items:center;gap:9px}
+.gc-logo{width:30px;height:30px;border-radius:50%;object-fit:cover;border:1px solid rgba(226,194,125,.6)}
+.gc-brand{font-family:var(--font-display);letter-spacing:4px;font-size:13px;font-weight:600}
+.gc-kind{margin-left:auto;font-size:8.5px;letter-spacing:3px;color:#e2c27d;font-weight:700}
+.gc-amount{margin:auto 0 0;text-align:right;font-family:var(--font-display);font-weight:600;font-size:clamp(40px,13vw,58px);line-height:1;
+  background:linear-gradient(110deg,#a8853c,#f6e4b4 35%,#e2c27d 55%,#fff6dc 70%,#c79d4f);-webkit-background-clip:text;background-clip:text;color:transparent}
+.gc-names{display:flex;gap:16px;margin-top:8px}
+.gc-names div{min-width:0;flex:1}
+.gc-names small{display:block;font-size:8px;letter-spacing:2.5px;color:rgba(255,255,255,.5)}
+.gc-names b{display:block;font-family:var(--font-display);font-weight:500;font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gc-msg{font-family:var(--font-display);font-style:italic;font-size:13px;color:rgba(255,240,215,.75);margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-height:0}
+.gc-msg:empty{display:none}
+#giftModal .amt-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px}
+#giftModal .amt-opt{padding:12px 0;border-radius:12px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-weight:700;font-size:14px;cursor:pointer;transition:all .2s}
+#giftModal .amt-opt.active{border-color:var(--accent);background:rgba(226,194,125,.14);color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.gc-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.gc-ta{min-height:64px!important}
+.gc-perks{list-style:none;margin:4px 0 12px;padding:0;display:grid;gap:7px}
+.gc-perks li{display:flex;gap:10px;align-items:flex-start;font-size:12px;color:var(--text-soft,rgba(255,255,255,.7));line-height:1.45}
+.gc-perks i{color:var(--accent);width:14px;text-align:center;margin-top:2px}
+.gc-err{color:#ff6b7d;font-size:12.5px;text-align:center;min-height:0;margin-bottom:8px}
+.gc-err:empty{display:none}
+.gc-pay i{margin-right:6px}
+.gc-mollie{text-align:center;font-size:10.5px;color:var(--text-muted,rgba(255,255,255,.4));margin-top:9px;letter-spacing:.3px}
+.gc-result{text-align:center;padding:24px 6px 10px}
+.gc-state .ic{width:72px;height:72px;border-radius:50%;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:30px;border:1px solid rgba(226,194,125,.5);color:var(--accent);background:rgba(226,194,125,.08)}
+.gc-state .ic.ok{animation:gcPop .5s cubic-bezier(.2,1.4,.4,1)}
+@keyframes gcPop{from{transform:scale(.4);opacity:0}}
+.gc-state h4{font-family:var(--font-display);font-weight:400;font-size:26px;letter-spacing:1px;margin-bottom:8px}
+.gc-state p{font-size:13.5px;color:var(--text-soft,rgba(255,255,255,.7));line-height:1.6;margin-bottom:6px}
+.gc-state .code{display:inline-block;margin:12px 0 18px;padding:10px 18px;border-radius:12px;border:1px dashed rgba(226,194,125,.6);color:var(--accent);font-weight:800;letter-spacing:3px;font-size:16px}
+.gc-state .btn-form-primary{margin-top:6px}
+.gc-state .gc-link{display:inline-block;margin-top:14px;font-size:12px;color:var(--text-muted,rgba(255,255,255,.5));text-decoration:underline;cursor:pointer}
+@media(max-width:380px){.gc-card{padding:15px 16px}.gc-names b{font-size:15px}#giftModal .amt-opt{font-size:13px}}
+.gc-state a.btn-form-primary{text-decoration:none;text-align:center}
+
+/* deposit + WhatsApp question button */
+.bk-deposit{border:1px solid var(--border-hover);background:linear-gradient(145deg,rgba(201,169,110,.10),rgba(255,255,255,.02));border-radius:14px;padding:14px 16px;margin:6px 0 14px}
+.bk-dep-top{display:flex;align-items:center;gap:9px;margin-bottom:10px}
+.bk-dep-top i{color:var(--accent)}
+.bk-dep-top span{font-size:11px;letter-spacing:3px;font-weight:800;color:var(--accent)}
+.bk-dep-top b{margin-left:auto;font-family:var(--font-display);font-size:24px;font-weight:600;color:#fff}
+.bk-steps{list-style:none;counter-reset:st;margin:0;padding:0;display:grid;gap:8px}
+.bk-steps li{counter-increment:st;display:flex;gap:10px;align-items:flex-start;font-size:12.5px;line-height:1.5;color:var(--text-soft,rgba(255,255,255,.75))}
+.bk-steps li::before{content:counter(st);flex:0 0 20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#111;background:var(--accent)}
+.bk-steps li b{color:#fff}
+.gc-how{font-size:10px;letter-spacing:3px;font-weight:800;color:var(--accent);margin:4px 0 8px}
+.gc-steps{margin-bottom:14px}
+.pay-row{display:flex;gap:10px;align-items:stretch}
+.pay-row .btn-form-primary{flex:1;margin:0}
+.ask-btn{flex:0 0 52px;border-radius:50%;border:1px solid rgba(37,211,102,.5);background:rgba(37,211,102,.12);color:#25d366;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;aspect-ratio:1}
+.ask-btn:active{transform:scale(.95)}
+#bkAlt{margin-top:12px}
+
+.gc-promo{margin:-4px 0 12px;padding:10px 14px;border-radius:12px;background:linear-gradient(90deg,rgba(226,194,125,.22),rgba(226,194,125,.06));border:1px solid rgba(226,194,125,.5);color:#fff;font-size:12.5px;text-align:center}
+.gc-promo i{color:var(--accent);margin-right:6px}
+#giftModal .amt-opt small{display:block;font-size:10px;font-weight:700;color:var(--accent);margin-top:2px}
+#giftModal .amt-opt.promo{border-color:rgba(226,194,125,.55)}
+
+.gc-terms{margin:0 0 12px;font-size:11.5px;color:var(--text-muted,rgba(255,255,255,.5))}
+.gc-terms summary{cursor:pointer;text-decoration:underline;list-style:none}
+.gc-terms summary::-webkit-details-marker{display:none}
+.gc-terms p{margin-top:6px;line-height:1.55}
+
+.bk-gift-toggle{display:block;margin-top:12px;font-size:12px;color:var(--accent);text-decoration:underline;cursor:pointer}
+.bk-gift{margin-top:10px}
+.bk-gift .form-input{text-transform:uppercase;letter-spacing:2px;margin-bottom:6px}
+.bk-gift-note{font-size:11.5px;color:var(--text-soft,rgba(255,255,255,.7))}
+</style>
+
+</head>
+</style>
+
+</head>
+
+<body>
+
+<style>
+/* ===== separate pages (cadeaubon / afspraak) ===== */
+body.pg #splash{display:none!important}
+body.pg .hero,body.pg .hero-bg,body.pg .scroll-hint{display:none!important}
+body.pg .content-wrap>*:not(.footer){display:none!important}
+body.pg .content-wrap{padding-top:0}
+body.pg-gift .xm-santa{display:none!important}
+body.pg .nav{background:rgba(10,10,10,.85);backdrop-filter:blur(12px)}
+body.pg .pg-main{position:relative;z-index:2;padding:86px 0 10px;min-height:calc(100vh - 160px)}
+body.pg .pg-main>.modal{display:block!important;position:relative;z-index:2;inset:auto;width:auto;height:auto;background:none;backdrop-filter:none}
+body.pg .pg-main>.modal>.modal-content{margin:0 auto;max-height:none;overflow:visible}
+body.pg .pg-main>.modal>.modal-content>.close-modal{display:none}
+.pg-back{display:flex;align-items:center;gap:8px;width:92%;max-width:400px;margin:0 auto 12px;font-size:12px;letter-spacing:2px;color:var(--text-muted);text-decoration:none}
+.pg-back:hover{color:var(--accent)}
+@media(min-width:768px){.pg-back{max-width:450px}}
+</style>
+<script>
+var PAGE='book';
+function pgLangQ(){try{return (typeof lang!=='undefined'&&lang==='en')?'?lang=en':''}catch(e){return ''}}
+document.body.classList.add('pg-'+PAGE);if(PAGE!=='home')document.body.classList.add('pg');
+</script>
+<div id="splash"><img src="https://firebasestorage.googleapis.com/v0/b/inkjection-admin.firebasestorage.app/o/site%2Flogo.png?alt=media" onerror="this.onerror=null;this.src='https://i.ibb.co/tPTrSN8k/image.png'" alt="Inkjection"><div class="splash-name">INKJECTION</div></div>
+<div class="hero-bg"></div>
+<canvas id="xmSnow" aria-hidden="true"></canvas>
+<script>
+/* CHRISTMAS & NEW YEAR THEME script: snow, lights, wreath, village, sleigh, Santa, countdown */
+(function(){
+  var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var isNL=function(){return typeof lang==='undefined'||lang==='nl'};
+  var now=new Date(),Y=now.getMonth()===0?now.getFullYear()-1:now.getFullYear(); // the December we are celebrating
+  var XMAS=new Date(Y,11,25),BOXING=new Date(Y,11,27),NY=new Date(Y+1,0,1);
+  function p2(x){return String(x).padStart(2,'0')}
+  function left(ms,n){var d=Math.floor(ms/864e5),h=Math.floor(ms/36e5)%24,m=Math.floor(ms/6e4)%60,s=Math.floor(ms/1e3)%60;
+    return '<b>'+d+'</b>d <b>'+p2(h)+'</b>'+(n?'u':'h')+' <b>'+p2(m)+'</b>m <b>'+p2(s)+'</b>s'}
+  function tick(){
+    var el=document.getElementById('xmCount');if(!el)return;var n=isNL(),t=Date.now();
+    if(t<XMAS)el.innerHTML=(n?'Nog ':'')+left(XMAS-t,n)+(n?' tot Kerstmis':' to Christmas');
+    else if(t<BOXING)el.innerHTML=n?'Zalig Kerstfeest!':'Merry Christmas!';
+    else if(t<NY)el.innerHTML=(n?'Nog ':'')+left(NY-t,n)+(n?' tot ':' to ')+(Y+1);
+    else el.innerHTML=(n?'Gelukkig ':'Happy ')+(Y+1)+'!';
+  }
+  window.XM_TXT=function(){
+    var n=isNL(),jan=Date.now()>=NY;
+    var s=document.getElementById('xmScript');if(s)s.textContent=jan?(n?'Gelukkig Nieuwjaar':'Happy New Year'):(n?'Fijne Feestdagen':'Happy Holidays');
+    var sub=document.getElementById('xmSub');if(sub)sub.innerHTML=(n?'Zalig Kerstfeest':'Merry Christmas')+' <i class="fas fa-star"></i> '+(n?'Gelukkig ':'Happy ')+(Y+1);
+    var g=document.getElementById('xmGiftText');if(g)g.textContent=n?'Geef een cadeaubon':'Give a gift card';
+    var b=document.getElementById('xmBubbleSmall');if(b)b.textContent=n?'Een cadeaubon? Tik op mij':'A gift card? Tap me';
+    var sa=document.getElementById('xmSanta');if(sa)sa.setAttribute('aria-label',n?'Cadeaubon':'Gift card');
+    tick();
+  };
+  setInterval(tick,1000);
+
+  var NS='http://www.w3.org/2000/svg';
+  function lights(){
+    var box=document.getElementById('xmLights');if(!box)return;var W=box.clientWidth||innerWidth,seg=W<600?3:5,sw=W/seg,cols=['#ff3b4e','#ffd36b','#3fd27a','#5ab0ff'],out='',k=0;
+    var d='M0 4';for(var i=0;i<seg;i++){d+=' Q'+(sw*i+sw/2)+' 30 '+(sw*(i+1))+' 4'}
+    out+='<path d="'+d+'" stroke="#1b2a22" stroke-width="1.6" fill="none"/>';
+    var per=W<600?4:5;
+    for(var i=0;i<seg;i++)for(var j=1;j<=per;j++){var t=j/(per+1),x0=sw*i,x1=sw*(i+1),cx=sw*i+sw/2;
+      var x=(1-t)*(1-t)*x0+2*(1-t)*t*cx+t*t*x1,y=(1-t)*(1-t)*4+2*(1-t)*t*30+t*t*4,c=cols[k++%4],dl=(Math.random()*1.6).toFixed(2);
+      out+='<g class="xm-bulb" style="animation-delay:'+dl+'s"><circle cx="'+x+'" cy="'+(y+8)+'" r="8" fill="'+c+'" opacity=".18"/><rect x="'+(x-2)+'" y="'+(y-1)+'" width="4" height="4" rx="1" fill="#2a3a30"/><ellipse cx="'+x+'" cy="'+(y+7)+'" rx="3.4" ry="5" fill="'+c+'"/><ellipse cx="'+(x-1)+'" cy="'+(y+5.5)+'" rx="1" ry="1.6" fill="#fff" opacity=".55"/></g>'}
+    box.innerHTML='<svg viewBox="0 0 '+W+' 46" preserveAspectRatio="none">'+out+'</svg>';
+  }
+  function wreath(){
+    var s=document.getElementById('xmWreath');if(!s)return;var out='',g=['#1f6b45','#2b8a5a','#17553a','#3a9e68'];
+    for(var i=0;i<46;i++){var a=i/46*Math.PI*2,r=41+(i%3-1)*2.2,x=50+Math.cos(a)*r,y=50+Math.sin(a)*r,rot=a*180/Math.PI+(i%2?35:-35);
+      out+='<ellipse cx="'+x.toFixed(2)+'" cy="'+y.toFixed(2)+'" rx="5.6" ry="2.3" fill="'+g[i%4]+'" transform="rotate('+rot.toFixed(1)+' '+x.toFixed(2)+' '+y.toFixed(2)+')"/>'}
+    for(var i=0;i<12;i++){var a=(i/12)*Math.PI*2+.2,x=50+Math.cos(a)*42,y=50+Math.sin(a)*42;
+      out+='<g class="xm-berry" style="animation-delay:'+(i*.2).toFixed(1)+'s"><circle cx="'+x.toFixed(2)+'" cy="'+y.toFixed(2)+'" r="1.9" fill="#d81b36"/><circle cx="'+(x-.6).toFixed(2)+'" cy="'+(y-.6).toFixed(2)+'" r=".6" fill="#fff" opacity=".7"/></g>'}
+    for(var i=0;i<8;i++){var a=(i/8)*Math.PI*2+.55,x=50+Math.cos(a)*40,y=50+Math.sin(a)*40;out+='<circle cx="'+x.toFixed(2)+'" cy="'+y.toFixed(2)+'" r="1.6" fill="#e2c27d"/>'}
+    // bow at the bottom
+    out+='<g transform="translate(50 92)"><path d="M0 0 Q-11 -9 -13 -1 Q-11 6 0 0Z M0 0 Q11 -9 13 -1 Q11 6 0 0Z" fill="#c8102e"/><path d="M0 0 L-6 12 L-3 11 L-1 13 Z M0 0 L6 12 L3 11 L1 13Z" fill="#a50d26"/><circle r="2.6" fill="#e0384f"/></g>';
+    s.innerHTML=out;
+  }
+  function ground(){
+    var box=document.getElementById('xmGround');if(!box)return;var W=box.clientWidth||innerWidth,H=box.clientHeight||150,o='';
+    o+='<defs><linearGradient id="xmSnowG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eef4fb" stop-opacity=".75"/><stop offset=".55" stop-color="#cfdbe8" stop-opacity=".28"/><stop offset="1" stop-color="#06100c" stop-opacity="1"/></linearGradient>'
+      +'<linearGradient id="xmTreeG" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2b8a5a"/><stop offset="1" stop-color="#124630"/></linearGradient></defs>';
+    // back hills + small pines
+    var hy=H*.55;o+='<path d="M0 '+hy+' Q'+W*.2+' '+(hy-26)+' '+W*.42+' '+(hy-6)+' T'+W*.8+' '+(hy-10)+' T'+W+' '+(hy-4)+' V'+H+' H0Z" fill="#dfe8f3" opacity=".10"/>';
+    var n=Math.max(6,Math.round(W/55));
+    for(var i=0;i<n;i++){var x=(i+.5)*W/n+((i*37)%19-9),h=18+((i*53)%14),b=hy-4+((i*29)%10);if(Math.abs(x-W/2)<W*.18)continue;
+      o+='<path d="M'+x+' '+(b-h)+' L'+(x+h*.38)+' '+b+' L'+(x-h*.38)+' '+b+'Z" fill="#0f2a1e" opacity=".85"/><path d="M'+x+' '+(b-h)+' L'+(x+h*.13)+' '+(b-h*.66)+' L'+(x-h*.13)+' '+(b-h*.66)+'Z" fill="#eef4fb" opacity=".55"/>'}
+    // cottage with a warm window
+    var cx=W<600?Math.max(34,W*.12):W*.2,cy=H*.72;
+    o+='<g><rect x="'+(cx-16)+'" y="'+(cy-16)+'" width="32" height="22" fill="#2a1d16"/><path d="M'+(cx-21)+' '+(cy-15)+' L'+cx+' '+(cy-33)+' L'+(cx+21)+' '+(cy-15)+'Z" fill="#3a2a20"/><path d="M'+(cx-22)+' '+(cy-14)+' L'+cx+' '+(cy-34)+' L'+(cx+22)+' '+(cy-14)+' L'+(cx+18)+' '+(cy-17)+' L'+cx+' '+(cy-29)+' L'+(cx-18)+' '+(cy-17)+'Z" fill="#eef4fb"/>'
+      +'<rect x="'+(cx+7)+'" y="'+(cy-30)+'" width="5" height="9" fill="#2a1d16"/><rect class="xm-win" x="'+(cx-10)+'" y="'+(cy-10)+'" width="8" height="8" fill="#ffcf6b"/><rect class="xm-win" x="'+(cx+3)+'" y="'+(cy-10)+'" width="8" height="8" fill="#ffcf6b"/><circle cx="'+(cx-6)+'" cy="'+(cy-6)+'" r="14" fill="#ffcf6b" opacity=".12"/></g>';
+    // front snow drift
+    var fy=H*.7;o+='<path d="M0 '+fy+' Q'+W*.25+' '+(fy-18)+' '+W*.5+' '+(fy-4)+' T'+W+' '+(fy-8)+' V'+H+' H0Z" fill="url(#xmSnowG)"/>';
+    // the big tree
+    var tx=Math.min(W-38,W*.86),tb=fy+2,th=Math.min(H*.86,120),tw=th*.42;
+    o+='<rect x="'+(tx-4)+'" y="'+(tb-8)+'" width="8" height="12" fill="#3a2a20"/>';
+    for(var L=0;L<3;L++){var top=tb-th+L*th*.24+10,bot=tb-6-(2-L)*th*.2,w=tw*(.55+L*.22);
+      o+='<path d="M'+tx+' '+top+' L'+(tx+w)+' '+bot+' Q'+tx+' '+(bot+5)+' '+(tx-w)+' '+bot+'Z" fill="url(#xmTreeG)"/><path d="M'+(tx-w)+' '+bot+' Q'+tx+' '+(bot+5)+' '+(tx+w)+' '+bot+' Q'+tx+' '+(bot+1)+' '+(tx-w)+' '+bot+'Z" fill="#eef4fb" opacity=".8"/>'}
+    // garland + ornaments
+    o+='<path d="M'+(tx-tw*.35)+' '+(tb-th*.62)+' Q'+tx+' '+(tb-th*.5)+' '+(tx+tw*.42)+' '+(tb-th*.66)+' M'+(tx-tw*.6)+' '+(tb-th*.36)+' Q'+tx+' '+(tb-th*.22)+' '+(tx+tw*.66)+' '+(tb-th*.4)+'" stroke="#e2c27d" stroke-width="1.2" fill="none" stroke-dasharray="1 3" stroke-linecap="round"/>';
+    var orn=[[-.18,.72,'#d81b36'],[.2,.64,'#e2c27d'],[-.05,.55,'#5ab0ff'],[-.42,.42,'#e2c27d'],[.36,.45,'#d81b36'],[.05,.38,'#e2c27d'],[-.25,.27,'#5ab0ff'],[.5,.25,'#e2c27d'],[-.6,.18,'#d81b36'],[.18,.2,'#d81b36']];
+    orn.forEach(function(r,i){o+='<circle class="xm-orn" style="animation-delay:'+(i*.27).toFixed(2)+'s" cx="'+(tx+r[0]*tw)+'" cy="'+(tb-r[1]*th)+'" r="3" fill="'+r[2]+'"/>'});
+    // star
+    var sx=tx,sy=tb-th+6,pts='';for(var k=0;k<10;k++){var rr=k%2?3.4:8,an=-Math.PI/2+k*Math.PI/5;pts+=(sx+Math.cos(an)*rr).toFixed(1)+','+(sy+Math.sin(an)*rr).toFixed(1)+' '}
+    o+='<circle cx="'+sx+'" cy="'+sy+'" r="14" fill="#ffd36b" opacity=".18"/><polygon class="xm-star" points="'+pts+'" fill="#ffd36b"/>';
+    // presents
+    var px=tx-tw*.9;o+='<rect x="'+px+'" y="'+(tb-10)+'" width="13" height="11" fill="#c8102e"/><rect x="'+(px+5.5)+'" y="'+(tb-10)+'" width="2" height="11" fill="#e2c27d"/><rect x="'+(px+16)+'" y="'+(tb-7)+'" width="10" height="8" fill="#1f6b45"/><rect x="'+(px+20)+'" y="'+(tb-7)+'" width="2" height="8" fill="#e2c27d"/>';
+    box.innerHTML='<svg viewBox="0 0 '+W+' '+H+'">'+o+'</svg>';
+  }
+  function build(){lights();ground()}
+  document.addEventListener('DOMContentLoaded',function(){
+    wreath();build();window.XM_TXT();
+    var rt;addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(build,200)});
+    // sleigh across the sky every ~18s while the hero is in view
+    var sl=document.getElementById('xmSleigh');
+    function fly(){if(!sl||reduce||document.hidden||scrollY>innerHeight*.6)return;sl.classList.remove('fly');void sl.offsetWidth;sl.classList.add('fly')}
+    setTimeout(fly,2500);setInterval(fly,18000);
+    // Santa says hi now and then
+    var bu=document.getElementById('xmBubble');
+    var sa=document.getElementById('xmSanta');
+    function place(){if(sa)sa.classList.remove('away')}
+    place();addEventListener('scroll',place,{passive:true});addEventListener('resize',place);
+    function hi(){if(!bu||(sa&&sa.classList.contains('away')))return;bu.classList.add('show');setTimeout(function(){bu.classList.remove('show')},5000)}
+    setTimeout(hi,4000);setInterval(hi,30000);
+  });
+
+  // falling snow (+ a few golden sparkles)
+  var c=document.getElementById('xmSnow'),x=c.getContext('2d'),W,H,dpr=Math.min(window.devicePixelRatio||1,2),F=[];
+  function size(){W=innerWidth;H=innerHeight;c.width=W*dpr;c.height=H*dpr;x.setTransform(dpr,0,0,dpr,0,0)}
+  size();addEventListener('resize',size);
+  var N=reduce?30:(innerWidth<600?70:130);
+  function flake(any){var gold=Math.random()<.08;return{x:Math.random()*W,y:any?Math.random()*H:-8,r:gold?Math.random()*1.2+.6:Math.random()*2.4+.6,v:Math.random()*.6+.25,w:Math.random()*6.28,s:Math.random()*.6+.2,g:gold,a:Math.random()*.5+.45}}
+  for(var i=0;i<N;i++)F.push(flake(true));
+  function frame(t){
+    x.clearRect(0,0,W,H);
+    for(var i=0;i<F.length;i++){var f=F[i];f.y+=f.v*(1+f.r*.25);f.w+=.012;f.x+=Math.sin(f.w)*f.s;
+      if(f.y>H+8||f.x<-10||f.x>W+10){F[i]=flake(false);continue}
+      if(f.g){x.fillStyle='rgba(255,215,130,'+(f.a*(.6+.4*Math.sin(t/300+i)))+')'}else{x.fillStyle='rgba(244,248,255,'+f.a+')'}
+      x.beginPath();x.arc(f.x,f.y,f.r,0,6.283);x.fill()}
+    if(!reduce)requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+<button type="button" class="xm-santa" id="xmSanta" onclick="openGiftModal()" aria-label="Cadeaubon">
+  <svg viewBox="0 0 100 100">
+    <ellipse cx="48" cy="60" rx="20" ry="18" fill="#f3c9a8"/>
+    <circle cx="35.5" cy="64" r="4.2" fill="#ef8a8a" opacity=".55"/><circle cx="60.5" cy="64" r="4.2" fill="#ef8a8a" opacity=".55"/>
+    <ellipse class="lid" cx="41" cy="56" rx="2.2" ry="2.7" fill="#2b1a14"/><ellipse class="lid" cx="55" cy="56" rx="2.2" ry="2.7" fill="#2b1a14"/>
+    <path d="M36.5 50.5 Q41 47.5 45 50.2 M51 50.2 Q55 47.5 59.5 50.5" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+    <path d="M27 61 Q24 90 48 96 Q72 90 69 61 Q63 75 48 75 Q33 75 27 61Z" fill="#f4f8ff"/>
+    <path d="M27 61 Q24 90 48 96 Q72 90 69 61" stroke="#d8e2ee" stroke-width="1.2" fill="none"/>
+    <path d="M48 68 Q40 61 32 67 Q39 73 48 70 Q57 73 64 67 Q56 61 48 68Z" fill="#fff" stroke="#d8e2ee" stroke-width=".8"/>
+    <circle cx="48" cy="63.5" r="4" fill="#e7897c"/><circle cx="46.7" cy="62.3" r="1.2" fill="#fff" opacity=".6"/>
+    <path d="M23 44 Q28 12 60 12 Q76 13 80 30 L74 34 Q68 24 58 26 Q40 28 37 44 Z" fill="#c8102e"/>
+    <path d="M36 42 Q40 27 58 26" stroke="#9e0b23" stroke-width="2" fill="none" opacity=".6"/>
+    <g class="pom"><circle cx="79" cy="33" r="7.5" fill="#fff"/><circle cx="77" cy="31" r="2.5" fill="#fff" opacity=".9"/></g>
+    <rect x="17" y="38" width="62" height="13" rx="6.5" fill="#f4f8ff"/>
+    <path d="M22 44 h52" stroke="#d8e2ee" stroke-width="1" stroke-dasharray="2 3"/>
+  </svg>
+  <span class="xm-bubble" id="xmBubble">Ho ho ho!<small id="xmBubbleSmall">Een cadeaubon? Tik op mij</small></span>
+</button>
+
+
+<!-- NAV -->
+
+<nav class="nav" id="navBar">
+  <a class="nav-logo" href="#"><img src="https://firebasestorage.googleapis.com/v0/b/inkjection-admin.firebasestorage.app/o/site%2Flogo.png?alt=media" onerror="this.onerror=null;this.src='https://i.ibb.co/tPTrSN8k/image.png'" alt="Inkjection Tattoo logo"><span>INKJECTION</span></a>
+  <div class="nav-right">
+    <div class="lang-toggle">
+      <button class="active" id="nlBtn" onclick="setLang('nl')">NL</button>
+      <button id="enBtn" onclick="setLang('en')">EN</button>
+    </div>
+    <div class="menu-btn" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
+  </div>
+</nav>
+
+<!-- SIDE MENU -->
+
+<div id="sideMenu">
+  <button class="close-menu" onclick="toggleMenu()">&times;</button>
+
+  <div class="menu-item" onclick="toggleMenuExpand('menuBook')">
+    <span id="labelBook">HOE BOEKEN?</span>
+    <i class="fas fa-chevron-down"></i>
+  </div>
+  <div class="menu-expand" id="menuBook">
+    <div class="menu-expand-content" id="contentBook"></div>
+  </div>
+
+  <div class="menu-item" onclick="toggleMenuExpand('menuAftercare')">
+    <span id="labelAftercare">NAZORG</span>
+    <i class="fas fa-chevron-down"></i>
+  </div>
+  <div class="menu-expand" id="menuAftercare">
+    <div class="menu-expand-content" id="contentAftercare"></div>
+  </div>
+
+  <div class="menu-item" onclick="toggleMenuExpand('menuContact')">
+    <span>CONTACT</span>
+    <i class="fas fa-chevron-down"></i>
+  </div>
+  <div class="menu-expand" id="menuContact">
+    <div class="menu-expand-content">
+      <a href="mailto:info@inkjection.be" class="menu-contact-row" id="ctEmail"><i class="fas fa-envelope"></i><span>info@inkjection.be</span></a>
+      <a href="https://wa.me/32476633794" class="menu-contact-row" id="ctPhone"><i class="fab fa-whatsapp"></i><span>+32 476 63 37 94</span></a>
+      <a href="#" class="menu-contact-row" id="ctAddress"><i class="fas fa-map-marker-alt"></i><span>Torenstraat 32, 2243 Zandhoven</span></a>
+      <div class="mini-map"><iframe id="ctMap" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2500.5833446059633!2d4.658828976935106!3d51.21175623259364!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c3f9f7a7810619%3A0xc367677d292f725a!2sTorenstraat%2032%2C%202243%20Zandhoven!5e0!3m2!1snl!2sbe!4v1709123456789!5m2!1snl!2sbe" allowfullscreen="" loading="lazy"></iframe></div>
+    </div>
+  </div>
+
+  <div class="menu-item" onclick="toggleMenu();openGiftModal()" style="color:var(--accent);border-bottom:none;margin-top:10px">
+    <span id="menuGiftLabel">CADEAUBON</span>
+    <i class="fas fa-gift"></i>
+  </div>
+</div>
+
+<!-- HERO -->
+
+<section class="hero">
+  <div class="xm-lights" id="xmLights" aria-hidden="true"></div>
+  <div class="xm-moon" aria-hidden="true"></div>
+  <div class="xm-sleigh" id="xmSleigh" aria-hidden="true">
+    <svg viewBox="0 -12 190 60" fill="#f3e6c4">
+      <path d="M48 32 Q100 22 164 26" stroke="#f3e6c4" stroke-width=".7" fill="none" opacity=".7"/>
+      <g transform="translate(0,6)">
+        <path d="M2 30 Q0 35 7 35 L44 35 Q51 35 51 28" stroke="#f3e6c4" stroke-width="1.8" fill="none"/>
+        <path d="M12 27 L12 35 M37 27 L37 35" stroke="#f3e6c4" stroke-width="1.5"/>
+        <path d="M4 14 L40 14 Q49 14 49 22 L46 27 L12 27 Q4 27 4 19 Z"/>
+        <circle cx="34" cy="8" r="7.5"/><circle cx="18" cy="9" r="6.5"/><circle cx="20" cy="0" r="3.6"/>
+        <path d="M16.6 -1 L25 -7.5 L23.6 1 Z"/><circle cx="25.3" cy="-7.6" r="1.5"/>
+      </g>
+      <g transform="translate(70,8)"><g class="deer"><ellipse cx="16" cy="16" rx="10" ry="4.6"/><path d="M23 14 L28 7 L30.6 8.6 L26 15.5 Z"/><ellipse cx="31" cy="7" rx="3.7" ry="2.3"/><path d="M29 5 L27 0 M27.8 2.6 L25 1.8 M30.6 5 L31.6 0 M31.2 2.4 L33.8 1" stroke="#f3e6c4" stroke-width="1.1" fill="none"/><path d="M22 19 L28 23.5 M20 19.5 L24.5 24.5 M11 19 L4.5 22 M9 19 L2 20.5 M7 14 L3.5 12" stroke="#f3e6c4" stroke-width="1.6" fill="none" stroke-linecap="round"/></g></g>
+      <g transform="translate(105,4)"><g class="deer"><ellipse cx="16" cy="16" rx="10" ry="4.6"/><path d="M23 14 L28 7 L30.6 8.6 L26 15.5 Z"/><ellipse cx="31" cy="7" rx="3.7" ry="2.3"/><path d="M29 5 L27 0 M27.8 2.6 L25 1.8 M30.6 5 L31.6 0 M31.2 2.4 L33.8 1" stroke="#f3e6c4" stroke-width="1.1" fill="none"/><path d="M22 19 L28 23.5 M20 19.5 L24.5 24.5 M11 19 L4.5 22 M9 19 L2 20.5 M7 14 L3.5 12" stroke="#f3e6c4" stroke-width="1.6" fill="none" stroke-linecap="round"/></g></g>
+      <g transform="translate(140,0)"><g class="deer"><ellipse cx="16" cy="16" rx="10" ry="4.6"/><path d="M23 14 L28 7 L30.6 8.6 L26 15.5 Z"/><ellipse cx="31" cy="7" rx="3.7" ry="2.3"/><path d="M29 5 L27 0 M27.8 2.6 L25 1.8 M30.6 5 L31.6 0 M31.2 2.4 L33.8 1" stroke="#f3e6c4" stroke-width="1.1" fill="none"/><path d="M22 19 L28 23.5 M20 19.5 L24.5 24.5 M11 19 L4.5 22 M9 19 L2 20.5 M7 14 L3.5 12" stroke="#f3e6c4" stroke-width="1.6" fill="none" stroke-linecap="round"/><circle class="xm-nose" cx="34.8" cy="7.4" r="1.6" fill="#ff3b4e"/><circle class="xm-nose" cx="34.8" cy="7.4" r="4" fill="#ff3b4e" opacity=".25"/></g></g>
+    </svg>
+  </div>
+  <div class="site-announce" id="siteAnnounce"></div>
+  <div class="xm-lockup">
+    <span class="xm-script" id="xmScript">Fijne Feestdagen</span>
+    <span class="xm-sub" id="xmSub">Zalig Kerstfeest <i class="fas fa-star"></i> Gelukkig 2027</span>
+  </div>
+  <div class="xm-logo-wrap">
+    <img class="hero-logo" src="https://firebasestorage.googleapis.com/v0/b/inkjection-admin.firebasestorage.app/o/site%2Flogo.png?alt=media" onerror="this.onerror=null;this.src='https://i.ibb.co/tPTrSN8k/image.png'" alt="Inkjection Tattoo">
+    <svg class="xm-wreath" id="xmWreath" viewBox="0 0 100 100" aria-hidden="true"></svg>
+  </div>
+  <h1>INKJECTION</h1>
+  <p class="hero-tagline" id="heroLine1">Fine Line, Old School &amp; Realism</p>
+  <p class="hero-sub" id="heroLine2">Zandhoven &bull; Antwerpen</p>
+  <div class="trust-badge">
+    <span class="trust-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+    <span id="trustText">5.0 &mdash; Geliefde studio in de Kempen</span>
+  </div>
+  <div class="xm-chips">
+    <span class="xm-chip"><i class="fas fa-tree"></i><span id="xmCount"></span></span>
+    <button type="button" class="xm-chip" onclick="openGiftModal()"><i class="fas fa-gift"></i><span id="xmGiftText">Geef een cadeaubon</span></button>
+  </div>
+  <div class="hero-ctas">
+    <button class="cta-primary" onclick="openModalSync('selectionModal')" id="heroCTA">
+      <i class="fas fa-calendar-check"></i>
+      <span id="heroCtaLabel">PLAN JE SESSIE</span>
+    </button>
+    <a class="cta-secondary" href="https://wa.me/32476633794" target="_blank" id="heroWA">
+      <i class="fab fa-whatsapp" style="font-size:18px"></i>
+      <span id="heroWaLabel">STUUR EEN BERICHT</span>
+    </a>
+  </div>
+  <div class="hero-socials">
+    <a href="https://www.instagram.com/inkj.ection/" target="_blank" id="soIg"><i class="fab fa-instagram"></i></a>
+    <a href="https://www.tiktok.com/@inkjection.tattoo" target="_blank" id="soTt"><i class="fab fa-tiktok"></i></a>
+    <a href="https://www.facebook.com/share/1XPw4Fx861/" target="_blank" id="soFb"><i class="fab fa-facebook-f"></i></a>
+  </div>
+  <div class="xm-ground" id="xmGround" aria-hidden="true"></div>
+  <div class="scroll-hint">
+    <span id="scrollLabel">Portfolio</span>
+    <i class="fas fa-chevron-down" style="color:var(--text-muted);font-size:11px"></i>
+  </div>
+</section>
+
+<!-- CONTENT -->
+
+<div class="content-wrap">
+
+  <div class="section-block" style="padding-bottom:15px">
+    <p class="section-label" id="portfolioLabel">PORTFOLIO</p>
+    <h2 class="section-title" id="portfolioTitle">MIJN WERK</h2>
+  </div>
+  <div class="slider-section">
+    <div class="slider-container" id="sliderContainer"></div>
+    <div class="slider-arrows">
+      <div class="slider-arrow" onclick="slideLeft()"><i class="fas fa-chevron-left"></i></div>
+      <div class="slider-arrow" onclick="slideRight()"><i class="fas fa-chevron-right"></i></div>
+    </div>
+  </div>
+  <div class="section-block" style="padding-top:18px">
+    <button class="btn-outline" onclick="openWorkModal()" id="btnAllWork">
+      <i class="fas fa-th"></i> <span id="allWorkLabel">ALLE WERKEN BEKIJKEN</span>
+    </button>
+  </div>
+
+  <!-- PRICING + ABOUT SIDE BY SIDE ON DESKTOP -->
+
+  <div class="desktop-row">
+    <!-- PRICING -->
+    <div class="section-block desktop-col">
+      <p class="section-label" id="pricingLabel">TARIEVEN</p>
+      <h2 class="section-title" id="pricingTitle">KIES JE FORMAAT</h2>
+      <div class="pricing-cards">
+        <div class="price-card" onclick="handleSelection('small')">
+          <div class="price-card-left"><b>SMALL</b><span>0 - 8 cm</span></div>
+          <div><span class="price-card-right" id="priceSmall">Vanaf €80</span><i class="fas fa-chevron-right"></i></div>
+        </div>
+        <div class="price-card" onclick="handleSelection('medium')">
+          <div class="price-card-left"><b>MEDIUM</b><span>8 - 15 cm</span></div>
+          <div><span class="price-card-right" id="priceMed">Vanaf €120</span><i class="fas fa-chevron-right"></i></div>
+        </div>
+        <div class="price-card" onclick="handleSelection('large')">
+          <div class="price-card-left"><b>LARGE</b><span>15+ cm</span></div>
+          <div><span class="price-card-right" id="priceLg">Op afspraak</span><i class="fas fa-chevron-right"></i></div>
+        </div>
+      </div>
+    </div>
+
+<!-- ABOUT -->
+<div class="section-block desktop-col">
+  <div class="about-card">
+    <div class="about-card-bg"></div>
+    <div class="about-card-content">
+      <h2 id="aboutTitle">OVER MIJ</h2>
+      <p id="aboutText"></p>
+    </div>
+  </div>
+</div>
+
+  </div>
+
+  <!-- DESIGNS -->
+
+  <div class="section-block" id="designsSliderBlock" style="display:none;padding-bottom:10px">
+    <p class="section-label" id="designsLabel">READY-TO-INK</p>
+    <h2 class="section-title" id="designsTitle">ONTWERPEN</h2>
+  </div>
+  <div class="designs-slider-section" id="designsSliderSection" style="display:none">
+    <div class="designs-slider-container" id="designsSliderContainer"></div>
+    <div class="designs-slider-arrows">
+      <div class="slider-arrow" onclick="designSlideLeft()"><i class="fas fa-chevron-left"></i></div>
+      <div class="slider-arrow" onclick="designSlideRight()"><i class="fas fa-chevron-right"></i></div>
+    </div>
+  </div>
+  <div class="section-block" id="designsBtnBlock" style="display:none;padding-top:18px">
+    <button class="btn-outline" onclick="openDesignsModal()" id="btnAllDesigns">
+      <i class="fas fa-palette"></i> <span id="allDesignsLabel">ALLE ONTWERPEN</span>
+    </button>
+  </div>
+
+  <!-- REVIEWS -->
+
+  <div class="section-block">
+    <p class="section-label">REVIEWS</p>
+    <h2 class="section-title" id="reviewTitle">WAT KLANTEN ZEGGEN</h2>
+
+    <div class="reviews-masonry" id="reviewsMasonry">
+  <div class="review-card">
+    <div class="review-header"><div class="review-avatar">K</div><div><div class="review-name">Kyra Derveaux</div><div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div></div></div>
+    <p class="review-body">"Samen met mijn zus en mama een tattoo laten zetten en we hebben hier een h&eacute;&eacute;l aangename ervaring gehad! Ze nam echt de tijd om alles goed te bespreken en plaatste de tattoo met veel zorg en precisie. De omgeving was super fijn en rustig. Heel tevreden over de werking &eacute;n natuurlijk over de prachtige tattoo! Zeker een aanrader!"</p>
+  </div>
+  <div class="review-card">
+    <div class="review-header"><div class="review-avatar">S</div><div><div class="review-name">Sandra Roerbert</div><div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div></div></div>
+    <p class="review-body">"Ik ben samen met mijn dochters een tattoo gaan zetten en het was een heel fijne ervaring. De uitleg was duidelijk en ik kreeg goed advies over de kleuren van de tattoo. Ze nam echt de tijd voor ons. De tattoo is prachtig geworden en ik ging met een heel gelukkig gevoel naar huis. Zeker een aanrader."</p>
+  </div>
+  <div class="review-card">
+    <div class="review-header"><div class="review-avatar">W</div><div><div class="review-name">Wally Goovaerts</div><div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div></div></div>
+    <p class="review-body">"Zeer vriendelijk! Ik heb er mijn eerste tattoo laten zetten, en nu ook mijn tweede! Haar werk is perfectionistisch &amp; hygi&euml;nisch, ze houdt rekening met wat je wil. Gewoon top!"</p>
+  </div>
+  <div class="review-card">
+    <div class="review-header"><div class="review-avatar">I</div><div><div class="review-name">Ilse Van Dijken</div><div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div></div></div>
+    <p class="review-body">"Al meerdere kleine en grote tatoeages hier laten zetten en altijd top! Ze neemt veel tijd om je ontwerp eigen te maken en ze werkt heel netjes. Nog altijd super blij met alles wat ze gezet heeft!"</p>
+  </div>
+  <div class="review-card">
+    <div class="review-header"><div class="review-avatar">L</div><div><div class="review-name">Levy Van Dyck</div><div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div></div></div>
+    <p class="review-body">"Zeer mooi ontwerp gekregen, zeer vriendelijk en zeer goed gedaan. Ben heel tevreden."</p>
+  </div>
+  <div class="review-card">
+    <div class="review-header"><div class="review-avatar">R</div><div><div class="review-name">Rani Derveaux</div><div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div></div></div>
+    <p class="review-body">"2de tattoo gezet bij haar en weer super tevreden. Heel vriendelijke dame en doet haar werk heel goed!"</p>
+  </div>
+  <div class="review-card">
+    <div class="review-header"><div class="review-avatar">L</div><div><div class="review-name">Liena Moorkens</div><div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div></div></div>
+    <p class="review-body">"Vanaf het eerste contact tot het plaatsen van de tattoo was echt geweldig. Vragen werden steeds meteen beantwoord en mogelijkheden tot aanpassingen ook meteen doorgevoerd. Ik ben 100% fan en zal zeker in de toekomst nog bij haar op de tattootafel liggen."</p>
+  </div>
+  <div class="review-card">
+    <div class="review-header"><div class="review-avatar">T</div><div><div class="review-name">Tim Jespers</div><div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div></div></div>
+    <p class="review-body">"Goeie en vriendelijke service. Eerlijke prijs en open communicatie. Echt een aanrader!"</p>
+  </div>
+  <div class="review-card">
+    <div class="review-header"><div class="review-avatar">E</div><div><div class="review-name">Eline Van Stijvoort</div><div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div></div></div>
+    <p class="review-body">"Supper blij met men tattoo. Altijd vriendelijk en net. Heel goed gezet."</p>
+  </div>
+  <div class="review-card">
+    <div class="review-header"><div class="review-avatar">J</div><div><div class="review-name">Jorn Vercammen</div><div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div></div></div>
+    <p class="review-body">"Mijn eerste old school tattoo laten zetten, super vriendelijke tattoo artisten, super mooi tattoo, zeker aanterijden!"</p>
+  </div>
+  <div class="review-card">
+    <div class="review-header"><div class="review-avatar">T</div><div><div class="review-name">Taner G&uuml;ne&scedil;</div><div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div></div></div>
+    <p class="review-body">"Very clean and hygienic tattoo artist, very kind and does exactly what you want, I definitely recommend you to go!"</p>
+  </div>
+  <div class="review-card">
+    <div class="review-header"><div class="review-avatar">E</div><div><div class="review-name">Emma Van uytven</div><div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div></div></div>
+    <p class="review-body">"Super fijne ervaring! Buiten gegaan met fantastisch mooie tattoo ter ere van mijn overleden grootvader en een heel fijne babbel! 1000x Dank! Een heel eerlijke prijs!"</p>
+    <div class="review-photos">
+      <img class="review-photo" loading="lazy" alt="Foto review Emma Van uytven" src="https://lh3.googleusercontent.com/grass-cs/ACvplmPiPUAjd7Bahbj0uWjGr-5BlhIqQoLmptuBUwloWpRWJ9TkuX1wC8jRg9F0GEkysC0BAMaSu2ghjCf41Y1uiOwW-uwA0IKqJDhnzbRpgfUcJgDBtCatUCoY-p0AGvF870EgzVd-X5eb4cAu=s3072-w3072-h1460-rw" onclick="openLightbox(0,['https://lh3.googleusercontent.com/grass-cs/ACvplmPiPUAjd7Bahbj0uWjGr-5BlhIqQoLmptuBUwloWpRWJ9TkuX1wC8jRg9F0GEkysC0BAMaSu2ghjCf41Y1uiOwW-uwA0IKqJDhnzbRpgfUcJgDBtCatUCoY-p0AGvF870EgzVd-X5eb4cAu=s3072-w3072-h1460-rw','https://lh3.googleusercontent.com/grass-cs/ACvplmMrC0GO9OrZa8OnXg8JfMiFXtEAQzVGPa8WovHu0hHfP05FM2Q4NWGg2N_uoTUB0PIJ5MzmweY41JJzgmSyZDSFleJV2ADeS8UIwNF4Mfh43Wq92wg_7i9PiMSNC-WjR7D_luEHNIyqMZxf=s3072-w3072-h1460-rw'])">
+      <img class="review-photo" loading="lazy" alt="Foto review Emma Van uytven" src="https://lh3.googleusercontent.com/grass-cs/ACvplmMrC0GO9OrZa8OnXg8JfMiFXtEAQzVGPa8WovHu0hHfP05FM2Q4NWGg2N_uoTUB0PIJ5MzmweY41JJzgmSyZDSFleJV2ADeS8UIwNF4Mfh43Wq92wg_7i9PiMSNC-WjR7D_luEHNIyqMZxf=s3072-w3072-h1460-rw" onclick="openLightbox(1,['https://lh3.googleusercontent.com/grass-cs/ACvplmPiPUAjd7Bahbj0uWjGr-5BlhIqQoLmptuBUwloWpRWJ9TkuX1wC8jRg9F0GEkysC0BAMaSu2ghjCf41Y1uiOwW-uwA0IKqJDhnzbRpgfUcJgDBtCatUCoY-p0AGvF870EgzVd-X5eb4cAu=s3072-w3072-h1460-rw','https://lh3.googleusercontent.com/grass-cs/ACvplmMrC0GO9OrZa8OnXg8JfMiFXtEAQzVGPa8WovHu0hHfP05FM2Q4NWGg2N_uoTUB0PIJ5MzmweY41JJzgmSyZDSFleJV2ADeS8UIwNF4Mfh43Wq92wg_7i9PiMSNC-WjR7D_luEHNIyqMZxf=s3072-w3072-h1460-rw'])">
+    </div>
+  </div>
+</div>
+
+    <a class="google-rev-btn" href="https://www.google.com/maps/search/?api=1&query=Inkjection+Tattoo+Zandhoven" target="_blank" rel="noopener"><i class="fab fa-google"></i><span id="googleRevLabel">Bekijk alle reviews op Google</span></a>
+  </div>
+
+  <!-- FAQ (answers can be filled in by the studio in the admin panel > Website > FAQ) -->
+  <div class="section-block" id="faqBlock">
+    <p class="section-label">FAQ</p>
+    <h2 class="section-title" id="faqTitle">VEELGESTELDE VRAGEN</h2>
+    <div class="faq-list" id="faqList"></div>
+  </div>
+
+  <div class="footer">
+    <p>&copy; 2026 Inkjection Tattoo &bull; Zandhoven, Antwerpen</p>
+    <p style="margin-top:6px;font-size:11px;color:var(--text-muted);letter-spacing:.5px">Btw BE 1013.735.914</p>
+    <p style="margin-top:10px"><a onclick="openPrivacyFromBanner()" id="footerPrivacyLink" style="color:var(--text-muted);text-decoration:underline;font-size:11px;cursor:pointer">Privacybeleid</a></p>
+    <p style="margin-top:8px;font-size:10px;color:rgba(255,255,255,0.25);letter-spacing:1px">Made by <a href="https://digital-ink.be" target="_blank" style="color:rgba(255,255,255,0.4);text-decoration:none;font-weight:600;transition:color .2s">DigitalInk</a></p>
+  </div>
+</div>
+
+<!-- STICKY WA -->
+
+<a class="sticky-wa" id="stickyWa" href="https://wa.me/32476633794" target="_blank">
+  <i class="fab fa-whatsapp"></i>
+  <span id="stickyWaLabel">STUUR EEN BERICHT</span>
+</a>
+
+<!-- COOKIE CONSENT -->
+
+<div class="cookie-banner" id="cookieBanner">
+  <div class="cookie-icon"><i class="fas fa-cookie-bite"></i></div>
+  <div class="cookie-text" id="cookieText">We gebruiken cookies om je bezoek aan onze site te verbeteren. Lees ons <a onclick="openPrivacyFromBanner()" id="cookieLink">privacybeleid</a>.</div>
+  <div class="cookie-actions">
+    <button class="cookie-btn cookie-decline" onclick="setCookieConsent(false)" id="cookieDeclineBtn">WEIGEREN</button>
+    <button class="cookie-btn cookie-accept" onclick="setCookieConsent(true)" id="cookieAcceptBtn">ACCEPTEREN</button>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-close" onclick="closeLightbox()">&times;</div>
+  <div class="lightbox-nav lightbox-prev" onclick="lightboxPrev()"><i class="fas fa-chevron-left"></i></div>
+  <div class="lightbox-nav lightbox-next" onclick="lightboxNext()"><i class="fas fa-chevron-right"></i></div>
+  <img id="lightboxImg" src="" alt="Portfolio">
+</div>
+
+<!-- GIFT MODAL -->
+
+<div id="giftModal" class="modal">
+  <div class="modal-content gc-wrap">
+    <span class="close-modal" onclick="closeModal('giftModal')">&times;</span>
+    <div id="gcForm">
+      <p class="gc-eyebrow" id="gcEyebrow">GEEF IETS BLIJVENDS</p>
+      <h3 class="modal-title" id="giftTitle">CADEAUBON</h3>
+      <div class="gc-card" id="gcCard">
+        <div class="gc-shine"></div>
+        <div class="gc-top"><img class="gc-logo" alt="" src="https://firebasestorage.googleapis.com/v0/b/inkjection-admin.firebasestorage.app/o/site%2Flogo.png?alt=media" onerror="this.onerror=null;this.src='https://i.ibb.co/tPTrSN8k/image.png'"><span class="gc-brand">INKJECTION</span><span class="gc-kind" id="cardTitle">CADEAUBON</span></div>
+        <div class="gc-amount" id="dispAmt">€ —</div>
+        <div class="gc-names"><div><small id="gcForL">VOOR</small><b id="dispTo">…</b></div><div><small id="gcFromL">VAN</small><b id="dispFrom">…</b></div></div>
+        <div class="gc-msg" id="dispMsg"></div>
+      </div>
+      <div class="gc-promo" id="gcPromo" style="display:none"></div>
+      <div class="amt-grid" id="giftAmtGrid">
+        <button class="amt-opt" onclick="setGiftAmt(50)">50€</button>
+        <button class="amt-opt" onclick="setGiftAmt(100)">100€</button>
+        <button class="amt-opt" onclick="setGiftAmt(150)">150€</button>
+        <button class="amt-opt" onclick="setGiftAmt(250)">250€</button>
+      </div>
+      <input type="number" inputmode="numeric" min="20" max="1000" id="inpGiftAmt" class="form-input" placeholder="Ander bedrag (€)" oninput="setGiftAmt(this.value,true)">
+      <div class="gc-row">
+        <input type="text" id="inpGiftTo" class="form-input" maxlength="40" placeholder="Voor (naam)" oninput="gcPreview()">
+        <input type="text" id="inpGiftFrom" class="form-input" maxlength="40" placeholder="Van (naam)" oninput="gcPreview()">
+      </div>
+      <textarea id="inpGiftMsg" class="form-input gc-ta" maxlength="160" placeholder="Persoonlijke boodschap (optioneel)" oninput="gcPreview()"></textarea>
+      <input type="email" id="inpGiftEmail" class="form-input" maxlength="120" placeholder="Jouw e-mail (hier sturen we de PDF naartoe)">
+      <p class="gc-how" id="gcHow">ZO WERKT HET</p><ol class="bk-steps gc-steps" id="gcPerks"><li><span></span></li><li><span></span></li><li><span></span></li></ol>
+      <details class="gc-terms"><summary id="gcTermsT">Voorwaarden</summary><p id="gcTermsP"></p></details>
+      <div class="gc-err" id="gcErr"></div>
+      <div class="pay-row">
+        <button class="btn-form-primary gc-pay" onclick="giftCheckout()" id="btnGiftOrder"><i class="fas fa-lock"></i> <span id="gcPayTxt">KIES EEN BEDRAG</span></button>
+        <button type="button" class="ask-btn" onclick="askQuestion('gift')" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></button>
+      </div>
+      <p class="gc-mollie" id="gcMollie">Betaling via Mollie · je wordt even doorgestuurd</p>
+    </div>
+    <div id="gcResult" class="gc-result" style="display:none">
+      <div class="gc-state" id="gcState"></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SIZE MODAL -->
+
+<div id="selectionModal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal" onclick="closeModal('selectionModal')">&times;</span>
+    <h3 class="modal-title" id="selectTitle">KIES JE FORMAAT</h3>
+    <div class="size-box">
+      <div class="size-option" onclick="handleSelection('small')">
+        <div><b>SMALL</b><span>0 - 8 cm</span></div>
+        <div><span class="size-price" id="sizePriceS">Vanaf €80</span><i class="fas fa-chevron-right" style="opacity:.3"></i></div>
+      </div>
+      <div class="size-option" onclick="handleSelection('medium')">
+        <div><b>MEDIUM</b><span>8 - 15 cm</span></div>
+        <div><span class="size-price" id="sizePriceM">Vanaf €120</span><i class="fas fa-chevron-right" style="opacity:.3"></i></div>
+      </div>
+      <div class="size-option" onclick="handleSelection('large')">
+        <div><b>LARGE</b><span>15+ cm</span></div>
+        <div><span class="size-price" id="sizePriceL">Op afspraak</span><i class="fas fa-chevron-right" style="opacity:.3"></i></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PREMIUM CALENDAR MODAL -->
+
+<div id="calModal" class="modal cal-modal">
+  <div class="modal-content">
+    <span class="close-modal" onclick="closeModal('calModal')">&times;</span>
+    <div class="cal-top-decor" id="calTopLabel">KIES JE DATUM</div>
+    <div style="text-align:center"><span class="cal-size-pill" id="calSizePill"><i class="fas fa-ruler"></i> <span id="calSizeLabel">SMALL</span></span></div>
+    <div class="cal-header">
+      <button class="cal-nav-btn" onclick="changeMonth(-1)" id="prevBtn"><i class="fas fa-chevron-left"></i></button>
+      <div>
+        <div class="cal-month-title" id="calMonthName"></div>
+        <div class="cal-month-year" id="calYearLabel"></div>
+      </div>
+      <button class="cal-nav-btn" onclick="changeMonth(1)" id="nextBtn"><i class="fas fa-chevron-right"></i></button>
+    </div>
+    <div class="cal-weekdays" id="calWeekdays"></div>
+    <div class="cal-days" id="calDays"></div>
+    <div class="cal-bottom">
+      <div class="cal-legend">
+        <div class="cal-legend-item"><div class="cal-legend-dot avail"></div><span id="legendAvail">Beschikbaar</span></div>
+        <div class="cal-legend-item"><div class="cal-legend-dot booked"></div><span id="legendBooked">Bezet</span></div>
+        <div class="cal-legend-item"><div class="cal-legend-dot today-dot"></div><span id="legendToday">Vandaag</span></div>
+      </div>
+      <div class="cal-hint-wa book">
+        <i class="fas fa-calendar-check"></i>
+        <span id="calHintText">Kies een dag &rarr; WhatsApp opent automatisch</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BOOKING REQUEST MODAL -->
+
+<div id="bookModal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal" onclick="closeModal('bookModal')">&times;</span>
+    <div id="bkFormView">
+      <h3 class="modal-title" id="bkTitle" style="text-align:center">AFSPRAAK AANVRAGEN</h3>
+      <div class="bk-summary">
+        <span class="bk-pill"><i class="fas fa-calendar"></i><span id="bkDateLabel"></span></span>
+        <span class="bk-pill"><i class="fas fa-ruler"></i><span id="bkSizeLabel"></span></span>
+      </div>
+      <div id="bkTimeBlock">
+        <span class="bk-label" id="bkTimeLabel">KIES EEN TIJDSTIP</span>
+        <div class="time-grid" id="bkTimes"></div>
+      </div>
+      <div class="bk-note" id="bkNoTimeNote"></div>
+      <span class="bk-label" id="bkYouLabel">JOUW GEGEVENS</span>
+      <input type="text" id="bkName" class="form-input" maxlength="80" autocomplete="name">
+      <input type="tel" id="bkPhone" class="form-input" maxlength="30" autocomplete="tel">
+      <input type="email" id="bkEmail" class="form-input" maxlength="120" autocomplete="email">
+      <input type="text" id="bkPlacement" class="form-input" maxlength="100">
+      <textarea id="bkDesc" class="form-input" maxlength="1000"></textarea>
+      <span class="bk-label" id="bkPhotoLabel">FOTO'S (OPTIONEEL, MAX 2)</span>
+      <div class="bk-photos" id="bkPhotos"></div>
+      <input type="file" id="bkPhotoInput" accept="image/*" multiple style="display:none" onchange="addBookingPhotos(this.files);this.value=''">
+      <input type="text" id="bkWebsite" class="bk-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <div class="bk-deposit" id="bkDeposit">
+        <div class="bk-dep-top"><i class="fas fa-shield-halved"></i><span id="bkDepTitle">VOORSCHOT</span><b id="bkDepAmt">€ 20</b></div>
+        <ol class="bk-steps" id="bkDepSteps"><li></li><li></li><li></li></ol>
+        <a class="bk-gift-toggle" id="bkGiftToggle" onclick="toggleGiftCode()"></a>
+        <div class="bk-gift" id="bkGiftBox" style="display:none">
+          <input type="text" id="bkGiftCode" class="form-input" maxlength="16" placeholder="INK-XXXX-XXXX" autocapitalize="characters" oninput="bkDepositUI()">
+          <p class="bk-gift-note" id="bkGiftNote"></p>
+        </div>
+      </div>
+      <label class="bk-consent"><input type="checkbox" id="bkConsent"><span id="bkConsentText"></span></label>
+      <div class="bk-error" id="bkError"></div>
+      <div class="pay-row">
+        <button class="btn-form-primary" id="bkSubmit" onclick="submitBooking()">BETAAL VOORSCHOT</button>
+        <button type="button" class="ask-btn" onclick="askQuestion('booking')" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></button>
+      </div>
+      <a class="bk-alt" id="bkAlt" onclick="askQuestion('booking')"><i class="fab fa-whatsapp"></i><span id="bkAltText">Een vraag of probleem? Stuur ons een WhatsApp</span></a>
+    </div>
+    <div id="bkDoneView" class="bk-done" style="display:none">
+      <div class="bk-done-icon"><i class="fas fa-check"></i></div>
+      <h3 id="bkDoneTitle">BEDANKT!</h3>
+      <p id="bkDoneText"></p>
+      <button class="btn-form-primary" onclick="closeModal('bookModal')" id="bkDoneBtn">SLUITEN</button>
+    </div>
+  </div>
+</div>
+
+<!-- MY WORK MODAL -->
+
+<div id="workModal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal" onclick="closeModal('workModal')">&times;</span>
+    <div class="portfolio-grid" id="portfolioGrid"></div>
+  </div>
+</div>
+
+<!-- DESIGNS MODAL -->
+
+<div id="designsModal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal" onclick="closeModal('designsModal')">&times;</span>
+    <h3 class="modal-title" id="designsModalTitle" style="text-align:center">ONTWERPEN</h3>
+    <p id="designsModalSub" style="text-align:center;font-size:11px;color:var(--text-muted);margin-top:-12px;margin-bottom:14px">Kies een ontwerp en bestel via WhatsApp</p>
+    <div class="designs-grid" id="designsGrid"></div>
+  </div>
+</div>
+
+<!-- PRIVACY MODAL -->
+
+<div id="privacyModal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal" onclick="closeModal('privacyModal')">&times;</span>
+    <h3 class="modal-title" id="privacyTitle">PRIVACYBELEID</h3>
+    <div id="privacyBody" style="font-size:12.5px;line-height:1.85;color:var(--text-soft)"></div>
+  </div>
+</div>
+
+<!-- DESIGN POPUP -->
+
+<div class="design-popup" id="designPopup">
+  <div class="design-popup-close" onclick="closeDesignPopup()">&times;</div>
+  <div class="design-popup-inner" id="designPopupContent"></div>
+</div>
+
+<script>
+// FIREBASE
+firebase.initializeApp({
+  apiKey:"AIzaSyA5e7A-Ha8dJWj5dUE_j_g3WeD0QhrDkZY",authDomain:"inkjection-admin.firebaseapp.com",
+  projectId:"inkjection-admin",storageBucket:"inkjection-admin.firebasestorage.app",
+  messagingSenderId:"272546510196",appId:"1:272546510196:web:ac81ad4ce4c3ce1db82821"
+});
+var db=firebase.firestore();
+
+// GLOBALS
+var MY_WA="32476633794",blockedDates=new Set(),lang="nl",userSizeChoice="small",selectedGiftAmt=0;
+var now=new Date();now.setHours(0,0,0,0);
+var viewMonth=now.getMonth(),viewYear=now.getFullYear();
+var portfolioUrls=[],lightboxIndex=0,designsSnap=null;
+var daySlots={},takenSlots={},bookingDate=null,bookingTime="",bookingPhotos=[];
+var SITE=null;
+
+// INIT
+window.onload=function(){
+  setTimeout(function(){var s=document.getElementById('splash');s.classList.add('hide');setTimeout(function(){s.style.display='none'},600)},2300);
+  fetchData();loadDesigns();updateLang();initCookieConsent();fetchSiteContent();
+
+  // =============================================
+  // AUTO-OPEN CALENDAR IF URL HAS #boek
+  // Share this link: https://www.inkjection.be/#boek
+  // =============================================
+  if(window.location.hash === '#boek') {
+    setTimeout(function() {
+      openModalSync('selectionModal');
+    }, 2500); // waits for splash screen to finish
+  }
+};
+
+// SCROLL
+window.addEventListener('scroll',function(){
+  var y=window.pageYOffset;
+  document.getElementById('navBar').classList.toggle('solid',y>60);
+  document.getElementById('stickyWa').classList.toggle('visible',y>window.innerHeight*.6);
+},{passive:true});
+
+// MENU
+function toggleMenu(){document.getElementById('sideMenu').classList.toggle('active')}
+function toggleMenuExpand(id){
+  var el=document.getElementById(id),open=el.classList.contains('open');
+  document.querySelectorAll('.menu-expand').forEach(function(e){e.classList.remove('open')});
+  if(!open)el.classList.add('open');
+}
+
+// LANG
+function setLang(l){lang=l;updateLang()}
+function updateLang(){
+  var n=lang==="nl";
+  if(window.XM_TXT)window.XM_TXT();
+  document.getElementById("nlBtn").classList.toggle("active",n);
+  document.getElementById("enBtn").classList.toggle("active",!n);
+  document.getElementById("heroLine1").textContent="Fine Line, Old School & Realism";
+  document.getElementById("heroLine2").textContent="Zandhoven \u2022 Antwerpen";
+  document.getElementById("heroCtaLabel").textContent=n?"PLAN JE SESSIE":"BOOK YOUR SESSION";
+  document.getElementById("heroWaLabel").textContent=n?"STUUR EEN BERICHT":"SEND A MESSAGE";
+  document.getElementById("trustText").innerHTML=n?'5.0 &mdash; Geliefde studio in de Kempen':'5.0 &mdash; Beloved studio in the Kempen';
+  document.getElementById("stickyWaLabel").textContent=n?"STUUR EEN BERICHT":"SEND A MESSAGE";
+  document.getElementById("portfolioLabel").textContent="PORTFOLIO";
+  document.getElementById("portfolioTitle").textContent=n?"MIJN WERK":"MY WORK";
+  document.getElementById("allWorkLabel").textContent=n?"ALLE WERKEN BEKIJKEN":"VIEW ALL WORKS";
+  document.getElementById("pricingLabel").textContent=n?"TARIEVEN":"PRICING";
+  document.getElementById("pricingTitle").textContent=n?"KIES JE FORMAAT":"CHOOSE YOUR SIZE";
+  document.getElementById("priceSmall").textContent=n?"Vanaf \u20AC80":"From \u20AC80";
+  document.getElementById("priceMed").textContent=n?"Vanaf \u20AC120":"From \u20AC120";
+  document.getElementById("priceLg").textContent=n?"Op afspraak":"On request";
+  document.getElementById("sizePriceS").textContent=n?"Vanaf \u20AC80":"From \u20AC80";
+  document.getElementById("sizePriceM").textContent=n?"Vanaf \u20AC120":"From \u20AC120";
+  document.getElementById("sizePriceL").textContent=n?"Op afspraak":"On request";
+  document.getElementById("designsLabel").textContent="READY-TO-INK";
+  document.getElementById("designsTitle").textContent=n?"ONTWERPEN":"DESIGNS";
+  document.getElementById("allDesignsLabel").textContent=n?"ALLE ONTWERPEN":"ALL DESIGNS";
+  document.getElementById("designsModalTitle").textContent=n?"ONTWERPEN":"DESIGNS";
+  document.getElementById("designsModalSub").textContent=n?"Kies een ontwerp en maak een afspraak via WhatsApp":"Choose a design and book via WhatsApp";
+  document.getElementById("aboutTitle").textContent=n?"OVER MIJ":"ABOUT ME";
+  document.getElementById("aboutText").innerHTML=n?'Hoi, ik ben <b>Talitha</b>! Welkom bij <b>Inkjection</b>, mijn priv\u00E9studio waar <b>hygi\u00EBne</b> en <b>precisie</b> topprioriteiten zijn. Ik geloof dat een tatoeage meer is dan alleen inkt; het is <b>jouw verhaal</b>. Daarom besteed ik aandacht aan elk detail van je wensen en werk ik creatief samen om je idee\u00EBn naar een hoger niveau te tillen. Mijn doel is om je gelukkiger te maken dan je had verwacht, met een uniek kunstwerk waar je een leven lang trots op zult zijn.':'Hi, I\'m <b>Talitha</b>! Welcome to <b>Inkjection</b>, my private studio where <b>hygiene</b> and <b>precision</b> are top priorities. I believe a tattoo is more than just ink; it\'s <b>your story</b>. That\'s why I pay attention to every single detail of your wishes and collaborate creatively to elevate your ideas. My goal? To make you happier than you expected with a unique piece of art you\'ll be proud of for a lifetime.';
+  document.getElementById("reviewTitle").textContent=n?"WAT KLANTEN ZEGGEN":"WHAT CLIENTS SAY";
+  if(typeof renderFaq==="function")renderFaq();
+  document.getElementById("labelBook").textContent=n?"HOE BOEKEN?":"HOW TO BOOK?";
+  document.getElementById("labelAftercare").textContent=n?"NAZORG":"AFTERCARE";
+  document.getElementById("menuGiftLabel").textContent=n?"CADEAUBON":"GIFT VOUCHER";
+  document.getElementById("contentBook").innerHTML=n?"<b>Stap 1:</b> Kies gewenst formaat.<br><b>Stap 2:</b> Selecteer een beschikbare datum (en tijdstip).<br><b>Stap 3:</b> Vul je gegevens in en verstuur je aanvraag.<br><b>Stap 4:</b> Talitha bevestigt je afspraak via WhatsApp of telefoon.<br><br><i>Pas na de bevestiging is je afspraak definitief.</i>":"<b>Step 1:</b> Choose preferred size.<br><b>Step 2:</b> Select an available date (and time).<br><b>Step 3:</b> Fill in your details and send your request.<br><b>Step 4:</b> Talitha confirms your appointment via WhatsApp or phone.<br><br><i>Your appointment is final only after that confirmation.</i>";
+  document.getElementById("contentAftercare").innerHTML=n?"<b>Eerste 3-5 dagen:</b> Laat de folie zitten zoals geadviseerd. Was daarna voorzichtig met lauw water en neutrale zeep.<br><br><b>Hydratatie:</b> Breng 2-3x per dag een dun laagje nazorgzalf aan.<br><br><b>Niet doen:</b> Niet krabben, vermijd zwemmen, sauna en direct zonlicht voor minstens 3 weken.":"<b>First 3-5 days:</b> Keep the foil as advised. Then wash gently with lukewarm water and neutral soap.<br><br><b>Hydration:</b> Apply a thin layer of aftercare ointment 2-3x a day.<br><br><b>Don'ts:</b> No scratching, avoid swimming, saunas, and direct sunlight for at least 3 weeks.";
+  document.getElementById("selectTitle").textContent=n?"KIES JE FORMAAT":"CHOOSE YOUR SIZE";
+  if(typeof gcLang==="function")gcLang();
+  document.getElementById("legendAvail").textContent=n?"Beschikbaar":"Available";
+  document.getElementById("legendBooked").textContent=n?"Bezet":"Booked";
+  document.getElementById("legendToday").textContent=n?"Vandaag":"Today";
+  document.getElementById("calHintText").innerHTML=n?"Kies een dag &rarr; vraag je afspraak aan":"Pick a day &rarr; request your appointment";
+  applyBookingLang();
+  document.getElementById("calTopLabel").textContent=n?"KIES JE DATUM":"PICK YOUR DATE";
+  document.getElementById("cookieText").innerHTML=n?'We gebruiken cookies om je bezoek aan onze site te verbeteren. Lees ons <a onclick="openPrivacyFromBanner()" id="cookieLink">privacybeleid</a>.':'We use cookies to improve your visit to our site. Read our <a onclick="openPrivacyFromBanner()" id="cookieLink">privacy policy</a>.';
+  document.getElementById("cookieDeclineBtn").textContent=n?"WEIGEREN":"DECLINE";
+  document.getElementById("cookieAcceptBtn").textContent=n?"ACCEPTEREN":"ACCEPT";
+  document.getElementById("privacyTitle").textContent=n?"PRIVACYBELEID":"PRIVACY POLICY";
+  document.getElementById("footerPrivacyLink").textContent=n?"Privacybeleid":"Privacy Policy";
+  document.getElementById("privacyBody").innerHTML=n?
+    '<p style="margin-bottom:12px"><b>Wie zijn wij?</b><br>Inkjection Tattoo, Torenstraat 32, 2243 Zandhoven &mdash; <a href="mailto:info@inkjection.be" style="color:var(--accent)">info@inkjection.be</a></p>'+
+    '<p style="margin-bottom:12px"><b>Welke gegevens verzamelen we?</b><br>Wanneer je via het boekingsformulier een afspraak aanvraagt, bewaren we de gegevens die jij zelf ingeeft (naam, telefoon, optioneel e-mail, datum, formaat, plaats en beschrijving) in een beveiligde database (Firebase, Google) die enkel wij kunnen inzien. We gebruiken ze alleen om je afspraak te regelen en verwijderen ze ten laatste 12 maanden na je afspraak. Via WhatsApp of het cadeaubonformulier delen we enkel wat jij zelf doorstuurt. We slaan geen betaalgegevens op.</p>'+
+    '<p style="margin-bottom:12px"><b>Cookies &amp; techniek</b><br>Deze site gebruikt functionele opslag (o.a. je taalkeuze en cookievoorkeur) en Firebase (Google) om onze portfolio, ontwerpen en beschikbare data te tonen. Er worden geen advertentiecookies of trackers van derden gebruikt. Voor anonieme bezoekersstatistieken (hoeveel mensen de site bekijken en via welke weg) gebruiken we een willekeurig bezoekersnummer, zonder naam of IP-adres. Alleen als je cookies accepteert, wordt dat nummer op je toestel bewaard.</p>'+
+    '<p style="margin-bottom:12px"><b>Google Maps</b><br>In het contactmenu tonen we een ingesloten Google Maps kaart. Google kan hierbij technische gegevens verzamelen volgens hun eigen privacybeleid.</p>'+
+    '<p><b>Jouw rechten</b><br>Je kan op elk moment inzage, aanpassing of verwijdering van je gegevens vragen via bovenstaand e-mailadres.</p>'
+    :
+    '<p style="margin-bottom:12px"><b>Who we are</b><br>Inkjection Tattoo, Torenstraat 32, 2243 Zandhoven, Belgium &mdash; <a href="mailto:info@inkjection.be" style="color:var(--accent)">info@inkjection.be</a></p>'+
+    '<p style="margin-bottom:12px"><b>What we collect</b><br>When you request an appointment with the booking form, we store the details you enter (name, phone, optional e-mail, date, size, placement and description) in a secured database (Firebase, Google) that only we can access. We use them only to arrange your appointment and delete them at the latest 12 months after your appointment. Via WhatsApp or the gift voucher form we only share what you send yourself. We do not store payment details.</p>'+
+    '<p style="margin-bottom:12px"><b>Cookies &amp; technology</b><br>This site uses functional storage (e.g. your language and cookie choice) and Firebase (Google) to display our portfolio, designs and availability. No advertising cookies or third-party trackers are used. For anonymous visitor statistics (how many people view the site and how they found it) we use a random visitor number, without name or IP address. Only if you accept cookies is that number kept on your device.</p>'+
+    '<p style="margin-bottom:12px"><b>Google Maps</b><br>Our contact menu shows an embedded Google Maps location. Google may collect technical data according to its own privacy policy.</p>'+
+    '<p><b>Your rights</b><br>You can request access to, correction of, or deletion of your data at any time via the email address above.</p>';
+  applySiteContent();
+  renderCalendar();
+}
+
+// FIREBASE
+async function fetchSlots(){
+  if(!db)return;
+  try{
+    var r=await Promise.all([db.collection("slots").get(),db.collection("bookedSlots").get()]);
+    daySlots={};r[0].forEach(function(d){daySlots[d.id]=(d.data().times||[]).slice().sort()});
+    takenSlots={};r[1].forEach(function(d){var x=d.data();(takenSlots[x.date]=takenSlots[x.date]||{})[x.time]=true});
+  }catch(e){console.warn('slots not loaded',e)}
+}
+function freeTimes(ds){var t=takenSlots[ds]||{};return (daySlots[ds]||[]).filter(function(x){return !t[x]})}
+async function fetchData(){
+  var bs=await db.collection("blockedDays").get();
+  blockedDates.clear();bs.forEach(function(d){blockedDates.add(d.id)});
+  await fetchSlots();
+  var ps=await db.collection("photos").get();
+  var all=[];ps.forEach(function(d){all.push({id:d.id,data:d.data()})});
+  all.sort(function(a,b){
+    var oa=a.data.order!==undefined?a.data.order:999999,ob=b.data.order!==undefined?b.data.order:999999;
+    if(oa===ob){return(b.data.createdAt?b.data.createdAt.seconds:0)-(a.data.createdAt?a.data.createdAt.seconds:0)}
+    return oa-ob;
+  });
+  var sl=document.getElementById("sliderContainer");sl.innerHTML="";portfolioUrls=[];
+  all.forEach(function(item,idx){
+    var url=item.data.url;portfolioUrls.push(url);
+    var el=document.createElement("div");el.className="slider-item";
+    el.setAttribute("onclick","openLightbox("+idx+")");
+    el.innerHTML='<img src="'+url+'" loading="lazy" alt="'+tatAlt()+'">';sl.appendChild(el);
+  });
+  renderCalendar();
+}
+
+// SLIDER
+function slideLeft(){var c=document.getElementById('sliderContainer'),w=c.querySelector('.slider-item');if(w)c.scrollBy({left:-(w.offsetWidth+10),behavior:'smooth'})}
+function slideRight(){var c=document.getElementById('sliderContainer'),w=c.querySelector('.slider-item');if(w)c.scrollBy({left:w.offsetWidth+10,behavior:'smooth'})}
+
+function tatAlt(n){return (lang==='nl'?'Tattoo door Inkjection Tattoo, Zandhoven':'Tattoo by Inkjection Tattoo, Zandhoven')+(n?' - '+n:'')}
+function dsAlt(d){var x=(d&&d.description)?String(d.description).slice(0,90):'';return (lang==='nl'?'Tattoo ontwerp':'Tattoo design')+(x?': '+x:'')+' - Inkjection Tattoo'}
+// ---------- GIFT CARD: online payment (Mollie) + automatic PDF ----------
+var GIFT_API='https://europe-west1-inkjection-admin.cloudfunctions.net';
+function gcT(){var n=lang==='nl';return{
+  eyebrow:n?'GEEF IETS BLIJVENDS':'GIVE SOMETHING LASTING',title:n?'CADEAUBON':'GIFT CARD',card:n?'CADEAUBON':'GIFT CARD',forL:n?'VOOR':'FOR',fromL:n?'VAN':'FROM',
+  other:n?'Ander bedrag (€)':'Other amount (€)',to:n?'Voor (naam)':'For (name)',from:n?'Van (naam)':'From (name)',msg:n?'Persoonlijke boodschap (optioneel)':'Personal message (optional)',
+  email:n?'Jouw e-mail (hier sturen we de PDF naartoe)':'Your e-mail (we send the PDF here)',
+  perks:n?['Kies een bedrag en vul in voor wie de bon is.','Betaal veilig met Bancontact.','Je krijgt de cadeaubon meteen als PDF en per e-mail. Hij is 1 jaar geldig voor elke tattoo bij Inkjection.']:['Choose an amount and who the card is for.','Pay securely with Bancontact.','You get the gift card right away as a PDF and by e-mail. It is valid for 1 year for any tattoo at Inkjection.'],how:n?'ZO WERKT HET':'HOW IT WORKS',termsT:n?'Voorwaarden (met betalen ga je hiermee akkoord)':'Conditions (by paying you agree to these)',terms:n?'Geldig voor één tattoosessie bij Inkjection, op naam van de ontvanger; niet te verdelen over meerdere personen of sessies. Niet combineerbaar met andere kortingen of acties. Niet inwisselbaar voor geld; een eventueel restbedrag vervalt. Geldig tot de vermelde datum (1 jaar).':'Valid for one tattoo session at Inkjection, in the name of the recipient; cannot be split over several people or sessions. Cannot be combined with other discounts or promotions. Not exchangeable for cash; any remaining balance expires. Valid until the date shown (1 year).',
+  choose:n?'KIES EEN BEDRAG':'CHOOSE AN AMOUNT',pay:n?'BETAAL':'PAY',wait:n?'EVEN GEDULD…':'ONE MOMENT…',mollie:n?'Betaling via Mollie · je wordt even doorgestuurd':'Payment via Mollie · you will be redirected briefly',
+  eAmt:n?'Kies een bedrag tussen 20 en 1000 €.':'Choose an amount between 20 and 1000 €.',eNames:n?'Vul de naam in van wie de bon krijgt en van wie hij komt.':'Fill in who the card is for and who it is from.',
+  eEmail:n?'Vul een geldig e-mailadres in.':'Please enter a valid e-mail address.',eGen:n?'Er ging iets mis. Probeer het opnieuw of stuur ons een WhatsApp.':'Something went wrong. Please try again or send us a WhatsApp.',
+  checking:n?'Betaling controleren…':'Checking your payment…',checkingP:n?'Dit duurt maar een paar seconden.':'This only takes a few seconds.',
+  okH:n?'Bedankt!':'Thank you!',okP:n?'Je cadeaubon is klaar en wordt nu gedownload. We stuurden hem ook naar ':'Your gift card is ready and is downloading now. We also sent it to ',
+  dl:n?'DOWNLOAD PDF':'DOWNLOAD PDF',view:n?'Bekijk de bon':'View the card',
+  failH:n?'Betaling niet gelukt':'Payment not completed',failP:n?'Er werd niets aangerekend. Je kan het gewoon opnieuw proberen.':'Nothing was charged. You can simply try again.',retry:n?'OPNIEUW PROBEREN':'TRY AGAIN',
+  slowH:n?'Nog even geduld':'Almost there',slowP:n?'Je betaling wordt nog verwerkt. Zodra ze binnen is, krijg je de cadeaubon per e-mail.':'Your payment is still being processed. As soon as it is confirmed, you will receive the gift card by e-mail.'
+}}
+function gcSetText(id,v){var e=document.getElementById(id);if(e)e.textContent=v}
+function gcLang(){
+  var t=gcT();gcSetText('gcEyebrow',t.eyebrow);gcSetText('giftTitle',t.title);gcSetText('cardTitle',t.card);gcSetText('gcForL',t.forL);gcSetText('gcFromL',t.fromL);gcSetText('gcMollie',t.mollie);gcSetText('gcHow',t.how);gcSetText('gcTermsT',t.termsT);gcSetText('gcTermsP',(typeof txt==='function'&&txt('gift.terms'))||t.terms);
+  var ph={inpGiftAmt:t.other,inpGiftTo:t.to,inpGiftFrom:t.from,inpGiftMsg:t.msg,inpGiftEmail:t.email};for(var k in ph){var e=document.getElementById(k);if(e)e.placeholder=ph[k]}
+  var pk=document.querySelectorAll('#gcPerks span');for(var i=0;i<pk.length;i++)pk[i].textContent=t.perks[i]||'';
+  gcPayLabel();
+}
+function gcPayLabel(){var t=gcT(),a=+selectedGiftAmt;gcSetText('gcPayTxt',a>=20?t.pay+' € '+a:t.choose)}
+function gcPreview(){
+  var v=function(id){var e=document.getElementById(id);return e?e.value.trim():''};
+  gcSetText('dispTo',v('inpGiftTo')||'…');gcSetText('dispFrom',v('inpGiftFrom')||'…');
+  var m=v('inpGiftMsg');gcSetText('dispMsg',m?'“'+m+'”':'');
+}
+function gcBonus(){var g=(typeof sv==='function'&&sv('gift'))||{},m={};if(g.bonusOn===true&&Array.isArray(g.bonus))g.bonus.forEach(function(x){var r=String(x).match(/^(\d+)=(\d+)$/);if(r&&+r[2]>+r[1])m[+r[1]]=+r[2]});return m}
+function gcValue(a){var m=gcBonus();return m[a]||a}
+function gcBuildAmounts(am){
+  var g=document.getElementById('giftAmtGrid');if(!g)return;var m=gcBonus(),list=(am&&am.length?am.slice(0,6):[50,100,150,250]).map(Number);
+  Object.keys(m).forEach(function(k){if(list.indexOf(+k)<0)list.push(+k)});list=list.filter(function(v){return v>0}).sort(function(a,b){return a-b}).slice(0,8);
+  g.innerHTML='';list.forEach(function(v){var b=document.createElement('button');b.className='amt-opt'+(m[v]?' promo':'');b.dataset.v=v;b.innerHTML=v+'€'+(m[v]?'<small>→ '+m[v]+'€</small>':'');b.onclick=function(){setGiftAmt(v)};g.appendChild(b)});
+  var p=document.getElementById('gcPromo'),keys=Object.keys(m);
+  if(p){if(keys.length){var k=keys[0];p.innerHTML='<i class="fas fa-tag"></i> '+(lang==='nl'?'Promo: betaal <b>€'+k+'</b> en geef een bon van <b>€'+m[k]+'</b>':'Promo: pay <b>€'+k+'</b> and give a card worth <b>€'+m[k]+'</b>');p.style.display='block'}else p.style.display='none'}
+}
+function setGiftAmt(a,typed){
+  a=Math.round(+a)||0;selectedGiftAmt=a;window.gcTyped=!!typed;
+  gcSetText('dispAmt',a?'€ '+(typed?a:gcValue(a)):'€ —');
+  var inp=document.getElementById('inpGiftAmt');if(!typed&&inp)inp.value='';
+  document.querySelectorAll('#giftAmtGrid .amt-opt').forEach(function(b){b.classList.toggle('active',!typed&&+(b.dataset.v||parseInt(b.textContent,10))===a)});
+  gcPayLabel();
+}
+function sendGiftWA(){giftCheckout()}
+async function giftCheckout(){
+  var t=gcT(),err=document.getElementById('gcErr'),btn=document.getElementById('btnGiftOrder');
+  var v=function(id){return document.getElementById(id).value.trim()};
+  var a=+selectedGiftAmt;err.textContent='';
+  if(!(a>=20&&a<=1000)){err.textContent=t.eAmt;return}
+  if(v('inpGiftTo').length<2||v('inpGiftFrom').length<2){err.textContent=t.eNames;return}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v('inpGiftEmail'))){err.textContent=t.eEmail;return}
+  btn.disabled=true;gcSetText('gcPayTxt',t.wait);
+  try{
+    var r=await fetch(GIFT_API+'/giftCheckout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({noPromo:!!window.gcTyped,amount:a,to:v('inpGiftTo'),from:v('inpGiftFrom'),message:v('inpGiftMsg'),email:v('inpGiftEmail'),lang:lang})});
+    var j=await r.json();
+    if(j.error==='promolimit'){err.innerHTML=lang==='nl'?'Deze promo kan maar '+j.limit+'x per persoon gebruikt worden. Wil je toch een cadeaubon? Vul het bedrag in bij <b>Ander bedrag</b>.':'This promotion can only be used '+j.limit+'x per person. Still want a gift card? Enter the amount under <b>Other amount</b>.';btn.disabled=false;gcPayLabel();return}
+    if(!r.ok||!j.url)throw new Error(j.error||'error');
+    location.href=j.url;
+  }catch(e){err.textContent=t.eGen;btn.disabled=false;gcPayLabel()}
+}
+function gcShow(html){document.getElementById('gcForm').style.display='none';var r=document.getElementById('gcResult');r.style.display='block';document.getElementById('gcState').innerHTML=html}
+function gcBackToForm(){document.getElementById('gcResult').style.display='none';document.getElementById('gcForm').style.display='block';var b=document.getElementById('btnGiftOrder');if(b)b.disabled=false;gcPayLabel()}
+function gcDownload(url){try{var fr=document.createElement('iframe');fr.style.display='none';fr.src=url;document.body.appendChild(fr);setTimeout(function(){fr.remove()},60000)}catch(e){}}
+async function giftReturn(id,tok){
+  var t=gcT(),url=GIFT_API+'/giftPdf?id='+encodeURIComponent(id)+'&t='+encodeURIComponent(tok);
+  document.getElementById('giftModal').style.display='block';
+  gcShow('<div class="ic"><i class="fas fa-spinner fa-spin"></i></div><h4>'+t.checking+'</h4><p>'+t.checkingP+'</p>');
+  for(var i=0;i<20;i++){
+    try{
+      var r=await fetch(GIFT_API+'/giftStatus?id='+encodeURIComponent(id)+'&t='+encodeURIComponent(tok));var j=await r.json();
+      if(j.status==='paid'){
+        gcShow('<div class="ic ok"><i class="fas fa-check"></i></div><h4>'+t.okH+'</h4><p>'+t.okP+'<b>'+escH(j.email||'')+'</b>.</p><div class="code">'+escH(j.code)+'</div>'+
+          '<a class="btn-form-primary" href="'+url+'" rel="noopener"><i class="fas fa-download"></i> '+t.dl+'</a><a class="gc-link" href="'+url+'&view=1" target="_blank" rel="noopener">'+t.view+'</a>');
+        setTimeout(function(){gcDownload(url)},700);return;
+      }
+      if(j.status==='canceled'||j.status==='expired'||j.status==='failed'||j.status==='unknown'){
+        gcShow('<div class="ic"><i class="fas fa-xmark"></i></div><h4>'+t.failH+'</h4><p>'+t.failP+'</p><button class="btn-form-primary" onclick="gcBackToForm()">'+t.retry+'</button>');return;
+      }
+    }catch(e){}
+    await new Promise(function(res){setTimeout(res,2000)});
+  }
+  gcShow('<div class="ic"><i class="fas fa-hourglass-half"></i></div><h4>'+t.slowH+'</h4><p>'+t.slowP+'</p>');
+}
+(function(){ // back from Mollie: inkjection.be/?gift=ID&t=TOKEN
+  try{var P=new URLSearchParams(location.search),id=P.get('gift'),tok=P.get('t');if(!id||!tok)return;
+    var u=new URL(location.href);u.searchParams.delete('gift');u.searchParams.delete('t');history.replaceState(history.state,'',u.pathname+u.search+u.hash);
+    var go=function(){setTimeout(function(){giftReturn(id,tok)},400)};
+    if(document.readyState==='complete')go();else addEventListener('load',go);
+  }catch(e){}
+})();
+
+// LIGHTBOX
+var activeGallery=portfolioUrls;
+function openLightbox(i,gallery){activeGallery=gallery||portfolioUrls;lightboxIndex=i;document.getElementById('lightboxImg').src=activeGallery[i];document.getElementById('lightbox').classList.toggle('single-photo',activeGallery.length<2);document.getElementById('lightbox').classList.add('active')}
+function closeLightbox(){document.getElementById('lightbox').classList.remove('active')}
+function lightboxPrev(){lightboxIndex=(lightboxIndex-1+activeGallery.length)%activeGallery.length;document.getElementById('lightboxImg').src=activeGallery[lightboxIndex]}
+function lightboxNext(){lightboxIndex=(lightboxIndex+1)%activeGallery.length;document.getElementById('lightboxImg').src=activeGallery[lightboxIndex]}
+
+// MY WORK
+function openWorkModal(){
+  var g=document.getElementById('portfolioGrid');g.innerHTML='';
+  portfolioUrls.forEach(function(url,i){
+    var img=document.createElement('img');img.src=url;img.loading='lazy';img.alt=tatAlt(i+1);
+    img.onclick=function(){closeModal('workModal');openLightbox(i)};g.appendChild(img);
+  });
+  document.getElementById('workModal').style.display='block';
+}
+
+// DESIGNS
+function designSlideLeft(){var c=document.getElementById('designsSliderContainer'),w=c.querySelector('.designs-slider-item');if(w)c.scrollBy({left:-(w.offsetWidth+10),behavior:'smooth'})}
+function designSlideRight(){var c=document.getElementById('designsSliderContainer'),w=c.querySelector('.designs-slider-item');if(w)c.scrollBy({left:w.offsetWidth+10,behavior:'smooth'})}
+
+function openDesignPopup(d){
+  var ct=document.getElementById('designPopupContent'),sold=d.sold===true,disc=d.discountPrice&&d.discountPrice!=='';
+  var ph='',dp='';
+  if(d.price){if(disc){ph='<span class="dp-old-price">\u20AC'+d.price+'</span><span class="dp-discount">\u20AC'+d.discountPrice+'</span>';dp='\u20AC'+d.discountPrice}else{ph='<span class="dp-price" style="font-size:20px;font-weight:800">\u20AC'+d.price+'</span>';dp='\u20AC'+d.price}}
+  var desc=d.description||'',wl=lang==="nl"?"AFSPRAAK VIA WHATSAPP":"BOOK APPOINTMENT",sl=lang==="nl"?"VERKOCHT":"SOLD";
+  var wm=encodeURIComponent(lang==="nl"?'Hallo! Ik wil graag een afspraak maken voor dit ontwerp: '+d.url+'\nPrijs: '+dp+'\n'+desc:'Hello! I would like to book for this design: '+d.url+'\nPrice: '+dp+'\n'+desc);
+  var btn=sold?'<div class="dp-sold">'+sl+'</div>':'<a href="https://wa.me/'+MY_WA+'?text='+wm+'" target="_blank" class="popup-wa-btn"><i class="fab fa-whatsapp" style="font-size:18px"></i> '+wl+'</a>';
+  ct.innerHTML='<img alt="'+escH(dsAlt(d))+'" src="'+d.url+'"'+(sold?' style="opacity:.35"':'')+'>'+
+    (ph?'<div style="margin-bottom:6px">'+ph+'</div>':'')+
+    (desc?'<div class="dp-desc">'+desc+'</div>':'')+btn;
+  document.getElementById('designPopup').classList.add('active');
+}
+function closeDesignPopup(){document.getElementById('designPopup').classList.remove('active')}
+
+function buildDesignsSlider(snap){
+  var c=document.getElementById('designsSliderContainer'),s=document.getElementById('designsSliderSection'),b=document.getElementById('designsSliderBlock'),bb=document.getElementById('designsBtnBlock');
+  c.innerHTML='';var cnt=0;
+  snap.forEach(function(doc){
+    var d=doc.data(),sold=d.sold===true,disc=d.discountPrice&&d.discountPrice!=='';
+    var ph='';
+    if(d.price){if(disc)ph='<span class="ds-old-price">\u20AC'+d.price+'</span><span class="ds-discount">\u20AC'+d.discountPrice+'</span>';else ph='<span class="ds-price">\u20AC'+d.price+'</span>'}
+    var desc=d.description||'',sl=lang==="nl"?"VERKOCHT":"SOLD";
+    var item=document.createElement('div');item.className='designs-slider-item';
+    item.innerHTML='<img alt="'+escH(dsAlt(d))+'" src="'+d.url+'"'+(sold?' class="ds-sold-img"':'')+' loading="lazy"><div class="ds-info">'+(ph?'<div>'+ph+'</div>':'')+(desc?'<div class="ds-desc">'+desc+'</div>':'')+(sold?'<div class="ds-sold">'+sl+'</div>':'')+'</div>';
+    item.onclick=function(){openDesignPopup(d)};c.appendChild(item);cnt++;
+  });
+  var show=cnt>0;s.style.display=show?'block':'none';b.style.display=show?'block':'none';bb.style.display=show?'block':'none';
+}
+async function loadDesigns(){designsSnap=await db.collection("designs").orderBy("createdAt","desc").get();buildDesignsSlider(designsSnap)}
+async function fetchDesigns(){
+  if(!designsSnap)await loadDesigns();
+  var g=document.getElementById("designsGrid");g.innerHTML="";
+  if(designsSnap.empty){g.innerHTML='<div class="designs-empty">'+(lang==="nl"?"Momenteel geen ontwerpen beschikbaar.":"No designs available.")+'</div>';return}
+  designsSnap.forEach(function(doc){
+    var d=doc.data(),sold=d.sold===true,disc=d.discountPrice&&d.discountPrice!=='';
+    var ph='',dp='';
+    if(d.price){if(disc){ph='<span class="design-old-price">\u20AC'+d.price+'</span><span class="design-discount-price">\u20AC'+d.discountPrice+'</span>';dp='\u20AC'+d.discountPrice}else{ph='<div class="design-price">\u20AC'+d.price+'</div>';dp='\u20AC'+d.price}}
+    var desc=d.description||'',wl=lang==="nl"?"AFSPRAAK VIA WHATSAPP":"BOOK APPOINTMENT",sl2=lang==="nl"?"VERKOCHT":"SOLD OUT";
+    var wm=encodeURIComponent(lang==="nl"?'Hallo! Ik wil graag een afspraak maken voor dit ontwerp: '+d.url+'\nPrijs: '+dp+'\n'+desc:'Hello! I would like to book for this design: '+d.url+'\nPrice: '+dp+'\n'+desc);
+    var card=document.createElement("div");card.className="design-card";
+    var stamp=lang==="nl"?"VERKOCHT":"SOLD";
+    var iw=sold?'<div class="design-sold-overlay"><img alt="'+escH(dsAlt(d))+'" src="'+d.url+'" loading="lazy"><div class="design-sold-stamp">'+stamp+'</div></div>':'<img alt="'+escH(dsAlt(d))+'" src="'+d.url+'" loading="lazy">';
+    var btn=sold?'<div style="text-align:center;padding:10px;color:var(--danger);font-weight:800;font-size:12px;letter-spacing:2px">'+sl2+'</div>':'<a href="https://wa.me/'+MY_WA+'?text='+wm+'" target="_blank" class="design-wa-btn"><i class="fab fa-whatsapp"></i> '+wl+'</a>';
+    card.innerHTML=iw+'<div class="design-card-info">'+(ph?'<div style="margin-bottom:4px">'+ph+'</div>':'')+(desc?'<div class="design-desc">'+desc+'</div>':'')+btn+'</div>';
+    g.appendChild(card);
+  });
+}
+async function openDesignsModal(){await fetchDesigns();document.getElementById('designsModal').style.display='block'}
+
+// ===== PREMIUM CALENDAR =====
+function renderCalendar(){
+  var daysEl=document.getElementById("calDays");
+  var nlM=["Januari","Februari","Maart","April","Mei","Juni","Juli","Augustus","September","Oktober","November","December"];
+  var enM=["January","February","March","April","May","June","July","August","September","October","November","December"];
+  var nlW=["MA","DI","WO","DO","VR","ZA","ZO"];
+  var enW=["MO","TU","WE","TH","FR","SA","SU"];
+
+  document.getElementById("calMonthName").textContent=(lang==="nl"?nlM[viewMonth]:enM[viewMonth]);
+  document.getElementById("calYearLabel").textContent=viewYear;
+
+  // Size pill
+  var sizeLabels={small:'SMALL (0-8cm)',medium:'MEDIUM (8-15cm)',large:'LARGE (15+cm)'};
+  document.getElementById("calSizeLabel").textContent=sizeLabels[userSizeChoice]||'SMALL';
+
+  // Weekdays
+  var wdEl=document.getElementById("calWeekdays");
+  wdEl.innerHTML='';
+  var wArr=lang==="nl"?nlW:enW;
+  wArr.forEach(function(w){var d=document.createElement("div");d.className="cal-weekday";d.textContent=w;wdEl.appendChild(d)});
+
+  daysEl.innerHTML="";
+  var currentTotalMonths=now.getFullYear()*12+now.getMonth();
+  var viewTotalMonths=viewYear*12+viewMonth;
+  var maxForwardMonths=maxForward();
+  document.getElementById("prevBtn").style.visibility=(viewTotalMonths<=currentTotalMonths)?"hidden":"visible";
+  document.getElementById("nextBtn").style.visibility=(viewTotalMonths>=currentTotalMonths+maxForwardMonths)?"hidden":"visible";
+
+  var first=new Date(viewYear,viewMonth,1).getDay();
+  var shift=first===0?6:first-1;
+  for(var i=0;i<shift;i++){var emp=document.createElement("div");emp.className="cal-day empty";daysEl.appendChild(emp)}
+
+  var todayStr=now.getFullYear()+'-'+(now.getMonth()+1).toString().padStart(2,'0')+'-'+now.getDate().toString().padStart(2,'0');
+  var total=new Date(viewYear,viewMonth+1,0).getDate();
+  for(var d=1;d<=total;d++){
+    var dObj=new Date(viewYear,viewMonth,d);
+    var id=viewYear+'-'+(viewMonth+1).toString().padStart(2,'0')+'-'+d.toString().padStart(2,'0');
+    var isPast=(dObj<now);
+    var isB=blockedDates.has(id)||(userSizeChoice==='large'&&largeWeekendOnly()&&dObj.getDay()>=1&&dObj.getDay()<=5)||((daySlots[id]||[]).length>0&&freeTimes(id).length===0);
+    var isToday=(id===todayStr);
+
+    var el=document.createElement("div");
+    el.className="cal-day";
+    if(isPast){el.classList.add("past")}
+    else if(isB){el.classList.add("booked-x")}
+    else{el.classList.add("available")}
+    if(isToday&&!isPast)el.classList.add("today");
+    el.textContent=d;
+
+    if(!isB&&!isPast){
+      (function(dateId){el.onclick=function(){openBooking(dateId)}})(id);
+    }
+    daysEl.appendChild(el);
+  }
+}
+
+function changeMonth(s){
+  var ct=now.getFullYear()*12+now.getMonth();
+  var nt=viewYear*12+viewMonth+s;
+  var mx=maxForward();
+  if(nt>=ct&&nt<=ct+mx){
+    viewMonth+=s;
+    if(viewMonth>11){viewMonth=0;viewYear++}else if(viewMonth<0){viewMonth=11;viewYear--}
+    renderCalendar();
+  }
+}
+
+// WHATSAPP BOOKING
+function goToWhatsAppWithDate(dateId){
+  closeModal('calModal');
+  var sl=userSizeChoice==='small'?'Small (0-8cm)':userSizeChoice==='medium'?'Medium (8-15cm)':'Large (15+cm)';
+  var msg=lang==="nl"
+    ?'Hallo! Ik wil graag informatie over een tattoo afspraak.\n\n\uD83D\uDCC5 Datum: '+dateId+'\n\uD83D\uDCCF Formaat: '+sl+'\n\nKunt u mij meer vertellen?'
+    :'Hello! I would like information about a tattoo appointment.\n\n\uD83D\uDCC5 Date: '+dateId+'\n\uD83D\uDCCF Size: '+sl+'\n\nCan you tell me more?';
+  window.open('https://wa.me/'+MY_WA+'?text='+encodeURIComponent(msg),'_blank');
+}
+
+// BOOKING REQUEST (saved in Firebase, Talitha approves in the admin panel)
+var BK_TXT={
+  nl:{title:'AFSPRAAK AANVRAGEN',time:'KIES EEN TIJDSTIP',you:'JOUW GEGEVENS',name:'Naam *',phone:'Telefoon / WhatsApp *',email:'E-mail *',place:'Plaats op het lichaam (bv. onderarm)',desc:'Beschrijf je idee (stijl, grootte, referenties...)',
+      noTime:'<i class="fas fa-circle-info"></i>Voor deze dag stelt Talitha een tijdstip voor wanneer ze je aanvraag bevestigt.',
+      consent:'Ik ga akkoord dat mijn gegevens bewaard worden om mijn afspraak te regelen. <a onclick="openPrivacyFromBanner()">Privacybeleid</a>',
+      send:'BETAAL VOORSCHOT',sending:'EVEN GEDULD...',alt:'Een vraag of probleem? Stuur ons een WhatsApp',depT:'VOORSCHOT',giftT:'Heb je een cadeaubon? Vul je code in, dan betaal je geen voorschot.',giftHide:'Toch geen cadeaubon gebruiken',giftNote:'Je cadeaubon wordt gekoppeld aan deze afspraak (1 sessie). Geen voorschot nodig.',sendGift:'VERSTUUR AANVRAAG',gNotFound:'Deze code bestaat niet. Kijk hem nog eens na.',gUsed:'Deze cadeaubon werd al gebruikt.',gExpired:'Deze cadeaubon is verlopen.',gFormat:'Vul de volledige code in, bv. INK-7K2P-9QXM.',doneGift:'Je aanvraag is verstuurd en je cadeaubon is eraan gekoppeld. Talitha bevestigt je afspraak zo snel mogelijk via WhatsApp of telefoon. Je krijgt ook een bevestiging per e-mail.',dep:['Vul je gegevens in en tik op <b>Betaal voorschot</b>.','Betaal het voorschot veilig met Bancontact. Pas daarna wordt je aanvraag verstuurd.','Talitha bevestigt je afspraak. Het voorschot gaat af van de prijs van je tattoo.'],checking:'Betaling controleren…',failT:'BETALING NIET GELUKT',fail:'Er werd niets aangerekend en er is geen afspraak aangemaakt. Je kan het gewoon opnieuw proberen.',retry:'OPNIEUW PROBEREN',slowT:'NOG EVEN GEDULD',slow:'Je betaling wordt nog verwerkt. Zodra ze binnen is, krijg je een bevestiging per e-mail.',timeMoved:'<br><br>Je gekozen tijdstip werd intussen geboekt; Talitha stelt je een ander uur voor.',
+      eTime:'Kies een tijdstip of "Geen voorkeur".',anyTime:'Geen voorkeur / ander tijdstip',eName:'Vul je naam in.',ePhone:'Vul een geldig telefoonnummer in.',eEmail:'Vul een geldig e-mailadres in.',photo:'FOTO\'S (OPTIONEEL, MAX 2)',addPhoto:'FOTO',ePhoto:'Deze foto kon niet geladen worden.',eConsent:'Vink het akkoord aan om verder te gaan.',
+      eTaken:'Dit tijdstip is net geboekt. Kies een ander tijdstip.',eLimit:'Je hebt vandaag al meerdere aanvragen verstuurd. Stuur ons een bericht via WhatsApp.',eGen:'Er ging iets mis. Probeer opnieuw of stuur een WhatsApp.',
+      doneT:'BEDANKT!',done:'Je voorschot is betaald en je aanvraag is verstuurd. Talitha bevestigt je afspraak zo snel mogelijk via WhatsApp of telefoon. Je krijgt ook een bevestiging per e-mail.',close:'SLUITEN'},
+  en:{title:'REQUEST APPOINTMENT',time:'PICK A TIME',you:'YOUR DETAILS',name:'Name *',phone:'Phone / WhatsApp *',email:'E-mail *',place:'Placement on the body (e.g. forearm)',desc:'Describe your idea (style, size, references...)',
+      noTime:'<i class="fas fa-circle-info"></i>For this day Talitha will propose a time when she confirms your request.',
+      consent:'I agree that my details are stored to arrange my appointment. <a onclick="openPrivacyFromBanner()">Privacy policy</a>',
+      send:'PAY DEPOSIT',sending:'ONE MOMENT...',alt:'A question or a problem? Send us a WhatsApp',depT:'DEPOSIT',giftT:'Have a gift card? Enter your code and you pay no deposit.',giftHide:'Don\'t use a gift card',giftNote:'Your gift card is linked to this appointment (1 session). No deposit needed.',sendGift:'SEND REQUEST',gNotFound:'This code does not exist. Please check it.',gUsed:'This gift card has already been used.',gExpired:'This gift card has expired.',gFormat:'Enter the full code, e.g. INK-7K2P-9QXM.',doneGift:'Your request has been sent and your gift card is linked to it. Talitha will confirm your appointment as soon as possible via WhatsApp or phone. You will also receive a confirmation by e-mail.',dep:['Fill in your details and tap <b>Pay deposit</b>.','Pay the deposit securely with Bancontact. Only then is your request sent.','Talitha confirms your appointment. The deposit is deducted from the price of your tattoo.'],checking:'Checking your payment…',failT:'PAYMENT NOT COMPLETED',fail:'Nothing was charged and no appointment was created. You can simply try again.',retry:'TRY AGAIN',slowT:'ALMOST THERE',slow:'Your payment is still being processed. As soon as it is confirmed, you will receive an e-mail.',timeMoved:'<br><br>Your chosen time was booked in the meantime; Talitha will propose another time.',
+      eTime:'Please pick a time or "No preference".',anyTime:'No preference / other time',eName:'Please enter your name.',ePhone:'Please enter a valid phone number.',eEmail:'Please enter a valid e-mail address.',photo:'PHOTOS (OPTIONAL, MAX 2)',addPhoto:'PHOTO',ePhoto:'This photo could not be loaded.',eConsent:'Please tick the agreement to continue.',
+      eTaken:'This time was just booked. Please pick another time.',eLimit:'You already sent several requests today. Please message us on WhatsApp.',eGen:'Something went wrong. Please try again or send a WhatsApp.',
+      doneT:'THANK YOU!',done:'Your deposit is paid and your request has been sent. Talitha will confirm your appointment as soon as possible via WhatsApp or phone. You will also receive a confirmation by e-mail.',close:'CLOSE'}
+};
+function bkT(){return BK_TXT[lang]||BK_TXT.nl}
+function bkDateNice(ds){var p=ds.split('-');var d=new Date(+p[0],+p[1]-1,+p[2]);try{return d.toLocaleDateString(lang==='nl'?'nl-BE':'en-GB',{weekday:'short',day:'numeric',month:'long'})}catch(e){return p[2]+'/'+p[1]+'/'+p[0]}}
+function applyBookingLang(){
+  var t=bkT();
+  document.getElementById('bkTitle').textContent=t.title;
+  document.getElementById('bkTimeLabel').textContent=t.time;
+  document.getElementById('bkYouLabel').textContent=t.you;
+  document.getElementById('bkName').placeholder=t.name;
+  document.getElementById('bkPhone').placeholder=t.phone;
+  document.getElementById('bkEmail').placeholder=t.email;
+  document.getElementById('bkPlacement').placeholder=t.place;
+  document.getElementById('bkDesc').placeholder=t.desc;
+  document.getElementById('bkNoTimeNote').innerHTML=t.noTime;
+  document.getElementById('bkConsentText').innerHTML=t.consent;
+  bkDepositUI();
+  document.getElementById('bkAltText').textContent=t.alt;
+  document.getElementById('bkDoneTitle').textContent=t.doneT;
+  document.getElementById('bkDoneText').innerHTML=t.done;
+  document.getElementById('bkDoneBtn').textContent=t.close;
+  document.getElementById('bkPhotoLabel').textContent=t.photo;
+  renderBookingPhotos();
+  if(bookingDate)document.getElementById('bkDateLabel').textContent=bkDateNice(bookingDate);
+}
+function renderBookingTimes(){
+  var all=daySlots[bookingDate]||[],taken=takenSlots[bookingDate]||{};
+  var grid=document.getElementById('bkTimes');grid.innerHTML='';
+  document.getElementById('bkTimeBlock').style.display=all.length?'block':'none';
+  document.getElementById('bkNoTimeNote').style.display=all.length?'none':'block';
+  all.forEach(function(t){
+    var b=document.createElement('button');b.type='button';b.className='time-opt'+(t===bookingTime?' active':'');b.textContent=t;
+    if(taken[t])b.disabled=true;
+    b.onclick=function(){bookingTime=t;renderBookingTimes()};
+    grid.appendChild(b);
+  });
+  if(all.length){
+    var n=document.createElement('button');n.type='button';n.className='time-opt'+(bookingTime==='any'?' active':'');
+    n.style.gridColumn='1 / -1';n.style.fontSize='13px';n.textContent=bkT().anyTime;
+    n.onclick=function(){bookingTime='any';renderBookingTimes()};
+    grid.appendChild(n);
+  }
+}
+function openBooking(dateId){
+  closeModal('calModal');
+  if(SITE&&SITE.booking&&SITE.booking.enabled===false){goToWhatsAppWithDate(dateId);return}
+  bookingDate=dateId;bookingTime='';
+  var free=freeTimes(dateId);if(free.length===1)bookingTime=free[0];
+  applyBookingLang();
+  document.getElementById('bkSizeLabel').textContent=userSizeChoice==='small'?'Small 0-8cm':userSizeChoice==='medium'?'Medium 8-15cm':'Large 15+cm';
+  document.getElementById('bkError').textContent='';
+  document.getElementById('bkFormView').style.display='block';
+  document.getElementById('bkDoneView').style.display='none';
+  renderBookingTimes();
+  document.getElementById('bookModal').style.display='block';
+}
+// --- booking photos (resized in the browser, stored with the request) ---
+function shrinkImage(file,maxSide,quality){
+  return new Promise(function(res,rej){
+    var fr=new FileReader();
+    fr.onerror=rej;
+    fr.onload=function(){
+      var img=new Image();
+      img.onerror=rej;
+      img.onload=function(){
+        var w=img.width,h=img.height,k=Math.min(1,maxSide/Math.max(w,h));
+        var c=document.createElement('canvas');c.width=Math.round(w*k);c.height=Math.round(h*k);
+        c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+        res(c.toDataURL('image/jpeg',quality));
+      };
+      img.src=fr.result;
+    };
+    fr.readAsDataURL(file);
+  });
+}
+async function addBookingPhotos(files){
+  var err=document.getElementById('bkError');err.textContent='';
+  for(var i=0;i<files.length&&bookingPhotos.length<2;i++){
+    try{
+      var d=await shrinkImage(files[i],1280,0.72);
+      if(d.length>420000)d=await shrinkImage(files[i],1000,0.6);
+      if(d.length>420000)d=await shrinkImage(files[i],800,0.5);
+      bookingPhotos.push(d);
+    }catch(e){err.textContent=bkT().ePhoto}
+  }
+  renderBookingPhotos();
+}
+function renderBookingPhotos(){
+  var box=document.getElementById('bkPhotos');if(!box)return;box.innerHTML='';
+  bookingPhotos.forEach(function(src,i){
+    var d=document.createElement('div');d.className='bk-photo';
+    d.innerHTML='<img alt=""><button type="button" aria-label="remove">&times;</button>';
+    d.querySelector('img').src=src;
+    d.querySelector('button').onclick=function(){bookingPhotos.splice(i,1);renderBookingPhotos()};
+    box.appendChild(d);
+  });
+  if(bookingPhotos.length<2){
+    var a=document.createElement('div');a.className='bk-photo-add';
+    a.innerHTML='<i class="fas fa-camera"></i><span>'+bkT().addPhoto+'</span>';
+    a.onclick=function(){document.getElementById('bkPhotoInput').click()};
+    box.appendChild(a);
+  }
+}
+
+
+// --- FAQ: fixed answers + studio policies filled in from the admin panel (empty = question hidden) ---
+var FAQ_BASE=[
+  {k:'book',q:{nl:'Hoe maak ik een afspraak?',en:'How do I book an appointment?'},a:{nl:'Tik op **Plan je sessie**, kies het formaat, een datum en (als die er zijn) een tijdstip, en verstuur je aanvraag. Talitha bevestigt je afspraak daarna via WhatsApp of telefoon. Pas na die bevestiging is je afspraak definitief.',en:'Tap **Plan your session**, choose the size, a date and (if available) a time, and send your request. Talitha then confirms your appointment via WhatsApp or phone. Only after that confirmation is your appointment final.'}},
+  {k:'price',q:{nl:'Wat kost een tattoo?',en:'How much does a tattoo cost?'},a:{nl:'Dat hangt af van de grootte, het detail en de plaats op je lichaam. Small (0-8 cm) start vanaf €80, medium (8-15 cm) vanaf €120, large (15+ cm) gaat op afspraak. Voor een prijs op maat stuur je gewoon een bericht met je idee.',en:'It depends on the size, the detail and the placement. Small (0-8 cm) starts from €80, medium (8-15 cm) from €120, large (15+ cm) by appointment. For a price on your idea, just send a message.'}},
+  {k:'deposit',q:{nl:'Moet ik een voorschot betalen?',en:'Do I pay a deposit?'},a:{nl:'Ja. Bij het aanvragen van je afspraak betaal je online een voorschot met Bancontact: **€20** voor small, **€50** voor medium en **€80** voor large. Zonder voorschot wordt er geen afspraak aangemaakt. Het voorschot gaat af van de prijs van je tattoo.',en:'Yes. When you request your appointment you pay a deposit online with Bancontact: **€20** for small, **€50** for medium and **€80** for large. Without a deposit no appointment is created. The deposit is deducted from the price of your tattoo.'}},
+  {k:'payment',q:{nl:'Hoe kan ik betalen?',en:'How can I pay?'}},
+  {k:'age',q:{nl:'Vanaf welke leeftijd kan ik een tattoo laten zetten?',en:'What is the minimum age for a tattoo?'}},
+  {k:'prep',q:{nl:'Hoe bereid ik me voor op mijn sessie?',en:'How do I prepare for my session?'},a:{nl:'Eet goed op voorhand, drink genoeg water en drink de dag ervoor geen alcohol. Kom uitgerust en draag kleding waarmee de plek van je tattoo makkelijk bereikbaar is.',en:'Eat well beforehand, drink enough water and skip alcohol the day before. Come well rested and wear clothes that give easy access to the tattoo spot.'}},
+  {k:'touchup',q:{nl:'Is bijwerken (touch-up) inbegrepen?',en:'Is a touch-up included?'}},
+  {k:'coverup',q:{nl:'Doe je ook cover-ups van een oude tattoo?',en:'Do you do cover-ups of an old tattoo?'}},
+  {k:'gift',q:{nl:'Kan ik een tattoo cadeau doen?',en:'Can I give a tattoo as a gift?'},a:{nl:'Ja! Via **Cadeaubon** in het menu kies je een bedrag. Een mooi cadeau voor een verjaardag of de feestdagen.',en:'Yes! Choose an amount via **Gift card** in the menu. A great present for a birthday or the holidays.'}}
+];
+function renderFaq(){
+  var box=document.getElementById('faqList');if(!box)return;
+  var t=document.getElementById('faqTitle');if(t)t.textContent=lang==='nl'?'VEELGESTELDE VRAGEN':'FREQUENTLY ASKED QUESTIONS';
+  var items=FAQ_BASE.map(function(f){var a=(typeof txt==='function'&&txt('faq.'+f.k))||(f.a?(f.a[lang]||f.a.nl):'');return a?{q:f.q[lang]||f.q.nl,a:a}:null}).filter(Boolean);
+  box.innerHTML=items.map(function(it){return '<details class="faq-item"><summary>'+escH(it.q)+'</summary><div class="faq-a">'+richText(it.a)+'</div></details>'}).join('');
+  var gb=document.getElementById('googleRevLabel');if(gb)gb.textContent=lang==='nl'?'Bekijk alle reviews op Google':'See all reviews on Google';
+}
+
+// --- site content managed from the admin panel (settings/site + reviews) ---
+var SITE_DEFAULTS={"contact": {"address": "Torenstraat 32, 2243 Zandhoven"}};
+function sv(path){var o=SITE;path.split('.').forEach(function(k){o=(o&&o[k]!==undefined)?o[k]:undefined});return o}
+function monthsAhead(){var m=+sv('booking.monthsAhead');return m>=1&&m<=12?m:2}
+// How many months customers can browse (set in the admin panel). Without a setting: the old rule.
+function maxForward(){
+  var v=+sv('booking.monthsVisible');
+  if(v>=1&&v<=12)return (v-1)+((sv('booking.extraAfter20')===true&&now.getDate()>=20)?1:0);
+  return monthsAhead()+((now.getDate()>=20)?1:0);
+}
+function largeWeekendOnly(){return sv('booking.largeWeekendOnly')!==false}
+function escH(t){return String(t==null?'':t).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function richText(t){return escH(t).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/\n/g,'<br>')}
+function txt(key){var v=sv(key);if(!v)return null;var x=v[lang]||v.nl||v.en;return x?String(x):null}
+function setText(id,v){var e=document.getElementById(id);if(e&&v!=null)e.textContent=v}
+function setRich(id,v){var e=document.getElementById(id);if(e&&v!=null)e.innerHTML=richText(v)}
+function applySiteContent(){
+  if(!SITE)return;
+  renderFaq();
+  setText('heroLine1',txt('heroTagline'));
+  setText('heroLine2',txt('heroSub'));
+  setText('trustText',txt('trust'));
+  setRich('aboutText',txt('about'));
+  setRich('contentAftercare',txt('aftercare'));
+  [['small',['priceSmall','sizePriceS']],['medium',['priceMed','sizePriceM']],['large',['priceLg','sizePriceL']]].forEach(function(p){
+    var v=txt('prices.'+p[0]);if(v)p[1].forEach(function(id){setText(id,v)});
+  });
+  var an=document.getElementById('siteAnnounce'),at=txt('announcement');
+  if(an){var on=sv('announcement.on')&&at;an.classList.toggle('show',!!on);if(on)an.innerHTML='<i class="fas fa-bullhorn"></i>'+richText(at)}
+  var c=sv('contact')||{};
+  if(c.whatsapp){
+    MY_WA=String(c.whatsapp).replace(/\D/g,'');
+    document.querySelectorAll('a[href^="https://wa.me/"]').forEach(function(a){a.href='https://wa.me/'+MY_WA});
+  }
+  if(c.email){var e=document.getElementById('ctEmail');if(e){e.href='mailto:'+c.email;e.querySelector('span').textContent=c.email}}
+  if(c.phoneDisplay){var ph=document.getElementById('ctPhone');if(ph)ph.querySelector('span').textContent=c.phoneDisplay}
+  if(c.address){var ad=document.getElementById('ctAddress');if(ad)ad.querySelector('span').textContent=c.address;
+    var mp=document.getElementById('ctMap');if(mp&&c.address!==SITE_DEFAULTS.contact.address){var u='https://www.google.com/maps?q='+encodeURIComponent(c.address)+'&output=embed';if(mp.src!==u)mp.src=u}}
+  [['soIg','instagram'],['soTt','tiktok'],['soFb','facebook']].forEach(function(x){var a=document.getElementById(x[0]);if(!a)return;var u=c[x[1]];if(u===''){a.style.display='none'}else if(u){a.href=u;a.style.display=''}});
+  var am=sv('gift.amounts');
+  gcBuildAmounts(am);
+}
+async function fetchSiteContent(){
+  if(!db)return;
+  try{var d=await db.collection('settings').doc('site').get();if(d.exists){SITE=d.data();applySiteContent();renderCalendar()}}catch(e){console.warn('site content not loaded',e)}
+  try{
+    var r=await db.collection('reviews').get();
+    if(r.size){
+      var list=[];r.forEach(function(d){list.push(d.data())});
+      list.sort(function(a,b){return (a.order||0)-(b.order||0)});
+      var box=document.getElementById('reviewsMasonry');if(!box)return;
+      box.innerHTML=list.map(function(v){
+        var stars='';for(var i=0;i<Math.max(1,Math.min(5,v.stars||5));i++)stars+='&#9733;';
+        var ph=(v.photos||[]).filter(Boolean).map(function(u){return '<img class="review-photo" loading="lazy" alt="Foto review '+escH(v.name)+'" src="'+escH(u)+'">'}).join('');
+        return '<div class="review-card"><div class="review-header"><div class="review-avatar">'+escH((v.name||'?').charAt(0).toUpperCase())+'</div><div><div class="review-name">'+escH(v.name)+'</div><div class="review-stars">'+stars+'</div></div></div>'+
+          '<p class="review-body">"'+escH(v.text)+'"</p>'+(ph?'<div class="review-photos">'+ph+'</div>':'')+'</div>';
+      }).join('');
+      box.querySelectorAll('.review-photo').forEach(function(img){img.onclick=function(){openLightbox(0,[img.src])}});
+    }
+  }catch(e){console.warn('reviews not loaded',e)}
+}
+
+function bkRecent(){try{var a=JSON.parse(localStorage.getItem('inkjection_bk')||'[]');var c=Date.now()-864e5;return a.filter(function(x){return x>c})}catch(e){return []}}
+var BOOK_API='https://europe-west1-inkjection-admin.cloudfunctions.net';
+var DEPOSIT={small:20,medium:50,large:80};
+function depAmt(size){var d=(typeof sv==='function'&&sv('deposit'))||{};var v=+d[size];return v>=0&&v<=500&&d[size]!==undefined&&d[size]!==''?Math.round(v):DEPOSIT[size]||DEPOSIT.small}
+function toggleGiftCode(){var b=document.getElementById('bkGiftBox');b.style.display=b.style.display==='none'?'block':'none';if(b.style.display==='block')document.getElementById('bkGiftCode').focus();bkDepositUI()}
+function bkDepositUI(){
+  var t=bkT(),a=depAmt(userSizeChoice);
+  var e=document.getElementById('bkDepAmt');if(e)e.textContent='€ '+a;
+  e=document.getElementById('bkDepTitle');if(e)e.textContent=t.depT;
+  var li=document.querySelectorAll('#bkDepSteps li');for(var i=0;i<li.length;i++)li[i].innerHTML='<span>'+(t.dep[i]||'')+'</span>';
+  var gb=document.getElementById('bkGiftBox'),useGift=gb&&gb.style.display!=='none';
+  e=document.getElementById('bkGiftToggle');if(e)e.textContent=useGift?t.giftHide:t.giftT;
+  e=document.getElementById('bkGiftNote');if(e)e.textContent=t.giftNote;
+  e=document.getElementById('bkDepAmt');if(e)e.style.textDecoration=useGift?'line-through':'';e=document.getElementById('bkDepSteps');if(e)e.style.display=useGift?'none':'';
+  var btn=document.getElementById('bkSubmit');if(btn&&!btn.disabled)btn.textContent=useGift?t.sendGift:t.send+' € '+a;
+}
+async function submitBooking(){
+  var t=bkT(),err=document.getElementById('bkError'),btn=document.getElementById('bkSubmit');
+  var v=function(id){return document.getElementById(id).value.trim()};
+  var name=v('bkName'),phone=v('bkPhone'),email=v('bkEmail'),place=v('bkPlacement'),desc=v('bkDesc');
+  var hasSlots=(daySlots[bookingDate]||[]).length>0;
+  var claim=hasSlots&&bookingTime&&bookingTime!=='any';
+  err.textContent='';
+  if(hasSlots&&!bookingTime){err.textContent=t.eTime;return}
+  if(name.length<2){err.textContent=t.eName;return}
+  if(phone.replace(/\D/g,'').length<8){err.textContent=t.ePhone;return}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){err.textContent=t.eEmail;return}
+  if(!document.getElementById('bkConsent').checked){err.textContent=t.eConsent;return}
+  if(v('bkWebsite')){return} // bot trap
+  var recent=bkRecent();if(recent.length>=5){err.textContent=t.eLimit;return}
+  btn.disabled=true;btn.textContent=t.sending;
+  try{
+    var r=await fetch(BOOK_API+'/bookingCheckout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+      date:bookingDate,time:claim?bookingTime:'',size:userSizeChoice,name:name,phone:phone,email:email,placement:place,description:desc,lang:lang,consent:true,photos:bookingPhotos.slice(0,2),giftCode:(document.getElementById('bkGiftBox').style.display!=='none'?v('bkGiftCode'):'')})});
+    var j={};try{j=await r.json()}catch(e){}
+    if(r.status===409&&j.error==='taken'){if(typeof fetchSlots==='function')await fetchSlots();bookingTime='';renderBookingTimes();renderCalendar();err.textContent=t.eTaken;btn.disabled=false;bkDepositUI();return}
+    if(j.error==='giftcode'){err.textContent=j.reason==='used'?t.gUsed:j.reason==='expired'?t.gExpired:j.reason==='format'?t.gFormat:t.gNotFound;btn.disabled=false;bkDepositUI();return}
+    if(j.direct){recent.push(Date.now());try{localStorage.setItem('inkjection_bk',JSON.stringify(recent))}catch(e){}
+      ['bkDesc','bkPlacement','bkGiftCode'].forEach(function(id){document.getElementById(id).value=''});bookingPhotos=[];renderBookingPhotos();
+      btn.disabled=false;bkShowDone('fa-check',t.doneT,t.doneGift,t.close);try{if(typeof fetchSlots==='function'){await fetchSlots();renderCalendar()}}catch(e){}return}
+    if(!r.ok||!j.url)throw new Error(j.error||'error');
+    recent.push(Date.now());try{localStorage.setItem('inkjection_bk',JSON.stringify(recent))}catch(e){}
+    location.href=j.url;
+  }catch(e){
+    console.warn('booking failed',e);err.textContent=t.eGen;btn.disabled=false;bkDepositUI();
+  }
+}
+function bkShowDone(icon,title,html,btnText,btnAction){
+  document.getElementById('bkFormView').style.display='none';
+  var d=document.getElementById('bkDoneView');d.style.display='block';
+  d.querySelector('.bk-done-icon').innerHTML='<i class="fas '+icon+'"></i>';
+  document.getElementById('bkDoneTitle').textContent=title;
+  document.getElementById('bkDoneText').innerHTML=html;
+  var b=document.getElementById('bkDoneBtn');b.textContent=btnText;b.onclick=btnAction||function(){closeModal('bookModal')};
+}
+async function bookingReturn(id,tok){
+  var t=bkT();
+  document.getElementById('bookModal').style.display='block';
+  bkShowDone('fa-spinner fa-spin',t.checking,'',t.close);
+  for(var i=0;i<20;i++){
+    try{
+      var r=await fetch(BOOK_API+'/bookingStatus?id='+encodeURIComponent(id)+'&t='+encodeURIComponent(tok));var j=await r.json();
+      if(j.status==='paid'){
+        bkShowDone('fa-check',t.doneT,t.done+(j.timeChanged?t.timeMoved:''),t.close);
+        try{if(typeof fetchSlots==='function'){await fetchSlots();renderCalendar()}}catch(e){}
+        return;
+      }
+      if(j.status==='canceled'||j.status==='expired'||j.status==='failed'||j.status==='unknown'){
+        bkShowDone('fa-xmark',t.failT,t.fail,t.retry,function(){closeModal('bookModal');openModalSync('selectionModal')});return;
+      }
+    }catch(e){}
+    await new Promise(function(res){setTimeout(res,2000)});
+  }
+  bkShowDone('fa-hourglass-half',t.slowT,t.slow,t.close);
+}
+(function(){ // back from Mollie: inkjection.be/?booking=ID&t=TOKEN
+  try{var P=new URLSearchParams(location.search),id=P.get('booking'),tok=P.get('t');if(!id||!tok)return;
+    var u=new URL(location.href);u.searchParams.delete('booking');u.searchParams.delete('t');history.replaceState(history.state,'',u.pathname+u.search+u.hash);
+    var go=function(){setTimeout(function(){bookingReturn(id,tok)},400)};
+    if(document.readyState==='complete')go();else addEventListener('load',go);
+  }catch(e){}
+})();
+// WhatsApp: "I have a question" with everything they already filled in
+function askQuestion(kind){
+  var n=lang==='nl',L=[],val=function(id){var e=document.getElementById(id);return e&&e.value?e.value.trim():''};
+  if(kind==='gift'){
+    L.push(n?'Hallo! Ik heb een vraag over een cadeaubon.':'Hello! I have a question about a gift card.');
+    if(+selectedGiftAmt)L.push((n?'💶 Bedrag: € ':'💶 Amount: € ')+selectedGiftAmt);
+    if(val('inpGiftTo'))L.push((n?'🎁 Voor: ':'🎁 For: ')+val('inpGiftTo'));
+    if(val('inpGiftFrom'))L.push((n?'✍️ Van: ':'✍️ From: ')+val('inpGiftFrom'));
+  }else{
+    var sl=userSizeChoice==='small'?'Small (0-8cm)':userSizeChoice==='medium'?'Medium (8-15cm)':'Large (15+cm)';
+    L.push(n?'Hallo! Ik heb een vraag over mijn afspraak.':'Hello! I have a question about my appointment.');
+    if(bookingDate)L.push((n?'📅 Datum: ':'📅 Date: ')+bkDateNice(bookingDate)+(bookingTime&&bookingTime!=='any'?' · '+bookingTime:''));
+    L.push((n?'📏 Formaat: ':'📏 Size: ')+sl);
+    if(val('bkName'))L.push((n?'👤 Naam: ':'👤 Name: ')+val('bkName'));
+    if(val('bkPlacement'))L.push((n?'📍 Plaats: ':'📍 Placement: ')+val('bkPlacement'));
+    if(val('bkDesc'))L.push((n?'💬 Idee: ':'💬 Idea: ')+val('bkDesc'));
+  }
+  L.push('');L.push(n?'Mijn vraag: ':'My question: ');
+  window.open('https://wa.me/'+MY_WA+'?text='+encodeURIComponent(L.join('\n')),'_blank');
+}
+
+function handleSelection(size){try{setTimeout(bkDepositUI,0)}catch(e){};userSizeChoice=size;closeModal('selectionModal');openModalSync('calModal')}
+
+// GIFT
+function openGiftModal(){gcBuildAmounts(typeof sv==='function'?sv('gift.amounts'):null);gcLang();gcPreview();gcBackToForm();document.getElementById('giftModal').style.display='block'}
+
+// COOKIE CONSENT
+function initCookieConsent(){
+  try{
+    if(localStorage.getItem('inkjection_cookie_consent')){return}
+  }catch(e){}
+  setTimeout(function(){
+    var b=document.getElementById('cookieBanner');
+    if(b)b.classList.add('visible');
+  },2400);
+}
+function setCookieConsent(accepted){
+  try{localStorage.setItem('inkjection_cookie_consent',accepted?'accepted':'declined')}catch(e){}
+  document.getElementById('cookieBanner').classList.remove('visible');
+}
+function openPrivacyFromBanner(){document.getElementById('privacyModal').style.display='block'}
+
+// MODAL UTILS
+function closeModal(id){document.getElementById(id).style.display="none"}
+async function openModalSync(id){await fetchData();document.getElementById(id).style.display="block"}
+</script>
+
+<script>
+/* ---------- VISITOR STATISTICS (anonymous) ----------
+   One document per page visit in Firestore "visits": date, hour, where the visitor came from,
+   phone/computer, seconds spent per part of the page and whether they opened the booking form.
+   A random visitor number (no name, no IP, nothing personal) lets the panel count people instead of page loads:
+   kept on this device only after "accept" in the cookie bar, otherwise only for this browser tab.
+   Only admins can read it. */
+(function(){
+  var ua=navigator.userAgent||'';
+  try{
+    if(navigator.webdriver||/bot|crawl|spider|slurp|preview|lighthouse|headless|phantom|pingdom|uptime|monitor|facebookexternalhit|whatsapp\/|telegram|python|curl|wget|java\//i.test(ua))return;
+    if(!navigator.languages||!navigator.languages.length||!screen.width)return;
+    if(/[?&]nostats/.test(location.search)){try{localStorage.setItem('inkjection_nostats','1')}catch(e){}}
+    try{if(localStorage.getItem('inkjection_nostats'))return}catch(e){} // Taner & Talitha's own devices
+  }catch(e){return}
+  var ref='';try{ref=document.referrer?new URL(document.referrer).hostname.replace(/^www\./,''):''}catch(e){}
+  if(ref===location.hostname.replace(/^www\./,''))ref='';
+  var P={};try{P=new URLSearchParams(location.search)}catch(e){P={get:function(){return null}}}
+  var q=((P.get&&P.get('utm_source'))||'').toLowerCase();
+  // our own tracking links: inkjection.be/?src=ig-bio, ?src=ig-story, ?src=gbp (Google profile), ?src=qr ...
+  var CMP=['ig-bio','ig-story','ig-post','fb','tt','gbp','qr','mail','wa'];
+  var cmp=((P.get&&P.get('src'))||'').toLowerCase();if(CMP.indexOf(cmp)<0)cmp='';
+  if(cmp||/[?&](src|utm_[a-z]+|fbclid|igshid)=/.test(location.search)){ // keep shared links clean
+    try{var u=new URL(location.href);['src','utm_source','utm_medium','utm_campaign','fbclid','igshid'].forEach(function(k){u.searchParams.delete(k)});history.replaceState(history.state,'',u.pathname+u.search+u.hash)}catch(e){}
+  }
+  function source(){
+    if(cmp){if(cmp.indexOf('ig')===0)return'instagram';return{fb:'facebook',tt:'tiktok',gbp:'maps',qr:'qr',mail:'email',wa:'whatsapp'}[cmp]}
+    var s=q+' '+ref;
+    if(/Instagram/.test(ua)||/instagram|^ig\b|l\.instagram/.test(s))return'instagram';
+    if(/FBAN|FBAV|FB_IAB|FBIOS|Messenger/.test(ua)||/facebook|^fb\b|fb\.me|m\.me/.test(s))return'facebook';
+    if(/musical_ly|Bytedance|TikTok|trill_/i.test(ua)||/tiktok/.test(s))return'tiktok';
+    if(/maps\.google|google\.[a-z.]+\/maps|maps\.app\.goo\.gl|g\.page/.test(s))return'maps';
+    if(/(^|\.)google\./.test(ref)||q==='google'||/googlequicksearch|GSA\//.test(ua))return'google';
+    if(/bing\.|duckduckgo|yahoo|ecosia|qwant|startpage|brave|yandex/.test(s))return'search';
+    if(/whatsapp|wa\.me/.test(s))return'whatsapp';
+    if(/mail|outlook|gmail/.test(s))return'email';
+    if(ref||q)return'other';
+    return'direct';
+  }
+  var src=source();
+  var dev=/iPad|Tablet/i.test(ua)||(/Android/.test(ua)&&!/Mobile/.test(ua))||(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1)?'tablet':(/Mobi|iPhone|Android/.test(ua)?'phone':'computer');
+  var now=new Date(),day=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');
+  function rid(){var s='';for(var i=0;i<14;i++)s+='abcdefghijklmnopqrstuvwxyz0123456789'.charAt(Math.floor(Math.random()*36));return s}
+  var ret=false,vid='';
+  try{
+    var ok=localStorage.getItem('inkjection_cookie_consent')==='accepted';
+    if(ok){ret=!!localStorage.getItem('inkjection_seen');localStorage.setItem('inkjection_seen','1');
+      vid=localStorage.getItem('inkjection_vid')||'';if(!/^[a-z0-9]{8,20}$/.test(vid)){vid=rid();localStorage.setItem('inkjection_vid',vid)}}
+    else{vid=sessionStorage.getItem('inkjection_sid')||'';if(!/^[a-z0-9]{8,20}$/.test(vid)){vid=rid();sessionStorage.setItem('inkjection_sid',vid)}}
+  }catch(e){vid=rid()}
+  var V={d:day,h:now.getHours(),src:src,dev:dev,lang:(typeof lang!=='undefined'?lang:'nl'),ret:ret,vid:vid,hum:false,dur:0,s:{},ev:{}};
+  if(cmp)V.cmp=cmp;
+  if(ref&&(src==='other'||src==='search'||src==='email'))V.rh=ref.slice(0,60);
+  var ref_=null,dirty=false,lastSent=0,sending=false;
+
+  // a real person touches, scrolls or moves the mouse; bots and accidental taps don't
+  function human(){if(V.hum)return;V.hum=true;dirty=true;if(ref_)send()}
+  ['pointerdown','touchstart','keydown','wheel'].forEach(function(t){addEventListener(t,human,{passive:true,once:true})});
+  var sy=scrollY;addEventListener('scroll',function(){if(Math.abs(scrollY-sy)>40)human()},{passive:true});
+
+  // which part of the page is in the middle of the screen
+  var ANCH=[['hero','.hero'],['portfolio','#portfolioTitle'],['prices','#pricingTitle'],['about','#aboutTitle'],['designs','#designsTitle'],['reviews','#reviewTitle'],['contact','.footer']];
+  var MODAL={workModal:'allwork',designsModal:'alldesigns',selectionModal:'booking',calModal:'booking',bookModal:'booking',giftModal:'gift',trickModal:'trick',privacyModal:'other',designPopup:'alldesigns'};
+  function shown(id){var e=document.getElementById(id);return !!(e&&e.getClientRects().length&&getComputedStyle(e).display!=='none')}
+  function where(){
+    for(var id in MODAL){if(shown(id))return MODAL[id]}
+    var mid=innerHeight*.6,cur='hero';
+    for(var i=0;i<ANCH.length;i++){var el=document.querySelector(ANCH[i][1]);if(!el||!el.getClientRects().length)continue;
+      var top=el.getBoundingClientRect().top;if(top<=mid)cur=ANCH[i][0]}
+    return cur;
+  }
+  var idle=0;['pointermove','pointerdown','keydown','scroll','touchstart'].forEach(function(t){addEventListener(t,function(){idle=0},{passive:true})});
+  function tick(){
+    if(document.visibilityState!=='visible'||document.prerendering)return;
+    if(++idle>300)return; // phone left open on the page: stop counting after 5 minutes without any movement
+    V.dur++;var w=where();V.s[w]=(V.s[w]||0)+1;
+    if(shown('selectionModal')||shown('calModal'))V.ev.book=1;
+    if(shown('bookModal'))V.ev.form=1;
+    if(shown('bkDoneView'))V.ev.sent=1;
+    if(shown('giftModal'))V.ev.gift=1;
+    dirty=true;
+    var due=V.dur===3||V.dur===15||V.dur===45||(V.dur>45&&V.dur-lastSent>=60);
+    if(due)send();
+  }
+  document.addEventListener('click',function(e){
+    var a=e.target.closest&&e.target.closest('a[href]');if(!a)return;var h=a.getAttribute('href')||'';
+    if(/wa\.me|whatsapp/.test(h))V.ev.wa=1;
+    else if(/^tel:/.test(h))V.ev.call=1;
+    else if(/maps|goo\.gl\/maps|google\.[a-z.]+\/maps/.test(h))V.ev.route=1;
+    else if(/instagram|tiktok|facebook/.test(h))V.ev.social=1;
+    else return;
+    human();dirty=true;send();
+  },true);
+  function send(){
+    if(typeof db==='undefined'||!db||sending||!dirty)return;
+    if(V.dur<3&&!ref_)return; // a 1-second bounce is not worth a write
+    if(V.dur>14400)return;
+    sending=true;dirty=false;lastSent=V.dur;
+    var p;
+    if(!ref_){ref_=db.collection('visits').doc();
+      var D={d:V.d,h:V.h,src:V.src,dev:V.dev,lang:V.lang,ret:V.ret,vid:V.vid,hum:V.hum,dur:V.dur,s:V.s,ev:V.ev,t:firebase.firestore.FieldValue.serverTimestamp()};
+      if(V.cmp)D.cmp=V.cmp;if(V.rh)D.rh=V.rh;
+      p=ref_.set(D);}
+    else p=ref_.update({dur:V.dur,s:V.s,ev:V.ev,hum:V.hum});
+    p.catch(function(){}).then(function(){sending=false});
+  }
+  setInterval(tick,1000);
+  document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden')send()});
+  addEventListener('pagehide',send);
+})();
+</script>
+<script>
+/* Second, independent visitor counter: Cloudflare Web Analytics (free, no cookies, filters bots).
+   Paste the token from dash.cloudflare.com > Analytics & Logs > Web Analytics between the quotes. Empty = off. */
+var CF_BEACON_TOKEN='';
+(function(){try{if(!CF_BEACON_TOKEN||localStorage.getItem('inkjection_nostats'))return}catch(e){}
+  var s=document.createElement('script');s.defer=true;s.src='https://static.cloudflareinsights.com/beacon.min.js';
+  s.setAttribute('data-cf-beacon',JSON.stringify({token:CF_BEACON_TOKEN}));document.body.appendChild(s)})();
+</script>
+<script>
+(function(){
+ var P=PAGE;
+ if(P!=='gift'){window.openGiftModal=function(){location.href='/cadeaubon/'+pgLangQ()}}
+ if(P!=='book'){var _o=window.openModalSync;window.openModalSync=function(id){if(id==='selectionModal'){location.href='/afspraak/'+pgLangQ();return}return _o.apply(this,arguments)}}
+ if(P==='home')return;
+ // move the page's form out of the overlay layer into the page itself
+ var id=P==='gift'?'giftModal':'selectionModal',m=document.getElementById(id),wrap=document.querySelector('.content-wrap');
+ var main=document.createElement('main');main.className='pg-main';
+ var back=document.createElement('a');back.className='pg-back';back.href='/';back.innerHTML='<i class="fas fa-arrow-left"></i><span id="pgBackTxt">HOME</span>';
+ main.appendChild(back);main.appendChild(m);wrap.parentNode.insertBefore(main,wrap);
+ var lg=document.querySelector('.nav-logo');if(lg)lg.setAttribute('href','/');
+ try{if(/[?&]lang=en/.test(location.search))setLang('en')}catch(e){}
+ var ol=window.onload;window.onload=function(){
+  try{ol&&ol.apply(this,arguments)}catch(e){console.error(e)}
+  try{var s=document.getElementById('splash');if(s)s.style.display='none'}catch(e){}
+  if(P==='gift'){if(!/[?&]gift=/.test(location.search))openGiftModal()}
+  else{if(!/[?&]booking=/.test(location.search))openModalSync('selectionModal')}
+ };
+})();
+</script>
+</body>
+</html>
